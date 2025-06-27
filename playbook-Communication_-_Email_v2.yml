@@ -1,0 +1,700 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: QRadar SARS Main
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Send templated emails
+id: 70bdd136-546b-49a4-8089-2ef586b1a070
+inputs:
+- description: Template name. Template is saved in xSOAR list.
+  key: template
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: EMAIL_TEMPLATE_DEFAULT
+- description: Email to
+  key: to
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Email cc
+  key: cc
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Email cc
+  key: bcc
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Email subject
+  key: subject
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: |-
+    Email body. Excluding signature as the signature will be added automatically.
+
+    The body is expected to be HTML
+  key: body
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Title
+  key: title
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Email preheader. Try to keep the prehader between 30 and 80 characters.
+  key: preheader
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Email greeting. Like, 'Hi there'
+  key: greeting
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: Hi,
+- description: 'Email importance. Possible values: High, Normal, Low.'
+  key: importance
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: Normal
+- description: War Room Entry IDS that contain the files to attach to the email
+  key: attachIDs
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Email Signature
+  key: signature
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: Regards,<br>Cybersecurity Team
+name: Communication - Email v2
+outputs: []
+sourceplaybookid: 14933ac6-9efe-406d-8b7a-6b33653748c7
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7ea7a047-88fe-4405-831c-158039e0e63d
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 7ea7a047-88fe-4405-831c-158039e0e63d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 50
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: EWSO365
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "17"
+      "yes":
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if there is an active instance of the VirusTotal Private
+        API integration enabled.
+      id: b6b851c6-9b78-4211-83dd-80f5d9d9c1a6
+      iscommand: false
+      name: Is EWSO365 enabled?
+      type: condition
+      version: -1
+    taskid: b6b851c6-9b78-4211-83dd-80f5d9d9c1a6
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 195
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fb4c6a2b-0eb0-4097-8147-b5127f373270
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: fb4c6a2b-0eb0-4097-8147-b5127f373270
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 1215
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      attachIDs:
+        complex:
+          root: inputs.attachIDs
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      bcc:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.bcc
+              operator: isExists
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.bcc
+              operator: isNotEmpty
+          root: inputs.bcc
+      cc:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.cc
+              operator: isExists
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.cc
+              operator: isNotEmpty
+          root: inputs.cc
+      htmlBody:
+        simple: ${email}
+      importance:
+        simple: ${inputs.importance}
+      subject:
+        simple: ${inputs.subject}
+      to:
+        simple: ${inputs.to}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: EWSO365
+      description: Sends an email.
+      id: c3caea6b-0d6c-470b-8e75-e0e0ddf81578
+      iscommand: true
+      name: Send email
+      script: EWSO365|||send-mail
+      type: regular
+      version: -1
+    taskid: c3caea6b-0d6c-470b-8e75-e0e0ddf81578
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 1040
+        }
+      }
+  "8":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.preheader
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          root: inputs.preheader
+          transformers:
+          - operator: trim
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: cccfb825-ee0a-4851-840e-ed30813fa057
+      iscommand: false
+      name: Preheader to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: cccfb825-ee0a-4851-840e-ed30813fa057
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 690
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: email
+      listTemplate:
+        simple: ${inputs.template}
+      object:
+        complex:
+          root: emailObject
+          transformers:
+          - operator: Stringify
+      removeNotFound:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This script allows sending an HTML email, using a template stored as a list item under Lists (Settings -> Advanced -> Lists).
+        Placeholders are marked in DT format (i.e. ${incident.id} for incident ID).
+        Available placeholders for example:
+        - ${incident.labels.Email/from}
+        - ${incident.name}
+        - ${object.value}
+        See incident Context Data menu for available placeholders
+
+        Note: Sending emails require an active  Mail Sender integration instance.
+      id: c5c7db66-45f0-41ce-8a30-ca7ecf593ede
+      iscommand: false
+      name: Build email body
+      script: CreateEmailHtmlBody
+      type: regular
+      version: -1
+    taskid: c5c7db66-45f0-41ce-8a30-ca7ecf593ede
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 865
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.template
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "16"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 871f1e00-780f-4425-81dd-b07f14501f4a
+      iscommand: false
+      name: Template is deinfed?
+      type: condition
+      version: -1
+    taskid: 871f1e00-780f-4425-81dd-b07f14501f4a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 370
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      key:
+        simple: email
+      value:
+        simple: ${inputs.body}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: EWSO365
+      description: Set a value in context under the key you entered.
+      id: fd2afb0a-e91c-4d4a-804d-78fc80fa6c53
+      iscommand: false
+      name: Send email
+      script: Set
+      type: regular
+      version: -1
+    taskid: fd2afb0a-e91c-4d4a-804d-78fc80fa6c53
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 865
+        }
+      }
+  "12":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.title
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          root: inputs.title
+          transformers:
+          - operator: trim
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 8b96646a-fd67-4a4c-83c0-d672ae094c7b
+      iscommand: false
+      name: Title to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: 8b96646a-fd67-4a4c-83c0-d672ae094c7b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 690
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+      - "12"
+      - "8"
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 991edec2-1fec-44a5-8db2-4f71c34c2810
+      iscommand: false
+      name: Build body from template
+      type: title
+      version: -1
+    taskid: 991edec2-1fec-44a5-8db2-4f71c34c2810
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 545
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.greeting
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          root: inputs.greeting
+          transformers:
+          - operator: trim
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: f118c5f3-36e7-4c02-8da8-ef24ad6457a2
+      iscommand: false
+      name: Greeting to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: f118c5f3-36e7-4c02-8da8-ef24ad6457a2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 690
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.body
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          root: inputs.body
+          transformers:
+          - operator: trim
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: c5fbf3c0-1f8a-4c0f-86ac-394ea6cec5bd
+      iscommand: false
+      name: Body to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: c5fbf3c0-1f8a-4c0f-86ac-394ea6cec5bd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 690
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b21fe7ba-0cec-4e99-8b8d-667e940d9a82
+      iscommand: false
+      name: Build without template
+      type: title
+      version: -1
+    taskid: b21fe7ba-0cec-4e99-8b8d-667e940d9a82
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 705
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 26675368-edb2-4736-8b65-4ca55c5c9e8b
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 26675368-edb2-4736-8b65-4ca55c5c9e8b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1555,
+          "y": 385
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_13_yes": 0.46
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1230,
+        "width": 2100,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
