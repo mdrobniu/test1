@@ -1,0 +1,70 @@
+{
+	"action": "script",
+	"cacheVersn": 0,
+	"definitionId": "",
+	"enabled": true,
+	"existingEventsFilters": [],
+	"fromServerVersion": "",
+	"id": "9fe2f26e-9270-465b-88be-71f24691d211",
+	"index": 0,
+	"itemVersion": "",
+	"linkTo": "oldest",
+	"locked": false,
+	"name": "Prasoon_Preprocess",
+	"newEventFilters": [
+		[
+			{
+				"left": {
+					"isContext": true,
+					"value": {
+						"simple": "type"
+					}
+				},
+				"operator": "isEqualString",
+				"right": {
+					"isContext": false,
+					"value": {
+						"simple": "Prasoon_IncidentType"
+					}
+				},
+				"type": "singleSelect"
+			}
+		]
+	],
+	"packID": "",
+	"packName": "",
+	"period": {
+		"by": "days",
+		"fromValue": 30
+	},
+	"propagationLabels": [
+		"all"
+	],
+	"readyExistingEventsFilters": [],
+	"readyNewEventFilters": [
+		[
+			{
+				"left": {
+					"isContext": true,
+					"value": {
+						"simple": "type"
+					}
+				},
+				"operator": "isEqualString",
+				"right": {
+					"isContext": false,
+					"value": {
+						"simple": "Prasoon_IncidentType"
+					}
+				},
+				"type": "singleSelect"
+			}
+		]
+	],
+	"scriptID": "bcda2356-bf1e-4e16-89fb-02f906b493b7",
+	"scriptName": "",
+	"searchClosed": false,
+	"system": false,
+	"toServerVersion": "",
+	"version": -1
+}
