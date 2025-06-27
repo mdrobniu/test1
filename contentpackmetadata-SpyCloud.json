@@ -1,0 +1,119 @@
+{
+	"author": "Niels Heijmans",
+	"authorImage": "content/packs/SpyCloud/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Data Enrichment \u0026 Threat Intelligence"
+	],
+	"certification": "",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Analytics \u0026 SIEM",
+				"commands": [
+					{
+						"description": "Lists the breaches identified. By default this lists all breaches known in Spycloud. With the arguments it's possible to scope the results on date and keywords.",
+						"name": "spycloud-list-breaches"
+					},
+					{
+						"description": "Retrieves the breach details. While very similar to list-breaches, this command obtains one specific breach, which is easier for automation tasks",
+						"name": "spycloud-get-breach-data"
+					},
+					{
+						"description": "Get all the data from a monitored domain and the breaches occurred that relates with it. Can be scoped by domain, type and severity",
+						"name": "spycloud-domain-data"
+					},
+					{
+						"description": "Get all the data from a monitored email address and the breaches occurred that relates with it. Can be scoped by date, severity and breach",
+						"name": "spycloud-email-data"
+					},
+					{
+						"description": "Get all the data from a watchlist.",
+						"name": "spycloud-watchlist-data"
+					}
+				],
+				"description": "With the SpyCloud integration data from breaches can be pulled and further processed in Playbooks. Filtering parameters can be used to filter the data set",
+				"id": "SpyCloud",
+				"name": "SpyCloud (Community Contribution)"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "1.0.7",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.27",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Integration for retrieving data from the SpyCloud ATO API",
+	"disabledMonthly": false,
+	"downloads": 133,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "6.2.0",
+	"general": [
+		"generalFieldFree"
+	],
+	"id": "SpyCloud",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/SpyCloud/SpyCloud_image.png",
+			"name": "SpyCloud"
+		}
+	],
+	"itemVersion": "1.0.7",
+	"keywords": [],
+	"legacy": true,
+	"name": "SpyCloud",
+	"packID": "SpyCloud",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "Integration for the SpyCloud ATO service. Retrieve breach data for\n\n- Domain searches\n- Email searches\n- Breaches\n\nUse this data to rotate stolen credentials, identify the latest breaches and automatically send warnings to employees, monitor certain email addresses for breach notifications.\n\n**Make sure to whitelist your outbound IP address XSOAR uses to connect in the console**\n\n# What does this pack do?\n\n- Retrieve data of SpyCloud for domain specific related breaches\n- Retrieve data of SpyCloud for breach specific searches\n- Retrieve data of SpyCloud for email addresses you monitor in the platform\n",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.2.0",
+	"support": "community",
+	"supportDetails": {
+		"email": "",
+		"url": ""
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-05-18T20:37:23Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3444919",
+	"videos": []
+}
