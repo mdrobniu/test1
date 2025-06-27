@@ -1,0 +1,439 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: 1462590a-e6d2-4303-80b4-20e4652566d7
+inputs:
+- description: ""
+  key: SearchQuery
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: FromDate
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: FileName
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Yes or no
+  key: OutputStats
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "no"
+name: Eskom - Splunk - Repeat Offender Excel Extract
+outputs:
+- contextPath: TotalNumberOfUsernames
+  type: number
+- contextPath: TotalNumberOfAttempts
+  type: number
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c05299aa-5e1b-4c9a-8da6-5b6ab8d8cc4d
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: c05299aa-5e1b-4c9a-8da6-5b6ab8d8cc4d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 50
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      add_fields_to_context:
+        simple: sourceip,status,escalation,count,usercount,users,occurred
+      fromdate:
+        complex:
+          root: inputs.FromDate
+      query:
+        complex:
+          root: inputs.SearchQuery
+      sort:
+        simple: occurred:desc
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Searches Cortex XSOAR Incidents and returnrs the most relevant
+        fields. Default search range is the last 30 days, if you want to change this,
+        use the fromDate argument. \n\nReturns the id, name, type, severity, status,
+        owner, and created/closed times to context.  You can add additional fields
+        using the add_field_to_context argument.\n\nThis automation runs using the
+        default Limited User role, unless you explicitly change the permissions.  Based
+        on the SearchIncidentsV2 from the Common Scripts pack, but more efficient."
+      id: 2368a2a8-6f27-4f55-8ecb-0d7205ac3fe1
+      iscommand: false
+      name: Retrieve incidents where the username was seen in the last 3 months
+      script: SearchIncidentsSummary
+      type: regular
+      version: -1
+    taskid: 2368a2a8-6f27-4f55-8ecb-0d7205ac3fe1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 195
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIncidents
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e6c035e0-14a7-4109-8107-f65c10da58e2
+      iscommand: false
+      name: Incident found?
+      type: condition
+      version: -1
+    taskid: e6c035e0-14a7-4109-8107-f65c10da58e2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      data:
+        simple: ${foundIncidents}
+      file_name:
+        simple: ${inputs.FileName}.xlsx
+      headers:
+        simple: id,occurred,sourceip,escalation,count,usercount,users
+      sheet_name:
+        simple: incidents
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Exports context data to a Microsoft Excel Open XML Spreadsheet
+        (XLSX) file.
+      id: 2440ede2-4fb9-4afb-8191-55d8fd0e0b33
+      iscommand: false
+      name: Create spreadsheet
+      script: ExportToXLSX
+      type: regular
+      version: -1
+    taskid: 2440ede2-4fb9-4afb-8191-55d8fd0e0b33
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 545
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e08b5fa5-b85e-4bb2-8aba-cf13ac1a3a0f
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: e08b5fa5-b85e-4bb2-8aba-cf13ac1a3a0f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -260,
+          "y": 1310
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      force:
+        simple: "false"
+      key:
+        simple: TotalNumberOfAttempts
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: foundIncidents.count
+              operator: isExists
+          root: foundIncidents.count
+          transformers:
+          - operator: SumList
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Set a value in context under the key you entered. If no value is entered, the script doesn't do anything.
+
+        This automation runs using the default Limited User role, unless you explicitly change the permissions.
+        For more information, see the section about permissions here:
+        https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.10/Cortex-XSOAR-Administrator-Guide/Automations
+      id: 8338e4b7-1904-4a46-8b81-4e2cfdb7e2da
+      iscommand: false
+      name: Get TotalNumberOfAttempts
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 8338e4b7-1904-4a46-8b81-4e2cfdb7e2da
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 170,
+          "y": 1100
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      force:
+        simple: "false"
+      key:
+        simple: TotalNumberOfUsernames
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: foundIncidents.users
+              operator: isExists
+          root: foundIncidents.users
+          transformers:
+          - operator: uniq
+          - operator: count
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Set a value in context under the key you entered. If no value is entered, the script doesn't do anything.
+
+        This automation runs using the default Limited User role, unless you explicitly change the permissions.
+        For more information, see the section about permissions here:
+        https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.10/Cortex-XSOAR-Administrator-Guide/Automations
+      id: c506fb10-34b7-4c74-878c-4bb2c352562a
+      iscommand: false
+      name: Get TotalNumberOfUsernames
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: c506fb10-34b7-4c74-878c-4bb2c352562a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 590,
+          "y": 1100
+        }
+      }
+  "12":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.OutputStats
+                    operator: isExists
+                root: inputs.OutputStats
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 603ad568-be23-483e-8144-1b7f347b8ebe
+      iscommand: false
+      name: Generate stats?
+      type: condition
+      version: -1
+    taskid: 603ad568-be23-483e-8144-1b7f347b8ebe
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 720
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: da51a0a3-7504-4f68-8068-83a1b1ae2753
+      iscommand: false
+      name: Stats
+      type: title
+      version: -1
+    taskid: da51a0a3-7504-4f68-8068-83a1b1ae2753
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 935
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1325,
+        "width": 1230,
+        "x": -260,
+        "y": 50
+      }
+    }
+  }
