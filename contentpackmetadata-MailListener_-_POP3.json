@@ -1,0 +1,114 @@
+{
+	"author": "Cortex XSOAR",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Email"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"classifier"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": [
+			{
+				"description": "",
+				"id": "Mail Listener - POP3 - Incoming Mapper",
+				"name": "Mail Listener - POP3 - Incoming Mapper"
+			}
+		],
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Email",
+				"commands": [],
+				"description": "Listen to a mailbox, enable incident triggering via e-mail.",
+				"id": "MailListener - POP3 Beta",
+				"name": "MailListener - POP3"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "2.0.7",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.25",
+			"name": "Base"
+		},
+		"Phishing": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.7.2",
+			"name": "Phishing"
+		}
+	},
+	"deprecated": false,
+	"description": "Listen to a mailbox, enable incident triggering via e-mail",
+	"disabledMonthly": false,
+	"downloads": 2748,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldByCortexXSOAR",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "MailListener_-_POP3",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/MailListener_-_POP3/MailListener-POP3Beta_image.png",
+			"name": "MailListener - POP3"
+		}
+	],
+	"itemVersion": "2.0.7",
+	"keywords": [],
+	"legacy": true,
+	"name": "MailListener - POP3",
+	"packID": "MailListener_-_POP3",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-05-25T20:34:56Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3089368",
+	"videos": []
+}
