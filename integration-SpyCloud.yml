@@ -1,0 +1,518 @@
+category: Analytics & SIEM
+commonfields:
+  id: SpyCloud
+  version: -1
+configuration:
+- display: Base URL of SpyCloud
+  name: url
+  required: true
+  type: 0
+- display: API Key of SpyCloud
+  name: apikey
+  required: true
+  type: 4
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.2.0
+    itemVersion: 1.0.7
+    packID: SpyCloud
+    packName: SpyCloud
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    toServerVersion: ""
+description: With the SpyCloud integration data from breaches can be pulled and further
+  processed in Playbooks. Filtering parameters can be used to filter the data set
+detaileddescription: |-
+  ### Community Contributed Integration
+   #### Integration Author: Niels Heijmans
+   No support or maintenance is provided by the author. Customers are encouraged to engage with the user community for questions and guidance at the [Cortex XSOAR Live Discussions](https://live.paloaltonetworks.com/t5/cortex-xsoar-discussions/bd-p/Cortex_XSOAR_Discussions).
+  ***
+  Use the Spycloud API to collect the breach information from watchlists or based on domain information
+
+  Notice: Submitting indicators using the **spycloud-domain-data** command of this integration might make the indicator data publicly available.  See the vendor’s documentation for more details.
+
+  ---
+  [View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/spy-cloud)
+display: SpyCloud (Community Contribution)
+image: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABGCAYAAAAHFFAPAAAABHNCSVQICAgIfAhkiAAAGqtJREFUeJztfHl4XEeV7+9U1b3dLbV2O45jx5448iYnAaIsJGRQZMPIdpjHAJFCJmNsh2xvHgG++TJ5wwCvIx5DgMBjWMJ8hiS2k7wAEgPMEGKbIe4oPLIRZx3LdqIxsS0vsi3JavV6761z3h/dLbXXWI6dYfL17/ta6ntvVZ2q+tVyzqlzGyijjDLKKKOMMsooo4wyyijjbQS1xGPmP7sSZZwJiNBh3wV0gtRl/FdCe1eXLv5fHF/98bEHpaSX8V8UJSS2bXxgzUc2/1KWxNfeDQCxWEyVSX57cXo7OxZT7QsWUN2sYbVjJHx/qKZimZdIeW5N1PUSqXvWty6/MyYx1Ym7BERyWmWXcUyo01aSCLUvWEDdHR1216jb7FZXLMuNpgREyj+UtG515d8ujq/9eid1cgx3UXkmvz04LQTHJKZAJE2bN8vi+Nrl61pXPuMnRj9qQi4RwQBALpEMyiS//XjrBMdiqpM6GQCeaZn5QGRK/Zq2+OrvrF9048+DrHedch1AQQMi3kjSc6sqyiS/jdBvKbcItR84oNq7mih89fLVoZrq5d7B4ZxbU33lrOuXTlm/cMXXZ9/w51t0JNSutNZKkbapnHWro1edd/01lfef99lfxwDV88QTQGfn6WlRGYfh1GePCLV3d6vujg67dOOajtBZ9T/J7B/yADEC4lBN1Pijqe+vu3r5/1j6xNrrIeIJZLJy3H8K/Jwfqq52vNHUPeuvLiteZxKnRHB7V5fu7uiwtzy/ytmVcP903cKVG9via74cqqr8vDeaDiCsxkhOJL+3rnXF7cW8bfE1T5mQewVnsjmntjqUSyS/saF1xd+WST4zmPAeHJOY6u7osACwYyR8v1tX/fji+APLN7Su+II/mv6aW11hQMQg6Fxi1Hfrqj+1OL52+VgBgl065AIA/ENJG6qO3tEWX3NPJ3UyiKS8J59eTIjgWIlC1fb42gdDNRXLvKFR60Qq1iyNr71pXevyv/MTya+5VZWGAEuggL0AApk9Xor8hD0f0DokBJsbSfhutOKOxfHVdwNAe3f36TPdypjAEi1CxeWz7fG1D4ZqK5flEqM+iWiAlKmMwE/nbt7Quvy+JRtXf9Wtrf6fQToDFXLhjya3UTb5LiBavW7pjQeWxtd8jBzzU+W6sLkcAEJkSj1S/ftvXb9wxQ+KW8CZavQZQHFQ8hmUQQU5E+qXCRO8OL76R2511cdziYSvRDkgQERYiMitCJOfzt60vnXF/Yvja+8gwmaI3ODWVt+QHU5sBnA2kfx0fevK29qefOhixfZuZr4ApBIEPLy+dcU/tMRX1551VmW6e0GH9yb1Lq27FD5nCieSR8f5frrln1K5Ez7KE5GIWJuXWRBLRArC7KVzcCLh+9ria2l96/JvAEDbkw+9lB1K/IUJOwvEWuhI+NbFG9eY9e9fdhOAttKyl2x8sEXAd+3fv/mDx2lY6Uw5ssEKZ2QGtWug2x5HngCQSdPmz7ZMueG9vTuPUee3CgIg9Y2N1Trtzjqwp/eliWY+KcRiMdXZmd9/F2984BlTUXF5kMkGBBhIviQRZlJakVJQNpj/aOvKrS3xuIngje3aOOdaP/BIoE1VRPvJ1DaA7iXQC4pQyyIf1RWRG4NMrm996/LZx6jCGIFnn9042TqhaoiQFS87tLtvN1CsxenvXAC6fvrssx1NrucZS5XeoaG+vkQxUcO583Yz+JvDu177P2hudrBpk3/aalAor37a3L8n0G2Du7fOwATaebIzmDo7O/lD8UcmWXBYB9xh09kdRDAsEAVQfiYrxcK+47iOtcE8AFt7WluDto1rvqfDoa+xF2gmKD+VDXQoPFe5znfY90FKwRBBrAWBM6VyCw3RAGz9zNnzyeofeIQFxNYFgYiM13DuvEF4cvPgwLZ4Me3J9+BxoQDwpGnzbhGSLxKp6VYI2giQM6g/Z/5DQ3u2fAIAwGJIVH5L2RQ9I1sFAS5I/PHLkyP45DRWyZdlTZZYvEcf/eAndgrk2051FCAJijuUCDMJOSACSOUAoPn5Vc6GhSu+7iWSnzPVFVoJWCDa5rLsjaYCm82yTWVtkErnBAALldap2AgGAAr0I1o7VymoOqVNpVKmQilda0zofDaqYGu3nAYzq10D4Lpz5l1Bxqwi0tNF+AW2diNbjotgCyl8cOrUOZPGsqgza96JCOMU/BYT2oOj9dGR5P70uxbHV8cU8FWbyX4GIAMBBMJESulICH4qs3LDopXr2ru6dPclHX67dOlu6vjq4vhqONWVd/ujSRZSpAAjUtjLj1/3/Oyd0dRELO9mDiDC21mCzSTKCokK2M4GaHc+ec9bn0HN2xU2wZLGMmEGCy4f6t/2XGmS+sbG6r19fSkAyFsXb4d/ZuJjaEIEZzLDRsQdIqLPVB6o+HJicvpppyJ8hZ/KBorI6HAIfia7csOilWsKpAoA033XZm6Jx8z61pV5kqPRu71UWhgQAhEIJ1CPWgjoASDnkFKw1u5ExL6ndA8EADQ1uchTbIEWA/QUFLGWEn97T0FZatfAfhq/BgDQWNpNPRYAiOVKEXlsaM+W50rKBAA+XP5RBCugpWQlOksKilqJnJ4jFLcWc8Q9DbTQ9IH/MP2Ar5QiOYVBNCGCR0cDFZFQxm2omZawicsU6F+0614RpLKsHAPOejdvaF25pr2ry+3u6LbI08b5g4QWVSS5beNqxwmHv2QzOSsEXVpvOs5UoIAryDVQHGw72NeXQFOTi97eYqcxens9jO1NPcF4ztLvRXSX7tHF/UyOSkt0Nit5FADQnCRsGhuGRbPp6GHZdEChF0HJYCiVgyPklOylh90DAAv0oL8fAQAws5A6wzMYmAxQWpTWgOIPEKseDgIQwWUvSDiu/clY5bq77TlXXTUn8P15AJ7t6ewZaFpwtVtowkM2l/sSCBqQfDweMYEZIAmVCBxrkYjSAGAP91VLyYcASGNjY2gwa5YZ4d9PrjFb9ibkswqYysSvDZ8VvQ+bNvmTzpl/nWiuNZ7/84GB7fsBoG7WrBqdCV0LLemD/Vt/DEBBJEpM+wAcqTwdfyr19npnnXfBFD/wbiCoswXwlFXxwT29jwPA5MlNUevYa0Mij+7d+9pBAEBzs9OwP3U9WxMf3vPvuwCgbua8K2D5Q2BEtVI/Y5FjDNQ3x8RDWgXEQQBFuJTY/t8glQFpBbYBpTOoAjDa3dFhJ89Z8M3E/+v7myiGgOoZ2ejM+Z/q7ei8HwBUgKqiZBq3p31TEQnZQ/Z14HCzDADYEAOAEqksduR4pdp1ft/c5A+m3CnGVT8MbLBlYMTucBx3sbCFViHU7Us1DQO3i5IvGyfcmGU6COCfAUD7oYt02LnP9/wdAH40dWpzKEdpB8LJk+kWJUxAfm+2Wftb14nMZrYgIkDj8w3nzls+uGvrg+LKVK3N6pzlKwAcBIC64eEKQngtc7YdwK6Gc+deQqKeUsZFXrfCp8kGAwT0j7Fwkpiw31dIiAMLIZqZE8mytSOkNUiUcM4jAJjynov/aeS17beff3tbru7h/419l06x0R2Z70+65JJbAMByblwuASLwTFU0lB0efS5DMz587A60WWELAV1WP33eFxumz7m0flrj9Pze1W2LtqeEhTgIUppovtJmsfX9QETA1ocitAMAC54UFmhgRrH8gDFTREAkzwJA2vFCEFFKUe5k+oWhNQBIzizVWs8Ocuk7rfAC8byrbODtFsEdAKCNDSxbnxSPzUjlOAyWpDEqvxxbWUYAgpz/USu8wNrcx0RkksjEz+8nTDAREawFWa7JX6sRUgQRax6/5ra9YeDjwUh29ruuvOKvt1/cGPrr8y/CFz59i9mHN66vZf0ZAOfVNJ4/DEVj5DpVFW6QzDy/YdGKy11/V6j96a7I+OzNa8Wa9YAIQAKllf4SkXlOwdnSMH1gS/25834x+ZymdwOAawMNBU1ECKz9OxO40yByB4ggQP306dMjimgLEUGBGovtMiTnEykwuA8AIl7GgEBgmpB3TIlcZm0wMLjn9XuGdvb2Htiz7XcW6isA5gGAH4R8OmLlFGtJlBhLRgBAKXUxW1k/tHfLz4d29vYO9b/+MxG5F4SaifI18RmMvFnMpKKOYSUEByBAq2zLqi+f72JGx+D23jbz/nkz6pJZ9P3jLzKjDoUAHKoLh29w4X4OQUZDxsn1EqkX1rUuv3Txxofnas2P7c9uLjXoGQAO7Ol9WVhe18ZoawMWZgYhSkSNRjkftiS/KHYgGCFmPlRtMt8eGHhl/8Fq9V2x9oBWyvGc2moS9IoIBDyr2C5mNIoIFKltxXt0SsH6NE2E/gAAU6c2VwAABbxdgZzJk5uiSvuWQMcsV1sryPfvZID/AwAaGuZWFTpisFTIydZm4jOYwTrkQAg/Xtd6c78S/JsKudBaJw++9of5gswzAOy+7bsicyY14NtVg+g5uBuzUF/7+6d6XiJ4g/uf7Z0mglSe3OQLGxatbG578qGpQPCKKJzb09pZXL6KCpQGICS4zlr/d1A0QooUKQUihcD6vlI0s2763Aut4hQpIgIyyWTYGa84jQAECSQK4HVhCwLNQjFsiahRhMEkfflLJadiloApKoQkAFRWjlgAcBgJEGBMECZSxy5USu0JCouoUQBw3agFAKXU8QyME2JCBLt+VoTg+KNpaMG3AIBIvmUzWQQ+1y/4wvU9Hg4Mttwbi/6h65fr0yOj+Iubro2oLTuxHUMbGz+25D054LdTF125I9xQW+mPpjdtWHRj85L4D6cjsK+6NVGXgJESkSUmA9TBPVteHOzfdlUo4DnE9t0swX+TwP6ABIaIYImmmrAXAICAyJhQfnnt7fVR0ELTsJHaiL+T2eZEYUbNjAurASgiOY+DgMnanQCQdkJ2Qj2q8to9K3YU5DBftA3BA4DANYaUOs66QKCChUAkhgiHnaYxs5xxR0eoPiNBwjVsg1Hx7DAAUFgdsBnfI0B7I0nKAd19D65fAODxvm/87OcHLp31kb0/+m0MwKHRrXtqATyW2tU/xc94D69fuGJZ25MPTRVrXzWuqQ3SGYjAOY54RmFAFsyLgwBeBvDLhulzLyGlLna8IIxhLajIq+VKOeMEUX4vNQS3r68v1zBt7h+UNvOcIJhUPb2JiDAF4DcGp9QMYDeg3YxF1rAQTaiPNMbciiWiSSAEZqu0Um/uJycQhE+La2xClc8NRUgb6ytj6mHVJABDnA2mmnDEtdlc2u89FAawL3LZZS/h2Wexv+/la/f3vTwHwFYAemDzy08AwC/f+5cDAJa1xR9qhG+f0RG3ljO5nAq7ISJ7olWl1NGg0NSk0dvrMdSQJoIoNlo5Y0srs1/6ApwCAFP4L4TXiPQ8IZ5qtG8UhWED6Stq41W+7yWhAwZHJtJHFoCSwz0SIkIEgVL6BApb0ZTPZ4A61nQ9w0u054QJQoETrYBouRMALOu/cWurIIQHH7tm5b6WWMz0ffe7OYwrSFsL3/NuuFhMxSSmAIBgHwzVRBts1vNEK9KuC7BkCo088sSE0Nzs5M0iKKAdiETyWmf+7UUQiJlt0bmNICiYY01NDgozMSjMZMXYQkQIAszUVs0gUmDB1mK/7NixIwdQTrHUnVTncP6wQYECUnzYKsSWHADQOc8K83HW2ZLbQlYJHVZGfg+e+BI98fgnBWVzPgT48DWPr52mFK72k2mINj8EgOSfn0OIxYqH4cUwEwEKb0B0dvITT1ydlytw2fMgBNau4+ZGR4dAzl8CR8Vm5cnetMkvuPRsqe0LoAEQKFBG6gpbp4ge/JNodqwEkWoRgYbKAoAQ9QKAcXiGCM0ECELYAgBobtbIu9gSTGoGAMyc+YZBfgXWQItBc/PxVr8kC1UCgO/nVxCrUQUAXhQ5KThEhFXRpqUC6SyBFNpMuQAcBcZXofwePHGc2svZ+SpmRIklUZ7N+YDNJQBg0yW3+sB4aC0K5LZLl+6kDtsSXx3uaW3Ntq1fNVUIC4Jsjk3IDXPOG3Zc855Hr/qrnUse+06oe2lH0cGgAdjJM+a+jy3aFOmnrciw1eIBgA74Q6To3cIMJgwGWdc4wgEpNXnSQOrag8CPa4fkOuXqs8RKUkSPAoDW0idswVYtIpIREQsmeR0AGkdGVF9e9uuK8lEnO3bsGB8s6AE2HbtrmNQ+BX5vaR5XaLqIBEN9faNTp85xfaOhFNxCFrFeWGtCBIbzSzjJMBUG1sDAKxkAUKSnlGj1J032qb99z6SsownWcjgagYzY2QD6lsQfnm5Y+d2LOgZa4nHT09oaND+/yummDr8tvvpPSGT9ko1rHmHC1cYxYQCwnn8oCOwF665evndxnB9AJvHfC1IIaFbAJiuWFmjH/WLBIzV+/KrzTWAOMq6N9opO1AkZzlua9EjD9HnfEpEGEQKTHByu4QHsAQJrdyqopNJoBRSs71lHsBMYn3kgWq+Nc0/dtHnfheARA5UBALa2TjQtQEXwYP5USeyYFg3vRaPDt0+aPu96D2qDCqSKIZ9VwPY8MVVpQTLLkJU1My78d5dsKAj4H5Q2CKzNr0hCryrCJ+unzb/cavOaw8GFLHwriF6cKE1vKUTVKo8IILEMEe4EAJbgm77K/b796a5IT2tr0P50V2TTJbf6S+IPT4fgd6aiYq6pqujUSrUCBOsHh9jji37zwU/uWfzE2s0i0rZu6aeLs1eAWZzvOHpF2KJo+45/KH8P6it7925KG4UQgY0wJ4QlpY0zRWtllDYgkV+ht9dDc7MztLuvn5W8oZRBIbDsoPL1bgDYsWOHDwA+6IHA93a6buhTjus8BUe9CEe9aCrCG0nhO85ohQUAEUwRzh+ShD3+lbV2SBn3EZcw6LjqDcdxL2TQvQCwd++mNITiromsdMQOEfReAj5gA98qVrUA4CvpUspAG/2MCztESvWQojdIUDtRjiYedFfyJ5QzFCjWNucBguYlG9ecL5A54Un1547uH37mmke/f3X3FR3DSx+/b6YV/yknEj7HZrJgkaxbWREO0plhgn/Rr9tu7l8cX/1cuKF2fm7wUOkopcLRHg3t3vLMpGnzr7GQJURSRyBXIB4B+0Wpx4b6t/wGAHzfCbQRJZAD8OVmi+AGJq6D8BY3CN0NYOxkSHJyqzXB58nQUhbZMXigN4lxhVAl+nuHJs9sutz3vBuFeI4CVQjEC/zgIBH9eGDglVShO75AoB4AGBjYvr9+RtOf+kH2NoCmEUvWBsG/De3ZtgaFMCBmc6vn5e4EaBqLP6A0vsRCf5aFbAaAxK6tv9bnzrteQT7MrEJQ3MVKniGrlk6Ur5NTywohsy3xe6NhqdjmVkbO8ZPZ3Rp0eaD4aRMKnWtzXoY1z9VW/Uw55hLlOvBGUy+Q0G1Q9FMddmdABNb3/9VI7pMW7ldg5R/XfeDG3rbHV29yoxUX25wHG9jNGxauuKCkficZktpigJ6gbmrTDG1khwj2DfZvmXqcNktjY2Oor68v1zBzzjxNoS2B5z88tGfrsmI5hbRvFql5tKZ/vHPi4+c51nOcIM2EAgsnNIMrMjVKQp4u2uA65ErgZ4q1ITdnKNBMZAz8ZMbTrnMxgOcgQJD1Au1ow2z/16MLbz0I4BYAtDi++jknWnmxl0xnjeOET2AHl0RinCVAN4B2lFwf3mgSnjLlosqBgVfS41Ed4xETfX19OQAg1hfBKICkoEEnqUSBKjhXWtTRMnsEY8F9Y9EexXDeQp4eGY8R6yl1vx7xvIeBdgK6S8KB2484OeqWQp4JnQufJMH5OqYjr6fDOC+tQg4o4wU25xGOE2VAgGY/YCEiJWClyNjAZl3XGQaA5lWrnMlzQ79xqyov9UZTHgmUDrsIcv5ovhvG36QoaeQRXqDu0oujBkY4PFIg9MjwGKD2vPkzXehskLMfUlpgQflDhqOjIvnw6IxuHI2jOr0kT88x0h/r+ZHlHtlW4BhRIm+Kk1OyCBITUT2tnYEj+iO5Q8kAJNUKTkAyfjKSLc2TdzwU7V0oxwDAsPZtAgAmzzazlDbv90aSDAZMJOR6idRuKLkOAGK469SiFEkJswTEIM+bdKz25Z0sPu7jwO4DyfVsfYRIXss/Pg1Be39EOGktupOIW+Ix8+jCZS9D6H1gHPBULgLC2OgNHycvKyiIQAna/6V15aGYxBRB36xcAwE8Ewm5fia7h8h/74bWlW+0d3Xp4ktuE0DeIeD4WhtjmCik9cCxyMobUAKrtANjHCOCzfv7t71arO4E5f5RY0J7cE9rZ9C8apWzYdHy59riq9tsoNkodoQZxExZqEKB+X7Nm6ochKqrHD+R+t66hSt+1xZfs/HZJ/gCECb7qWzgRMJhP5PZo8hevq715v5bnl/l/OCSjlN5M4ABIJKzKV/hTmVoY//O/mIQ/VHxVMrgc9bL7QTBE62/X3h2hl5/+c/DKS2DRQcGYjHVdvV5fW5l5Dx/NJNSCBYwmX82FeFmm8paVlCKiGDFBlbVGEc+FWqo+ao3nABbHpu5ioLL17Xe3N/8/Cqn6Al7C+05mSX2WOneceQCp+jo6GltDVricYPOTnZEf8RPZTKkqZLgjCsb+S60TrQCDHnEnDcpANvO3HACzJwpkmtEXXaayAXGSGsp+o1PlE7l0xUPL9555AJvwZPV09oatEuXfnThspfJBu9jtkOe5QqRkveCCIAiKMIa7DpwgzupLsQBp0wkFCnO3F8tWr77NJFbWrvCgcQJwfl0PQHeoeQCb9FV2U0dtvn5Vc66D9z0IoluFeKUUnCEGRBAExnvUNLT5L3CJNfbVAYm5FT66dO6LJdxApyWF6YKr6lYAFi8cc2rTrTiAj+VzphIOBKkMy9RVv5MwqrXqaqY5CfSuzXo8l8tWr47r1CVyT2TOC2/h9FNHbZ51SoHAEjTJ7xUOqm0ihABRLItMFTr1lZN8kfHyW0uk/u24LT94MmmW2/126VLr2tZ/iIxvY8tHzLRCgjU68bFvNzIaFaRXHJm9twyjofT+os23dRh27ti7vpFy19RQXClN5IEQSIk2GUEVz3WunJfmdx3ANq7ulwAWLJx9cIlG9f+fcn9t/bTiWX88aCUzJjEVCFOq4x3EorRk2WUUUYZZZRRRhlllFFGGWWUUUYZZZTxlvH/ARJol/oxNd47AAAAAElFTkSuQmCC
+name: SpyCloud
+script:
+  commands:
+  - arguments:
+    - defaultValue: empty
+      description: Give a keyword to search for in the dataset.
+      name: query
+    - defaultValue: "2010-01-01"
+      description: Search the dataset since this date. Format is yyyy-mm-dd and default
+        value is 2010-01-01
+      name: since
+    - defaultValue: "2100-01-01"
+      description: Search the dataset until this date. Format is yyyy-mm-dd and default
+        value is 2100-01-01 (aka get everything)
+      name: until
+    description: Lists the breaches identified. By default this lists all breaches
+      known in Spycloud. With the arguments it's possible to scope the results on
+      date and keywords.
+    name: spycloud-list-breaches
+    outputs:
+    - contextPath: SpyCloud.Breaches.uuid
+      description: unique ID
+      type: String
+    - contextPath: SpyCloud.Breaches.title
+      description: Breach title
+      type: String
+    - contextPath: SpyCloud.Breaches.type
+      description: Type of breach
+      type: String
+    - contextPath: SpyCloud.Breaches.description
+      description: Summary of the breach/threat
+      type: String
+    - contextPath: SpyCloud.Breaches.acquisition_date
+      description: When the breach data was acquired
+      type: Date
+    - contextPath: SpyCloud.Breaches.site
+      description: The website that was breached
+      type: String
+    - contextPath: SpyCloud.Breaches.spycloud_publish_date
+      description: Publication date
+      type: Date
+    - contextPath: SpyCloud.Breaches.num_records
+      description: Number of records in the breach
+      type: Number
+    - contextPath: SpyCloud.Breaches.id
+      description: Unique breach ID
+      type: Number
+  - arguments:
+    - description: The breach ID to filter on
+      name: id
+      required: true
+    description: Retrieves the breach details. While very similar to list-breaches,
+      this command obtains one specific breach, which is easier for automation tasks
+    name: spycloud-get-breach-data
+    outputs:
+    - contextPath: SpyCloud.Breaches.uuid
+      description: Unique ID
+      type: String
+    - contextPath: SpyCloud.Breaches.title
+      description: Breach title
+      type: String
+    - contextPath: SpyCloud.Breaches.type
+      description: Type of breach
+      type: String
+    - contextPath: SpyCloud.Breaches.description
+      description: Summary of the breach
+      type: String
+    - contextPath: SpyCloud.Breaches.acquisition_date
+      description: Acquired date
+      type: Date
+    - contextPath: SpyCloud.Breaches.site
+      description: Title of the breach
+      type: String
+    - contextPath: SpyCloud.Breaches.spycloud_publish_date
+      description: Publication date
+      type: Date
+    - contextPath: SpyCloud.Breaches.num_records
+      description: Number of records in breach
+      type: Number
+    - contextPath: SpyCloud.Breaches.id
+      description: Unique breach ID
+      type: Number
+  - arguments:
+    - description: The domain to search for in the data
+      name: domain
+      required: true
+    - defaultValue: corporate
+      description: 'Allowed values: corporate, infected. Default is corporate. Infected
+        returns the infected employees and customers'
+      name: type
+    - defaultValue: "2"
+      description: 'Allowed values: 2, 5, 10, 15, 20, 25. Default is 2'
+      name: severity
+    - description: The starting point for a date range query on the spycloud_publish_date.
+        The value provided must follow the standard ISO 8601 date format (yyyy-mm-dd)
+      name: since
+      required: true
+    description: Get all the data from a monitored domain and the breaches occurred
+      that relates with it. Can be scoped by domain, type and severity
+    name: spycloud-domain-data
+    outputs:
+    - contextPath: SpyCloud.Domain.document_id
+      description: The unique ID of the identified record
+      type: String
+    - contextPath: SpyCloud.Domain.spycloud_publish_date
+      description: The date SpyCloud has found the data record
+      type: Date
+    - contextPath: SpyCloud.Domain.username
+      description: The username that was found in the breach dataset
+      type: String
+    - contextPath: SpyCloud.Domain.email
+      description: The email that was found in the breach dataset
+      type: String
+    - contextPath: SpyCloud.Domain.infected_time
+      description: The date the user got infected
+      type: String
+    - contextPath: SpyCloud.Domain.target_url
+      description: Which URL the credentials are for
+      type: String
+    - contextPath: SpyCloud.Domain.source_id
+      description: breach source ID
+      type: String
+    - contextPath: SpyCloud.Domain.password_plaintext
+      description: Plaintext password identified
+      type: String
+  - arguments:
+    - description: Email address to search for
+      name: emailaddr
+      required: true
+    - defaultValue: "2"
+      description: 'Allowed values: 2, 5, 10, 15, 20, 25. Default is 2'
+      name: severity
+    - defaultValue: empty
+      description: The breach ID to search in
+      name: breach_id
+    - description: The starting point for a date range query on the spycloud_publish_date.
+        The value provided must follow the standard ISO 8601 date format (yyyy-mm-dd)
+      name: since
+      required: true
+    - defaultValue: "2100-01-01"
+      description: The until date for a date range query on the spycloud_publish_date.
+        The value provided must follow the standard ISO 8601 date format (yyyy-mm-dd)
+      name: until
+    description: Get all the data from a monitored email address and the breaches
+      occurred that relates with it. Can be scoped by date, severity and breach
+    name: spycloud-email-data
+    outputs:
+    - contextPath: SpyCloud.Emails.document_id
+      description: The unique ID of the identified record
+      type: String
+    - contextPath: SpyCloud.Emails.spycloud_publish_date
+      description: The date SpyCloud has found the data record
+      type: Date
+    - contextPath: SpyCloud.Emails.username
+      description: The username that was found in the breach dataset
+      type: String
+    - contextPath: SpyCloud.Emails.email
+      description: The email that was found in the breach dataset
+      type: String
+    - contextPath: SpyCloud.Emails.source_id
+      description: breach source ID
+      type: String
+    - contextPath: SpyCloud.Emails.domain
+      description: The domain that the user/pass is used on
+      type: String
+    - contextPath: SpyCloud.Emails.password
+      description: Password found. Can be plaintext or hashed, good to check
+      type: String
+    - contextPath: SpyCloud.Emails.user_browser
+      description: The browser of the user
+      type: String
+    - contextPath: SpyCloud.Emails.target_url
+      description: The target url of the credentials
+      type: String
+  - arguments:
+    - description: Allowed values are ip, domain, email.
+      name: watchlist_type
+      required: true
+    - defaultValue: corporate
+      description: 'Allowed values: corporate or infected. Default is corporate.'
+      name: type
+    - defaultValue: empty
+      description: The breach ID to search in
+      name: breach_id
+    - description: The starting point for a date range query on the spycloud_publish_date.
+        The value provided must follow the standard ISO 8601 date format (yyyy-mm-dd)
+      name: since
+      required: true
+    - defaultValue: "2100-01-01"
+      description: The until date for a date range query on the spycloud_publish_date.
+        The value provided must follow the standard ISO 8601 date format (yyyy-mm-dd)
+      name: until
+    description: Get all the data from a watchlist.
+    name: spycloud-watchlist-data
+    outputs:
+    - contextPath: SpyCloud.Watchlist.document_id
+      description: The unique ID of the identified record
+      type: String
+    - contextPath: SpyCloud.Watchlist.username
+      description: The username of the identified record
+      type: String
+    - contextPath: SpyCloud.Watchlist.target_url
+      description: The targeted url
+      type: String
+    - contextPath: SpyCloud.Watchlist.breach_id
+      description: The breach ID
+      type: String
+    - contextPath: SpyCloud.Watchlist.password
+      description: The password of the user being exposed
+      type: String
+    - contextPath: SpyCloud.Watchlist.spycloud_publish_date'
+      description: Date when Spycloud published the breach
+      type: String
+    - contextPath: SpyCloud.Watchlist.email
+      description: The email address involved (if email watchlist type selected)
+      type: String
+    - contextPath: SpyCloud.Watchlist.domain
+      description: The domain involved of the watchlist (if that type is selected)
+      type: String
+  dockerimage: demisto/python3:3.11.10.115186
+  runonce: false
+  script: |
+    register_module_line('SpyCloud', 'start', __line__())
+    CONSTANT_PACK_VERSION = '1.0.7'
+    demisto.debug('pack id = SpyCloud, pack version = 1.0.7')
+
+    import requests
+    import urllib3
+
+
+    # Disable insecure warning
+    urllib3.disable_warnings()
+
+    BASE_URL = demisto.params().get("url")
+    API_KEY = demisto.params().get("apikey")
+    headers = {"X-Api-Key": API_KEY}
+
+    """MAIN FUNCTIONS"""
+
+
+    def download_data(URL_SUFFIX, cursor=" "):
+        """General download function for Spycloud breach data. Cannot be used for catalog"""
+
+        jdata = requests.get(URL_SUFFIX + "&cursor=" + str(cursor), headers=headers, timeout=10).json()
+
+        return jdata
+
+
+    def get_breach_data():
+        """Func to get a specific breach SpyCloud has"""
+        breach_id = demisto.args().get("id")
+
+        # form the URL with the arguments and execute GET request
+        URL_SUFFIX = BASE_URL + f"breach/catalog/{breach_id}"
+        resp = requests.get(URL_SUFFIX, headers=headers, timeout=30)
+        jdata = resp.json()
+
+        breachdata = []
+        for r in jdata["results"]:
+            t = {}
+            t["uuid"] = transform(r, "uuid")
+            t["spycloud_publish_date"] = transform(r, "spycloud_publish_date")
+            t["num_records"] = transform(r, "num_records")
+            t["title"] = transform(r, "title")
+            t["type"] = transform(r, "type")
+            t["description"] = transform(r, "description")
+            t["site"] = transform(r, "site")
+            t["id"] = transform(r, "id")
+            t["acquisition_date"] = transform(r, "acquisition_date")
+            breachdata.append(t)
+
+        command_results = CommandResults(outputs_prefix="SpyCloud.Breaches", outputs_key_field="uuid", outputs=breachdata)
+        return command_results
+
+
+    def list_breaches():
+        """Func to list the general breaches SpyCloud identifies"""
+        since = demisto.args().get("since")
+        until = demisto.args().get("until")
+        query = demisto.args().get("query")
+
+        # form the URL with the arguments and execute GET request
+        if query == "empty":
+            URL_SUFFIX = BASE_URL + f"breach/catalog?&since={since}&until={until}"
+        else:
+            URL_SUFFIX = BASE_URL + f"breach/catalog?&since={since}&until={until}&query={query}"
+        resp = requests.get(URL_SUFFIX, headers=headers, timeout=10)
+        jdata = resp.json()
+
+        breachdata = []
+        for r in jdata["results"]:
+            t = {}
+            t["uuid"] = transform(r, "uuid")
+            t["spycloud_publish_date"] = transform(r, "spycloud_publish_date")
+            t["num_records"] = transform(r, "num_records")
+            t["title"] = transform(r, "title")
+            t["type"] = transform(r, "type")
+            t["description"] = transform(r, "description")
+            t["site"] = transform(r, "site")
+            t["id"] = transform(r, "id")
+            t["acquisition_date"] = transform(r, "acquisition_date")
+            breachdata.append(t)
+
+        command_results = CommandResults(outputs_prefix="SpyCloud.Breaches", outputs_key_field="uuid", outputs=breachdata)
+
+        return command_results
+
+
+    def get_domain_data():
+        """Get all the messages from the domain monitored"""
+        domain = demisto.args().get("domain")
+        type_search = demisto.args().get("type")
+        severity = demisto.args().get("severity")
+        since = demisto.args().get("since")
+
+        URL_SUFFIX = BASE_URL + f"breach/data/domains/{domain}/?type={type_search}&severity={severity}&since={since}"
+        sc_data = []
+        cursor = " "
+        total_records = download_data(URL_SUFFIX)["hits"]
+        total_queries = -(-total_records // 1000)
+
+        for _i in range(total_queries):
+            data = download_data(URL_SUFFIX, cursor=cursor)
+            cursor = data["cursor"]
+            if "hits" in data and "results" in data:
+                sc_results = data["results"]
+                sc_data.extend(sc_results)
+
+        spydata = []
+        for r in sc_data:
+            t = {}
+            t["document_id"] = transform(r, "document_id")
+            t["spycloud_publish_date"] = transform(r, "spycloud_publish_date")
+            t["username"] = transform(r, "username")
+            t["email"] = transform(r, "email")
+            t["target_domain"] = transform(r, "target_domain")
+            t["infected_time"] = transform(r, "infected_time")
+            t["source_id"] = transform(r, "source_id")
+            t["password_plaintext"] = transform(r, "password_plaintext")
+            spydata.append(t)
+
+        command_results = CommandResults(outputs_prefix="SpyCloud.Results", outputs_key_field="document_id", outputs=spydata)
+
+        return command_results
+
+
+    def get_email_data():
+        """Get all the data for one email address"""
+        emailaddr = demisto.args().get("emailaddr")
+        breach_id = demisto.args().get("breach_id")
+        severity = demisto.args().get("severity")
+        since = demisto.args().get("since")
+        until = demisto.args().get("until")
+
+        URL_SUFFIX = BASE_URL + f"breach/data/emails/{emailaddr}?since={since}"
+        if severity != "empty":
+            URL_SUFFIX + f"&severity={severity}"
+        if until != "empty":
+            URL_SUFFIX + f"&until={until}"
+        if breach_id != "empty":
+            URL_SUFFIX + f"&source_id={breach_id}"
+
+        sc_data = []
+        cursor = " "
+        total_records = download_data(URL_SUFFIX)["hits"]
+        total_queries = -(-total_records // 1000)
+
+        while cursor:
+            for _i in range(total_queries):
+                data = download_data(URL_SUFFIX, cursor=cursor)
+                cursor = data["cursor"]
+                if "hits" in data and "results" in data:
+                    sc_data.extend(data["results"])
+
+        spydata = []
+        for r in sc_data:
+            t = {}
+            t["document_id"] = transform(r, "document_id")
+            t["spycloud_publish_date"] = transform(r, "spycloud_publish_date")
+            t["username"] = transform(r, "username")
+            t["email"] = transform(r, "email")
+            t["source_id"] = transform(r, "source_id")
+            t["domain"] = transform(r, "domain")
+            t["user_browser"] = transform(r, "user_browser")
+            t["password"] = transform(r, "password_plaintext")
+            t["target_url"] = transform(r, "target_url")
+            spydata.append(t)
+
+        command_results = CommandResults(outputs_prefix="SpyCloud.Emails", outputs_key_field="document_id", outputs=spydata)
+        return command_results
+
+
+    def get_watchlist_data():
+        """Get all the data for watchlists"""
+        watchlist_type = demisto.args().get("watchlist_type")
+        type_search = demisto.args().get("type")
+        breach_id = demisto.args().get("breach_id")
+        since = demisto.args().get("since")
+        until = demisto.args().get("until")
+
+        URL_SUFFIX = BASE_URL + f"breach/data/watchlist?watchlist_type={watchlist_type}&since={since}&type={type_search}"
+        if until != "empty":
+            URL_SUFFIX + f"&until={until}"
+        if breach_id != "empty":
+            URL_SUFFIX + f"&source_id={breach_id}"
+
+        sc_data = []
+        cursor = " "
+        total_records = download_data(URL_SUFFIX)["hits"]
+        total_queries = -(-total_records // 1000)
+
+        while cursor:
+            for _i in range(total_queries):
+                data = download_data(URL_SUFFIX, cursor=cursor)
+                cursor = data["cursor"]
+                if "hits" in data and "results" in data:
+                    sc_data.extend(data["results"])
+
+        spydata = []
+        for r in sc_data:
+            t = {}
+            t["document_id"] = transform(r, "document_id")
+            t["spycloud_publish_date"] = transform(r, "spycloud_publish_date")
+            t["username"] = transform(r, "username")
+            t["breach_id"] = transform(r, "source_id")
+            t["password"] = transform(r, "password")
+            t["target_url"] = transform(r, "target_url")
+            t["email"] = transform(r, "email")
+            t["domain"] = transform(r, "domain")
+            spydata.append(t)
+
+        command_results = CommandResults(outputs_prefix="SpyCloud.Watchlist", outputs_key_field="document_id", outputs=spydata)
+
+        return command_results
+
+
+    def transform(spydata, key):
+        transformed_data = spydata.get(key, "empty")
+
+        return transformed_data
+
+
+    def test_module():
+        """Simple test function to verify it works from the BYOI screen"""
+        URL_SUFFIX = BASE_URL + "breach/catalog"
+        resp = requests.get(URL_SUFFIX, headers=headers, timeout=30)
+        if resp.status_code == 200:
+            demisto.results("ok")
+        else:
+            demisto.results("not ok")
+
+
+    def main():
+        """EXECUTION"""
+        try:
+            if demisto.command() == "spycloud-list-breaches":
+                return_results(list_breaches())
+            elif demisto.command() == "spycloud-domain-data":
+                return_results(get_domain_data())
+            elif demisto.command() == "spycloud-get-breach-data":
+                return_results(get_breach_data())
+            elif demisto.command() == "spycloud-email-data":
+                return_results(get_email_data())
+            elif demisto.command() == "spycloud-watchlist-data":
+                return_results(get_watchlist_data())
+            elif demisto.command() == "test-module":
+                test_module()
+        except Exception as e:
+            demisto.debug(f"exception was thrown: {e}")
+
+
+    if __name__ in ("__main__", "__builtin__", "builtins"):
+        main()
+
+    register_module_line('SpyCloud', 'end', __line__())
+  subtype: python3
+  type: python
+system: true
