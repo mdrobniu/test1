@@ -1,0 +1,28 @@
+commonfields:
+  id: cc92ee17-012e-44db-8c99-3b38d7c9e405
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+dockerimage: demisto/python3:3.9.7.24076
+enabled: true
+engineinfo:
+  engine: 6c4c5e5f-eb41-4786-a8e4-d6f069c77e92
+mainengineinfo: {}
+name: Prasoon_Test
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: print(demisto.get_objects())
+scripttarget: 0
+subtype: python3
+tags: []
+type: python
