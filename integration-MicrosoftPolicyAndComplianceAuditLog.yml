@@ -1,0 +1,434 @@
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: MicrosoftPolicyAndComplianceAuditLog
+  version: -1
+configuration:
+- additionalinfo: A pfx certificate encoded in Base64.
+  display: Certificate
+  displaypassword: Certificate Password
+  name: certificate
+  required: true
+  section: Connect
+  type: 9
+- display: The organization used in app-only authentication.
+  name: organization
+  required: true
+  section: Connect
+  type: 0
+- display: The application ID from the Azure portal
+  hiddenpassword: true
+  name: app_id
+  required: true
+  section: Connect
+  type: 0
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  section: Connect
+  type: 8
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    itemVersion: 2.0.5
+    packID: Office365AndAzureAuditLog
+    packName: Office 365 and Azure (Audit Log)
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    toServerVersion: ""
+description: Use the integration to get logs from the O365 service.
+detaileddescription: "### Microsoft Policy And Compliance Audit Log\nThis integration
+  searches the unified audit log to view user and administrator activity in your organization.\n\n###
+  App authentication\nTo use this integration, you will need to add a new Azure App
+  Registration in the Azure Portal. \n1. To create the application, follow the instructions
+  in this [guide](https://docs.microsoft.com/en-us/powershell/exchange/app-only-auth-powershell-v2?view=exchange-ps).
+  \n2. Run the **CreateCertificate** script from the `EWS` pack in Cortex XSOAR to
+  acquire the certificate. You can also provide your own certificate or perform the
+  instructions in the following Microsoft article: [Generate a self-signed certificate](https://docs.microsoft.com/en-us/powershell/exchange/app-only-auth-powershell-v2?view=exchange-ps#step-3-generate-a-self-signed-certificate).\n3.
+  Attach the .cer file to your Azure App. See the following [article](https://docs.microsoft.com/en-us/powershell/exchange/app-only-auth-powershell-v2?view=exchange-ps#step-4-attach-the-certificate-to-the-azure-ad-application)
+  for an example.\n4. Copy the contents of the .txt file and paste it in the Certificate
+  parameter of the integration’s instance.\n\n#### Permissions:\nTo view and run Office
+  365 unified audit log searches, admins or users must be assigned the **View Only
+  Audit Logs** or **Audit Logs** role in [Exchange Online](https://admin.microsoft.com/Adminportal#/homepage).\n\n-------\n#####
+  Note\nIf the credentials object is used, make sure to set the `certificate` value
+  as the `username` property and not as the certificate field\n![credentials_example](https://storage.googleapis.com/marketplace-dist/content/packs/Office365AndAzureAuditLog/integration_description_images/credentials_example.png)\n\n---\n[View
+  Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/microsoft-policy-and-compliance-audit-log)"
+display: Microsoft Policy And Compliance (Audit Log)
+image: data:image/png;base64,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
+name: MicrosoftPolicyAndComplianceAuditLog
+script:
+  commands:
+  - arguments:
+    - defaultValue: 24 hours
+      description: The start date of the date range or a date range (3 days, 1 year,
+        etc.). Entries are stored in the unified audit log in Coordinated Universal
+        Time (UTC). If you specify a date/time value without a time zone, the value
+        is in UTC.
+      name: start_date
+    - description: The end date of the date range. Entries are stored in the unified
+        audit log in Coordinated Universal Time (UTC). If you specify a date/time
+        value without a time zone, the value is in UTC. If empty, wll take current
+        time.
+      name: end_date
+    - description: 'The text string by which to filter the log entries.\ \ If the
+        value contains spaces, enclose the value in quotation\ \ marks (for example:
+        "Invalid logon").'
+      name: free_text
+    - description: 'The record type by which to filter the log entries.\ \ Available
+        record types: https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#auditlogrecordtype.'
+      name: record_type
+    - description: A comma-separated list of IP addresses by which to filter the log
+        entries.
+      isArray: true
+      name: ip_addresses
+    - description: The operations by which to filter the log entries. The available
+        values for this parameter depend on the record_types value. Refer to https://docs.microsoft.com/en-us/microsoft-365/compliance/search-the-audit-log-in-security-and-compliance?view=o365-worldwide#audited-activities.
+      isArray: true
+      name: operations
+    - description: A comma-separated list of ID of the users who performed the action
+        by which to filter the log entries. The list of user IDs can be acquired by
+        running the ews-users-list command.
+      isArray: true
+      name: user_ids
+    - defaultValue: "10"
+      description: The maximum number of results to return. Default is 10.
+      name: result_size
+    description: Use the o365-search-auditlog command to search the unified audit
+      log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+      for Business, Azure Active Directory, Microsoft Teams, Power BI, and other Microsoft
+      365 services. You can search for all events in a specified date range, or you
+      can filter the results based on specific criteria, such as the action, the user
+      who performed the action, or the target object.
+    name: o365-auditlog-search
+    outputs:
+    - contextPath: O365AuditLog.Actor.ID
+      description: The ID of the actor.
+      type: String
+    - contextPath: O365AuditLog.Actor.Type
+      description: The type of the actor.
+      type: Number
+    - contextPath: O365AuditLog.ActorContextId
+      description: The GUID of the organization that the actor belongs to.
+      type: String
+    - contextPath: O365AuditLog.ActorIpAddress
+      description: The actor's IP address in IPV4 or IPV6 address format.
+      type: String
+    - contextPath: O365AuditLog.ApplicationId
+      description: The GUID that represents the application that is requesting the
+        login. The display name can be looked up using the Azure Active Directory
+        Graph API.
+      type: String
+    - contextPath: O365AuditLog.AzureActiveDirectoryEventType
+      description: The type of Azure Active Directory event.
+      type: Number
+    - contextPath: O365AuditLog.ClientIP
+      description: The IP address of the device that was used when the activity was
+        logged. The IP address is displayed in IPv4 or IPv6 address format.
+      type: String
+    - contextPath: O365AuditLog.CreationTime
+      description: The date and time in Coordinated Universal Time (UTC) when the
+        user performed the activity.
+      type: Date
+    - contextPath: O365AuditLog.ExtendedProperties.Name
+      description: Name of the extended properties.
+      type: String
+    - contextPath: O365AuditLog.ExtendedProperties.Value
+      description: Value of the extended properties.
+      type: String
+    - contextPath: O365AuditLog.ModifiedProperties.Name
+      description: Name of the modified properties.
+      type: String
+    - contextPath: O365AuditLog.ModifiedProperties.NewValue
+      description: The updated value of the property.
+      type: String
+    - contextPath: O365AuditLog.ModifiedProperties.OldValue
+      description: The previous value of the property.
+      type: String
+    - contextPath: O365AuditLog.Id
+      description: The unique ID of the log.
+      type: String
+    - contextPath: O365AuditLog.InterSystemsId
+      description: The GUID that tracked the actions across components within the
+        Office 365 service.
+      type: String
+    - contextPath: O365AuditLog.IntraSystemId
+      description: The GUID that's generated by Azure Active Directory to track the
+        action.
+      type: String
+    - contextPath: O365AuditLog.LogonError
+      description: For failed logins, a user-readable description of the reason for
+        the failure.
+      type: String
+    - contextPath: O365AuditLog.ObjectId
+      description: For SharePoint and OneDrive for Business activity, the full path
+        name of the file or folder accessed by the user. For Exchange admin audit
+        logging, the name of the object that was modified by the cmdlet.
+      type: String
+    - contextPath: O365AuditLog.Operation
+      description: The operation used in the log.
+      type: String
+    - contextPath: O365AuditLog.OrganizationId
+      description: The GUID for your organization's Office 365 tenant. This value
+        will always be the same for your organization, regardless of the Office 365
+        service in which it occurs.
+      type: String
+    - contextPath: O365AuditLog.RecordType
+      description: The type of operation indicated by the record. See the AuditLogRecordType
+        table (https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema#auditlogrecordtype)for
+        details on the types of audit log records.
+      type: Number
+    - contextPath: O365AuditLog.ResultStatus
+      description: Whether the action (specified in the Operation property) was successful.
+        Possible values are Succeeded, PartiallySucceeded, or Failed. For Exchange
+        admin activity, the value is either True or False.
+      type: String
+    - contextPath: O365AuditLog.SupportTicketId
+      description: The customer support ticket ID for the action in "act-on-behalf-of"
+        situations.
+      type: String
+    - contextPath: O365AuditLog.Target.ID
+      description: The ID of the user on whom the action (identified by the Operation
+        property) was performed.
+      type: String
+    - contextPath: O365AuditLog.Target.Type
+      description: The type of the user on whom the action (identified by the Operation
+        property) was performed.
+      type: Number
+    - contextPath: O365AuditLog.TargetContextId
+      description: The GUID of the organization that the targeted user belongs to.
+      type: String
+    - contextPath: O365AuditLog.UserId
+      description: Identifier (for example, email address) for the user who clicked
+        on the URL.
+      type: String
+    - contextPath: O365AuditLog.UserKey
+      description: An alternative ID for the user identified in the UserId property.
+        For example, this property is populated with the passport unique ID (PUID)
+        for events performed by users in SharePoint, OneDrive for Business, and Exchange.
+      type: String
+    - contextPath: O365AuditLog.UserType
+      description: The type of user who performed the operation.
+      type: Number
+    - contextPath: O365AuditLog.Version
+      description: The version of the log.
+      type: Number
+    - contextPath: O365AuditLog.Workload
+      description: The Office 365 service where the activity occurred.
+      type: String
+  dockerimage: demisto/pwsh-exchangev3:1.0.0.116826
+  runonce: false
+  script: |-
+    ### pack version: 2.0.5
+    $script:COMMAND_PREFIX = "o365-auditlog"
+    $script:INTEGRATION_ENTRY_CONTEXT = "O365AuditLog"
+
+    Import-Module ExchangeOnlineManagement
+
+    class ExchangeOnlinePowershellV3Client
+    {
+        [System.Security.Cryptography.X509Certificates.X509Certificate2]$certificate
+        [string]$organization
+        [string]$app_id
+        [SecureString]$password
+        ExchangeOnlinePowershellV3Client(
+                [string]$app_id,
+                [string]$organization,
+                [string]$certificate,
+                [SecureString]$password
+        )
+        {
+            try
+            {
+                $ByteArray = [System.Convert]::FromBase64String($certificate)
+            }
+            catch
+            {
+                throw "Could not decode the certificate. Try to re-enter it"
+            }
+            $this.certificate = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList ($ByteArray, $password)
+
+            $this.organization = $organization
+            $this.app_id = $app_id
+        }
+        CreateSession()
+        {
+            $cmd_params = @{
+                "AppID" = $this.app_id
+                "Organization" = $this.organization
+                "Certificate" = $this.certificate
+            }
+            Connect-ExchangeOnline @cmd_params -ShowBanner:$false -CommandName Search-UnifiedAuditLog -WarningAction:SilentlyContinue | Out-Null
+        }
+        DisconnectSession()
+        {
+            Disconnect-ExchangeOnline -Confirm:$false -WarningAction:SilentlyContinue 6>$null | Out-Null
+        }
+        [Array]SearchUnifiedAuditLog(
+            [string]$start_date,
+            [string]$end_date,
+            [string]$free_text,
+            [string]$record_type,
+            [String[]]$ip_addresses,
+            [String[]]$operations,
+            [String[]]$user_ids,
+            [int]$result_size
+        ) {
+            $cmd_args = @{
+                "StartDate" = $start_date
+                "EndDate"   = $end_date
+            }
+            if ($record_type) {
+                $cmd_args.RecordType = $record_type
+            }
+            if ($free_text) {
+                $cmd_args.FreeText = $free_text
+            }
+            if ($operations.Length -gt 0) {
+                $cmd_args.Operations = $operations
+            }
+            if ($ip_addresses.Length -gt 0) {
+                $cmd_args.IPAddresses = $ip_addresses
+            }
+            if ($user_ids.Length -gt 0) {
+                $cmd_args.UserIds = $user_ids
+            }
+            if ($result_size -gt 0) {
+                $cmd_args.ResultSize = $result_size
+            }
+            else {
+                $cmd_args.ResultSize = 5000
+            }
+            return Search-UnifiedAuditLog @cmd_args -ErrorAction Stop
+        }
+    }
+
+    function SearchAuditLogCommand {
+        [CmdletBinding()]
+        Param(
+            [Parameter(Mandatory)][ExchangeOnlinePowershellV3Client]$client,
+            [hashtable]$kwargs
+        )
+        try {
+            $client.CreateSession()
+            if ($kwargs.end_date) {
+                $end_date = Get-Date $kwargs.end_date
+            }
+            else {
+                $end_date = Get-Date
+            }
+            try {
+                # If parse date range works, it is fine. The end date will be automatically now.
+                $start_date, $end_date = ParseDateRange $kwargs.start_date
+            }
+            catch {
+                try {
+                    # If it didn't work, it should be a date.
+                    $start_date = Get-Date $kwargs.start_date
+                }
+                catch {
+                    # If it's not a date and not a date range - throw.
+                    $start_date = $kwargs.start_date
+                    throw "start_date ('$start_date') is not a date range or a valid date "
+                }
+            }
+
+            $raw_response = $client.SearchUnifiedAuditLog(
+                $start_date,
+                $end_date,
+                $kwargs.free_text,
+                $kwargs.record_type,
+                (ArgToList $kwargs.ip_addresses),
+                (ArgToList $kwargs.operations),
+                (ArgToList $kwargs.user_ids),
+                ($kwargs.result_size -as [int])
+            )
+            if ($raw_response) {
+                $list = [System.Collections.Generic.List[object]]::new()
+                foreach ($item in $raw_response) {
+                    $list.add((ConvertFrom-Json $item.AuditData))
+                }
+                # foreach ($item in ,@{AuditData = Get-Content "test_data/audit_log.json" -Raw}) {$list.add((ConvertFrom-Json $item.AuditData))}
+                $context = @{
+                    "$script:INTEGRATION_ENTRY_CONTEXT(val.Id === obj.Id)" = $list
+                }
+                $human_readable = TableToMarkdown $list.ToArray() "Audit log from $start_date to $end_date"
+                Write-Output $human_readable, $context, $list
+            }
+            else {
+                $human_readable = "Audit log from $start_date to $end_date is empty"
+                Write-Output $human_readable, $null, $null
+            }
+
+        }
+        finally {
+            $client.DisconnectSession()
+        }
+    }
+
+    function TestModuleCommand($client)
+    {
+        try
+        {
+            $client.CreateSession()
+            $demisto.results("ok")
+        }
+        finally
+        {
+            $client.DisconnectSession()
+        }
+
+    }
+
+    function Main {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
+        param()
+        $command = $demisto.GetCommand()
+        $command_arguments = $demisto.Args()
+        $integration_params = $demisto.Params()
+
+        $password = ConvertTo-SecureString $integration_params.certificate.password -AsPlainText -Force
+
+        $audit_log_client = [ExchangeOnlinePowershellV3Client]::new(
+                $integration_params.app_id,
+                $integration_params.organization,
+                $integration_params.certificate.identifier,
+                $password
+        )
+        try {
+            # Executing command
+            $demisto.Debug("Command being called is $command")
+            switch ($command) {
+                "test-module" {
+                    $human_readable, $entry_context, $raw_response = TestModuleCommand $audit_log_client
+                }
+                "$script:COMMAND_PREFIX-search" {
+                    $human_readable, $entry_context, $raw_response = SearchAuditLogCommand $audit_log_client $command_arguments
+                }
+                default {
+                    throw "Command $command no implemented"
+                }
+            }
+            # Return results to server
+            ReturnOutputs $human_readable $entry_context $raw_response | Out-Null
+        }
+        catch {
+            $demisto.debug("Integration: $script:INTEGRATION_NAME
+                Command: $command
+                Arguments: $($command_arguments | ConvertTo-Json)
+                Error: $($_.Exception.Message)")
+            ReturnError "Error:
+                Integration: $script:INTEGRATION_NAME
+                Command: $command
+                Arguments: $($command_arguments | ConvertTo-Json)
+                Error: $($_.Exception)" | Out-Null
+        }
+    }
+
+    # Execute Main when not in Tests
+    if ($MyInvocation.ScriptName -notlike "*.tests.ps1" -AND -NOT $Test) {
+        Main
+    }
+  type: powershell
+system: true
