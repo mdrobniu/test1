@@ -1,0 +1,536 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Splunk incident closure workflow
+id: 5ddcd905-69b3-478b-8334-08990289aa15
+inputs:
+- description: Benign Positive - Suspicious But Expected,False Positive - Inaccurate
+    Data,False Positive - Incorrect Analytic Logic,Other,True Positive - Suspicious
+    Activity,Undetermined
+  key: disposition
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: comment
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Eskom - Splunk - Incident Closure
+outputs: []
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 42dfcd69-f9a5-4f51-89e5-0ae57f4d1176
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 42dfcd69-f9a5-4f51-89e5-0ae57f4d1176
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        complex:
+          root: inputs.comment
+      disposition:
+        complex:
+          root: inputs.disposition
+      eventIDs:
+        simple: ${incident.dbotMirrorId}
+      status:
+        simple: "4"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: SplunkPy
+      description: Updates existing notable events in Splunk ES.
+      id: 1752db55-3ae4-4172-8002-b4815d773f60
+      iscommand: true
+      name: Update notable
+      script: SplunkPy|||splunk-notable-event-edit
+      type: regular
+      version: -1
+    taskid: 1752db55-3ae4-4172-8002-b4815d773f60
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 545
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        complex:
+          root: inputs.comment
+      closeReason:
+        complex:
+          root: inputs.disposition
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: bc79ce28-c146-49f3-8ef6-edb5d3bf80f9
+      iscommand: true
+      name: Close xsoar investigation
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: bc79ce28-c146-49f3-8ef6-edb5d3bf80f9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1245
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 77be5b3e-183f-410a-81fd-62bea600af33
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 77be5b3e-183f-410a-81fd-62bea600af33
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1420
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      verdict:
+        complex:
+          root: inputs.disposition
+          transformers:
+          - args:
+              input_values:
+                value:
+                  simple: Benign Positive - Suspicious But Expected,False Positive
+                    - Inaccurate Data,False Positive - Incorrect Analytic Logic,Other,True
+                    Positive - Suspicious Activity,Undetermined
+              mapped_values:
+                value:
+                  simple: Suspicious,False Positive,False Positive,Unknown,Malicious,Unknown
+            operator: MapValuesTransformer
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 691f0e9a-7943-4432-8dd8-8f068be1fc56
+      iscommand: true
+      name: Set incident verdict
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 691f0e9a-7943-4432-8dd8-8f068be1fc56
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 370
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.disposition
+          operator: inList
+          right:
+            value:
+              simple: Benign Positive - Suspicious But Expected,False Positive - Inaccurate
+                Data,False Positive - Incorrect Analytic Logic,Other,True Positive
+                - Suspicious Activity,Undetermined
+      label: "yes"
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 820cae46-d7fa-4cfb-8eb0-6d61ae60d163
+      iscommand: false
+      name: Is the provided Disposition supported?
+      type: condition
+      version: -1
+    taskid: 820cae46-d7fa-4cfb-8eb0-6d61ae60d163
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 195
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      message:
+        simple: The provided disposition,  ${inputs.disposition}, is not supported.
+          Contact the xSOAR administrator.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prints an error entry with a given message.
+      id: 8e46b9fc-802a-45ad-8fb1-abe3d61934e2
+      iscommand: false
+      name: Print error
+      script: PrintErrorEntry
+      type: regular
+      version: -1
+    taskid: 8e46b9fc-802a-45ad-8fb1-abe3d61934e2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 545
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9237dacc-fdf6-4888-8b21-7aa96df22ca4
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 9237dacc-fdf6-4888-8b21-7aa96df22ca4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 735
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      body:
+        simple: The provided disposition,  ${inputs.disposition}, is not supported.
+          Contact the xSOAR administrator.
+      greeting:
+        simple: Hi,
+      importance:
+        simple: High
+      signature:
+        simple: Regards,<br>Dbot
+      subject:
+        simple: SINC${incident.id} | ${incident.account} | Closure Fatal Error
+      template:
+        simple: EMAIL_TEMPLATE_DEFAULT
+      to:
+        complex:
+          accessor: XSOAR_DEVELOPER
+          root: lists
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Send templated emails
+      id: b9d82670-0c1d-4f23-8db9-8a768273880e
+      iscommand: false
+      name: Communication - Email v2
+      playbookId: 70bdd136-546b-49a4-8089-2ef586b1a070
+      type: playbook
+      version: -1
+    taskid: b9d82670-0c1d-4f23-8db9-8a768273880e
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: incident.ticketnumber
+                    operator: isExists
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: incident.ticketnumber
+                    operator: isNotEmpty
+                root: incident.ticketnumber
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d0b5547f-24e3-4716-8977-5e65f8c35807
+      iscommand: false
+      name: Zendesk ticket available
+      type: condition
+      version: -1
+    taskid: d0b5547f-24e3-4716-8977-5e65f8c35807
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 720
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: customFields
+      stringify:
+        simple: "true"
+      value:
+        simple: '{"id": ${lists.ZENDESK_OUTCOME_FIELD_ID}, "value": ${inputs.Closure
+          reason}}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: d64231fd-5a08-4cef-8924-2caa5c1ddd6e
+      iscommand: false
+      name: Set custom fields to local context - Outcome
+      script: Set
+      type: regular
+      version: -1
+    taskid: d64231fd-5a08-4cef-8924-2caa5c1ddd6e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 895
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        complex:
+          root: inputs.comment
+      custom_fields:
+        complex:
+          root: customFields
+          transformers:
+          - operator: ParseJSON
+      status:
+        simple: solved
+      ticket_id:
+        complex:
+          accessor: ticketnumber
+          root: incident
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Zendesk v2
+      description: |-
+        Updates a Zendesk ticket.
+        Required permissions: Agents.
+      id: d2ef1d94-349a-4965-82c7-bbeea478c13b
+      iscommand: true
+      name: Close the ticket in Zendesk
+      script: Zendesk v2|||zendesk-ticket-update
+      type: regular
+      version: -1
+    taskid: d2ef1d94-349a-4965-82c7-bbeea478c13b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 1070
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1435,
+        "width": 922.5,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
