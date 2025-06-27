@@ -1,0 +1,61 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "",
+	"feed": false,
+	"fromServerVersion": "",
+	"id": "1ff19447-79cc-422b-8109-35cee5f9948d",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"itemVersion": "",
+	"keyTypeMap": {
+		"UNIVERS": "Prasoon_IncidentType"
+	},
+	"locked": false,
+	"logicalVersion": 2,
+	"mapping": null,
+	"name": "Prasoon_Classifier",
+	"nameRaw": "Prasoon_Classifier",
+	"packID": "",
+	"packName": "",
+	"propagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"system": false,
+	"toServerVersion": "",
+	"transformer": {
+		"complex": {
+			"filters": [],
+			"root": "subject",
+			"transformers": [
+				{
+					"args": {
+						"flags": {
+							"isContext": false
+						},
+						"groups": {
+							"isContext": false
+						},
+						"keys": {
+							"isContext": false
+						},
+						"regex": {
+							"isContext": false,
+							"value": {
+								"simple": "(UNIVERS)"
+							}
+						}
+					},
+					"operator": "RegexGroups"
+				}
+			]
+		}
+	},
+	"type": "classification",
+	"unclassifiedCases": null,
+	"version": -1
+}
