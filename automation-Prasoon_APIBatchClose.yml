@@ -1,0 +1,148 @@
+commonfields:
+  id: 3d4e8917-4a6f-4c09-8d70-4b8cc31a5392
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.8.1983910
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Prasoon_APIBatchClose
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: |-
+  from datetime import datetime
+
+
+  body = {
+      "all": True,
+      "filter": {
+          "andOp": True,
+          "fromDate": "2025-04-16T00:00:00.000+00:00",
+          "toDate": "2025-04-18T23:59:59.000+00:00",
+          # "notStatus": [2],
+          # "status": [1,3]
+          "query": "-status:closed"
+          # "period": {
+          #             "status": [3]
+          # },
+              },
+          "closeNotes": "API Testing closed enabled query",
+          "force": True,
+
+          "overrideInvestigation": False
+          # "closeReason": "Other"
+  }
+
+
+
+
+
+  response = demisto.executeCommand("core-api-post", {"uri":"/incident/batchClose", "body": body})
+  print(response)
+
+
+
+
+  # import requests
+
+  # url = "https://hostname/incident/batch"
+
+  payload = {
+      "filter": {
+          "andOp": True,
+          "category": ["string"],
+          "details": "string",
+          "fields": ["string"],
+          "files": ["string"],
+          "filterobjectquery": "string",
+          "fromActivatedDate": "2019-08-24T14:15:22Z",
+          "fromClosedDate": "2019-08-24T14:15:22Z",
+          "fromDate": "2019-08-24T14:15:22Z",
+          "fromDateLicense": "2019-08-24T14:15:22Z",
+          "fromDueDate": "2019-08-24T14:15:22Z",
+          "fromReminder": "2019-08-24T14:15:22Z",
+          "id": ["string"],
+          "ignoreWorkers": True,
+          "includeTmp": True,
+          "investigation": ["string"],
+          "level": [4],
+          "name": ["string"],
+          "notCategory": ["string"],
+          "notInvestigation": ["string"],
+          "notStatus": [2],
+          "page": -9007199254740991,
+          "parent": ["string"],
+          "period": {
+              "by": "string",
+              "byFrom": "string",
+              "byTo": "string",
+              "field": "string",
+              "fromValue": "string",
+              "toValue": "string"
+          },
+          "query": "string",
+          "reason": ["string"],
+          "searchAfter": ["string"],
+          "searchAfterElastic": ["string"],
+          "searchAfterMap": {
+              "property1": ["string"],
+              "property2": ["string"]
+          },
+          "searchAfterMapOrder": {
+              "property1": -9007199254740991,
+              "property2": -9007199254740991
+          },
+          "searchBefore": ["string"],
+          "searchBeforeElastic": ["string"],
+          "size": -9007199254740991,
+          "sort": [
+              {
+                  "asc": True,
+                  "field": "string",
+                  "fieldType": "string"
+              }
+          ],
+          "status": [2],
+          "systems": ["string"],
+          "timeFrame": -9007199254740991,
+          "toActivatedDate": "2019-08-24T14:15:22Z",
+          "toClosedDate": "2019-08-24T14:15:22Z",
+          "toDate": "2019-08-24T14:15:22Z",
+          "toDueDate": "2019-08-24T14:15:22Z",
+          "toReminder": "2019-08-24T14:15:22Z",
+          "totalOnly": True,
+          "trim_events": -9007199254740991,
+          "type": ["string"],
+          "urls": ["string"],
+          "users": ["string"]
+      },
+      "force": True,
+      "ids": ["string"],
+      "line": "string",
+      "originalIncidentId": "string",
+      "overrideInvestigation": True
+  }
+  headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "123"
+  }
+
+  # response = requests.post(url, json=payload, headers=headers)
+
+  # print(response.json())
+scripttarget: 0
+subtype: python3
+tags: []
+type: python
