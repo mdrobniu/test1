@@ -1,0 +1,422 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: da6dbe17-d295-49c9-81dc-7332cfc62c2a
+inputs:
+- description: ""
+  key: BaseQuery
+  playbookInputQuery: null
+  required: true
+  value:
+    complex:
+      accessor: drilldown_search
+      root: incident.labels
+- description: ""
+  key: EarliestTime
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: LatestTime
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: CheckUserAgainstAD
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "false"
+name: Eskom - Splunk - Search Users
+outputs:
+- contextPath: Splunk.Result.user
+  description: Result from Splunk
+- contextPath: UsernamesNotFound
+  description: Usernames found in AD
+  type: unknown
+- contextPath: UsernamesFound
+  description: Usernames not found in AD
+  type: unknown
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c9e2fa8c-0dd4-4520-892a-c0d623f5eaea
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: c9e2fa8c-0dd4-4520-892a-c0d623f5eaea
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      earliest_time:
+        complex:
+          root: inputs.EarliestTime
+      latest_time:
+        complex:
+          root: inputs.LatestTime
+      query:
+        complex:
+          root: inputs.BaseQuery
+          transformers:
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: ' | eval user=split(user, ":") | mvexpand user | table user
+                    | dedup user'
+            operator: concat
+      retry-count:
+        simple: "3"
+      retry-interval:
+        simple: "300"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: SplunkPy
+      description: Searches Splunk for events. For human readable output, the table
+        command is supported in the query argument. For example, `query=" * | table
+        field1 field2 field3"` will generate a table with field1, field2, and field3
+        as headers.
+      id: 6c78da3c-95f7-4891-8e89-3edece1d6caf
+      iscommand: true
+      name: Retrieve usernames from Splunk
+      script: SplunkPy|||splunk-search
+      type: regular
+      version: -1
+    taskid: 6c78da3c-95f7-4891-8e89-3edece1d6caf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 195
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Splunk.Result
+                    operator: isExists
+                root: Splunk.Result
+                transformers:
+                - operator: count
+          operator: greaterThan
+          right:
+            value:
+              simple: "0"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4ad83017-e5e0-457a-8eb3-77c92d649a59
+      iscommand: false
+      name: Splunk results found?
+      type: condition
+      version: -1
+    taskid: 4ad83017-e5e0-457a-8eb3-77c92d649a59
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 370
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Splunk.Result.user
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: '*****'
+                root: Splunk.Result.user
+                transformers:
+                - operator: count
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "0"
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5377cdf9-0504-4284-8dfe-14055aed19e3
+      iscommand: false
+      name: Are all usernames obfuscated?
+      type: condition
+      version: -1
+    taskid: 5377cdf9-0504-4284-8dfe-14055aed19e3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 545
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: UsernamesNotFound
+      value:
+        complex:
+          accessor: user
+          root: Splunk.Result
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 5a48d885-e819-4084-8f61-c1af60f2b760
+      iscommand: false
+      name: Set key to local context
+      script: Set
+      type: regular
+      version: -1
+    taskid: 5a48d885-e819-4084-8f61-c1af60f2b760
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 895
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      forEach: true
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      username:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Splunk.Result.user
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: '*****'
+          root: Splunk.Result.user
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9e00d00a-8b8c-4215-8996-4ebd8229ec41
+      iscommand: false
+      name: Eskom - User Enrichment
+      playbookId: f0e6b33d-1e43-4df9-806e-5588d36ef308
+      type: playbook
+      version: -1
+    taskid: 9e00d00a-8b8c-4215-8996-4ebd8229ec41
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 895
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CheckUserAgainstAD
+                transformers:
+                - operator: toUpperCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "TRUE"
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c2d6c94b-618d-458c-8f58-8441b24d66f1
+      iscommand: false
+      name: Check against AD?
+      type: condition
+      version: -1
+    taskid: c2d6c94b-618d-458c-8f58-8441b24d66f1
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 720
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf266af3-f8fa-4d64-8d43-1a13a02588b4
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: cf266af3-f8fa-4d64-8d43-1a13a02588b4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 1070
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1085,
+        "width": 922.5,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
