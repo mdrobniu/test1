@@ -1,0 +1,292 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: 'Verify whether the vendors that flagged the indicator as malicious form
+  part of the list of trusted vendors that the client provided. '
+id: 9e1911af-6123-442d-833a-79953b0d761d
+inputs:
+- description: ""
+  key: sourceBrands
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: preferredBrand
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: moduleToFeedMap
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: indicator
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Eskom - Indicator Malicious Threshold Check
+outputs:
+- contextPath: Match
+  type: unknown
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5f33d7a7-daa1-4e58-8f84-c087c7f5508d
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 5f33d7a7-daa1-4e58-8f84-c087c7f5508d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      add_fields_to_context:
+        simple: moduleToFeedMap
+      query:
+        simple: value:${inputs.indicator}
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: abd4bbf3-71d4-4cea-8ba7-bf318f92ddd4
+      iscommand: false
+      name: Query indicator
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: abd4bbf3-71d4-4cea-8ba7-bf318f92ddd4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "1"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8bb27e1c-0cd4-437e-8d79-15d7107bde00
+      iscommand: false
+      name: Indicator already defined?
+      type: condition
+      version: -1
+    taskid: 8bb27e1c-0cd4-437e-8d79-15d7107bde00
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 195
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: moduleToFeedMap
+                root: foundIndicators
+                transformers:
+                - args:
+                    field:
+                      iscontext: true
+                      value:
+                        simple: inputs.sourceBrands
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: score
+                  operator: getField
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9860c810-1362-46f3-8ff2-890fa7ad0a36
+      iscommand: false
+      name: Is Malicious?
+      type: condition
+      version: -1
+    taskid: 9860c810-1362-46f3-8ff2-890fa7ad0a36
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 545
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Match
+      value:
+        simple: ${inputs.sourceBrands}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 3d2b58c1-0b56-4290-8a1a-b4f5268a8686
+      iscommand: false
+      name: Set vendor to local context
+      script: Set
+      type: regular
+      version: -1
+    taskid: 3d2b58c1-0b56-4290-8a1a-b4f5268a8686
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 720
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1fbf62af-f5af-43cd-8e4f-07c982f89327
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 1fbf62af-f5af-43cd-8e4f-07c982f89327
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 895
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 910,
+        "width": 605,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
