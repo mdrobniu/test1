@@ -1,0 +1,105 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "",
+	"feed": false,
+	"fromServerVersion": "",
+	"id": "4722cdc1-938c-48e2-85b5-21c5231c08c9",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"itemVersion": "",
+	"keyTypeMap": {},
+	"locked": false,
+	"logicalVersion": 3,
+	"mapping": {
+		"Prasoon_IncidentType": {
+			"dontMapEventToLabels": false,
+			"internalMapping": {
+				"Ticket Number": {
+					"complex": {
+						"filters": [],
+						"root": "subject",
+						"transformers": [
+							{
+								"args": {
+									"flags": {
+										"isContext": false
+									},
+									"groups": {
+										"isContext": false
+									},
+									"keys": {
+										"isContext": false
+									},
+									"regex": {
+										"isContext": false,
+										"value": {
+											"simple": "(?:UNIVERS)\\-(\\d+)"
+										}
+									}
+								},
+								"operator": "RegexGroups"
+							}
+						]
+					}
+				}
+			}
+		},
+		"dbot_classification_incident_type_all": {
+			"dontMapEventToLabels": true,
+			"internalMapping": {
+				"Ticket Number": {
+					"complex": {
+						"filters": [],
+						"root": "${name}",
+						"transformers": [
+							{
+								"args": {
+									"error_if_no_match": {
+										"isContext": false
+									},
+									"ignore_case": {
+										"isContext": false
+									},
+									"multi_line": {
+										"isContext": false
+									},
+									"period_matches_newline": {
+										"isContext": false
+									},
+									"regex": {
+										"isContext": false,
+										"value": {
+											"simple": "^(UNIVERS\\-\\d+)"
+										}
+									},
+									"unpack_matches": {
+										"isContext": false
+									}
+								},
+								"operator": "RegexExtractAll"
+							}
+						]
+					}
+				}
+			}
+		}
+	},
+	"name": "Prasoon_Mapper",
+	"nameRaw": "Prasoon_Mapper",
+	"packID": "",
+	"packName": "",
+	"propagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"system": false,
+	"toServerVersion": "",
+	"transformer": {},
+	"type": "mapping-incoming",
+	"unclassifiedCases": null,
+	"version": -1
+}
