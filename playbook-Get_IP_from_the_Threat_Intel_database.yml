@@ -1,0 +1,396 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Get IP from the Threat Intel database
+id: cbe8ad40-a067-4b7d-8d50-875cb26a1d63
+inputs:
+- description: ""
+  key: IP
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: AdditionalFields
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Get IP from the Threat Intel database
+outputs:
+- contextPath: foundIndicators
+  type: unknown
+quiet: true
+sourceplaybookid: 834d17e4-dc36-4f6a-825c-afcab2990307
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ec383154-1d48-4fb2-858c-dcaa4b60200a
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: ec383154-1d48-4fb2-858c-dcaa4b60200a
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        complex:
+          root: inputs.AdditionalFields
+      query:
+        simple: value:${inputs.IP} type:IP
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: 36d30574-86c1-4acc-8d5b-8412b32bf2c1
+      iscommand: false
+      name: Get IP address information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: 36d30574-86c1-4acc-8d5b-8412b32bf2c1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 195
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 17ca5911-f7fa-4669-89fd-be6b79d83437
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 17ca5911-f7fa-4669-89fd-be6b79d83437
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 1420
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05655620-c3f1-4bbd-8fa2-188f5c5d2cf8
+      iscommand: false
+      name: Data found?
+      type: condition
+      version: -1
+    taskid: 05655620-c3f1-4bbd-8fa2-188f5c5d2cf8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        simple: firstSeen,lastSeen,relatedIncCount,asn,geocountry,geolocation,organization
+      query:
+        simple: value:${inputs.IP} type:IP
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: d82f32dd-5509-4138-8258-2c60243e8866
+      iscommand: false
+      name: Retry to retrieve IP information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: d82f32dd-5509-4138-8258-2c60243e8866
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 720
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c1bf86b1-2acb-4878-82d7-6fd46f3d6214
+      iscommand: false
+      name: Data found?
+      type: condition
+      version: -1
+    taskid: c1bf86b1-2acb-4878-82d7-6fd46f3d6214
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 895
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      body:
+        simple: The xSOAR couldn't retrieve IP information from the threat intel database.
+          Access the incident and debug.
+      greeting:
+        simple: Hi,
+      importance:
+        simple: High
+      signature:
+        simple: Regards,<br>Cybersecurity Team
+      subject:
+        simple: SINC${incident.id} | ${incident.account} | Fatal Error
+      template:
+        simple: EMAIL_TEMPLATE_DEFAULT
+      to:
+        complex:
+          accessor: XSOAR_DEVELOPER
+          root: lists
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3be161be-a46b-473a-8a87-69812db157b9
+      iscommand: false
+      name: Communication - Email v2
+      playbookId: 70bdd136-546b-49a4-8089-2ef586b1a070
+      type: playbook
+      version: -1
+    taskid: 3be161be-a46b-473a-8a87-69812db157b9
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1070
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      message:
+        simple: Contact xSOAR engineer. Fatal error
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prints an error entry with a given message.
+      id: 11e05662-61fe-4905-8213-893fd0965db0
+      iscommand: false
+      name: Fatal error
+      script: PrintErrorEntry
+      type: regular
+      version: -1
+    taskid: 11e05662-61fe-4905-8213-893fd0965db0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1245
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      seconds:
+        simple: "60"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sleep for X seconds.
+      id: b99233ff-71fb-4db0-8eab-b86b1340aa17
+      iscommand: false
+      name: Sleep
+      script: Sleep
+      type: regular
+      version: -1
+    taskid: b99233ff-71fb-4db0-8eab-b86b1340aa17
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 545
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1435,
+        "width": 605,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

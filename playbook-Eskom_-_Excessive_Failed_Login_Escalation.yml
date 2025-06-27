@@ -1,0 +1,966 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - sentinelone
+    toServerVersion: ""
+description: Escalation of excessive failed login incidents
+id: 824b5018-73f5-4080-8bf6-94daee23a80c
+inputs:
+- description: Email recipients
+  key: EmailTo
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Users involved in the authentication attempt
+  key: UsersFound
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Vendors that determined the malicious verdict of the incident
+  key: VendorsDetection
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: UsersNotFound
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: EmailCC
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: AllUsers
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: Observations
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: AttachIDs
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Eskom - Excessive Failed Login Escalation
+outputs:
+- contextPath: Remediation Plan Client Response.Answers.0
+  description: Action to take
+  type: singleSelect
+- contextPath: Remediation Plan Client Response.Answers.1
+  description: Investigation verdict
+  type: singleSelect
+- contextPath: Remediation Plan Client Response.Answers.2
+  description: Addition info
+  type: longText
+- contextPath: Remediation Plan Client Response.Answers.name
+  description: answered username or email address
+sourceplaybookid: 2c533ee4-eb6f-4d87-8c28-a20d64a7518f
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+      - "5"
+      - "7"
+      - "17"
+      - "24"
+      - "26"
+      - "29"
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c19673d4-abcb-47ab-886c-ae5d4ad4e3f7
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: c19673d4-abcb-47ab-886c-ae5d4ad4e3f7
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1555,
+          "y": 50
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.description
+      stringify:
+        simple: "false"
+      value:
+        simple: |-
+          The source IP <strong>${incident.sourceip}</strong> failed VPN authentication <strong>${incident.count}</strong> times using <strong>${incident.labels.user_count}</strong> username(s) in the last hour.<br/>
+          <br/>
+          The xSOAR bot investigated this incident and could not make an automated decision on whether or not to block the IP address. Human intervention is therefore required to determine the action to take against the IP address.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: b8af886a-3876-41ac-84c9-1c0b3be92eb7
+      iscommand: false
+      name: Description to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: b8af886a-3876-41ac-84c9-1c0b3be92eb7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.risk
+      stringify:
+        simple: "false"
+      value:
+        simple: Excessive failed login attempts pose multiple risks. They suggest
+          credential stuffing and brute force attacks, could trigger account lockouts,
+          expose weaknesses in Eskom's password policies, and indicate reconnaissance
+          for future attacks.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 439efc77-1578-4861-875f-f5b86da01af2
+      iscommand: false
+      name: Risk to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: 439efc77-1578-4861-875f-f5b86da01af2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 370
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: emailObject.preheader
+      stringify:
+        simple: "false"
+      value:
+        simple: Incident Escalation
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: dfb96ee4-ecb6-4475-8e46-44a3621c6117
+      iscommand: false
+      name: Set the email's preheader
+      script: Set
+      type: regular
+      version: -1
+    taskid: dfb96ee4-ecb6-4475-8e46-44a3621c6117
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 370
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c9b09ec5-6b0b-4c40-83f7-2ea9018b1322
+      iscommand: false
+      name: Email
+      type: title
+      version: -1
+    taskid: c9b09ec5-6b0b-4c40-83f7-2ea9018b1322
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1555,
+          "y": 545
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 519585d8-591c-45d6-819d-3bc87cd79561
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 519585d8-591c-45d6-819d-3bc87cd79561
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1555,
+          "y": 1565
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: What action would you like the SOAR to take?
+        options: []
+        optionsarg:
+        - {}
+        - simple: Block the IP address
+        - simple: Take no action
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "1"
+        label: ""
+        labelarg:
+          simple: What is the verdict of your investigation?
+        options: []
+        optionsarg:
+        - {}
+        - simple: True Positive - Suspicious Activity
+        - simple: Benign Positive - Suspicious But Expected
+        - simple: False Positive - Incorrect Analytic Login
+        - simple: False Positive - Inaccurate Data
+        - simple: Other
+        - simple: Undetermined
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "2"
+        label: ""
+        labelarg:
+          simple: Additional information/Comment
+        options: []
+        optionsarg: []
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: You can use this field to provide a reason for the action that you
+          took.
+        type: longText
+      sender: Your SOC team
+      title: Remediation Plan Client Response
+      totalanswers: 0
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: {}
+      cc:
+        complex:
+          accessor: XSOAR_DEVELOPER
+          root: lists
+          transformers:
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: ','
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: pierre.jacobs@cyberantix.co.za
+            operator: concat
+      format: html
+      methods: []
+      subject:
+        simple: ${incident.account} | Remediation | SINC${incident.id}
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 4
+        retriesinterval: 1440
+      to:
+        simple: ${inputs.EmailTo}
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e8c0d47b-5634-45e4-8e53-622a573b3ca9
+      iscommand: false
+      name: Get data from the client
+      tags:
+      - datacollection
+      type: collection
+      version: -1
+    taskid: e8c0d47b-5634-45e4-8e53-622a573b3ca9
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1390
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      arrayData:
+        simple: Review the IP address' activity, Block the suspicious IP address if
+          necessary
+      contextKey:
+        simple: tempremediation
+      separator:
+        simple: '*'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'Will create an array object in context from given string input '
+      id: d017a4db-c48a-4cef-8a59-df019f4f4e66
+      iscommand: false
+      name: Remediation to local object
+      script: CreateArray
+      type: regular
+      version: -1
+    taskid: d017a4db-c48a-4cef-8a59-df019f4f4e66
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 195
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: emailObject.remediation
+      value:
+        complex:
+          root: tempremediation
+          transformers:
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 041e48db-e99f-420c-8d4d-511243850010
+      iscommand: false
+      name: Add HTML UL elements to remediation list
+      script: ArrayToHTMLList
+      type: regular
+      version: -1
+    taskid: 041e48db-e99f-420c-8d4d-511243850010
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 370
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      task_id:
+        complex:
+          accessor: id
+          root: Tasks
+      users:
+        simple: ${lists.XSOAR_DEVELOPER}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Generates the URL for a Data Collection Task into Context.  Can be used to get the url for tasks send via Email, Slack, or even if you select "By Task Only".
+
+        To generate links for specific users, add an array of users in the users argument.
+      id: 5270e7cd-1ff2-46a2-8e87-d9d8e6d8a679
+      iscommand: false
+      name: Get data collection URL
+      script: GetDataCollectionLink
+      type: regular
+      version: -1
+    taskid: 5270e7cd-1ff2-46a2-8e87-d9d8e6d8a679
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 1040
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      attachIDs:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.AttachIDs
+              operator: isExists
+          root: inputs.AttachIDs
+      bcc:
+        simple: ${lists.XSOAR_DEVELOPER}
+      body:
+        simple: |-
+          <p>On <strong>${incident.occurred}</strong> a security incident, <strong>${incident.name}</strong>, was detected and
+              investigated by the Security Operation Center (SOC). The SOC found the incident to be
+              <strong>${incident.verdict}</strong>. <br /><br /><strong>Please see the details below:</strong>
+          </p>
+          <p><strong>Timeframe:</strong><br/>
+          Start time: ${TimeframeStart}<br/>
+          End Time: ${incident.occurred}
+          </p>
+          <p><strong>Users:</strong><br />Usernames used in the auth attempts: ${inputs.AllUsers}<br />Exists in AD:
+              ${inputs.UsersFound}<br />Does not
+              exist in AD: ${inputs.UsersNotFound}</p>
+          <p><strong> IP
+                  Address:</strong><br />${IPToHTML}</p>
+          <p><strong>Description:</strong><br />${emailObject.description}</p>
+          <p><strong>Observations:</strong><br />${emailObject.observations}</p>
+          <p><strong>Risk:</strong><br />${emailObject.risk}</p>
+          <p><strong>Remediations and Recommendations:
+              </strong><br />${emailObject.remediation}</p>
+          <hr class="separator" />
+          <p>Click on the link below to get access to the web form that will allow you to provide feedback to the xSOAR to allow
+              the incident workflow to continue. This link can only be accessed from ${incident.account}'s network.</p>
+          <p><a title="Data Collection URL" href="${DataCollectionURL.url}" target="_blank" rel="noopener">Link to the data
+                  collection form</a></p>
+      cc:
+        complex:
+          root: inputs.EmailCC
+      greeting:
+        simple: Dear Eskom,
+      importance:
+        simple: High
+      preheader:
+        simple: Eskom Incident Escalation
+      signature:
+        simple: Regards,<br>Dbot
+      subject:
+        simple: 'SINC${incident.id} | ${incident.account} | Escalation #waitclientresponse'
+      template:
+        simple: EMAIL_TEMPLATE_DEFAULT
+      to:
+        simple: ${inputs.EmailTo}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Send templated emails
+      id: 3a729cc1-0618-410d-8c77-148cfffd4b09
+      iscommand: false
+      name: Communication - Email v2
+      playbookId: 70bdd136-546b-49a4-8089-2ef586b1a070
+      type: playbook
+      version: -1
+    taskid: 3a729cc1-0618-410d-8c77-148cfffd4b09
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 1390
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      seconds:
+        simple: "5"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sleep for X seconds.
+      id: f285e94b-9f95-480e-88c7-6f4ed11c9894
+      iscommand: false
+      name: Sleep and wait for the data collection URL to be generated
+      script: Sleep
+      type: regular
+      version: -1
+    taskid: f285e94b-9f95-480e-88c7-6f4ed11c9894
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 690
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      escalation:
+        simple: T
+      verdict:
+        simple: Suspicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 33e190c0-b92f-44ec-8db3-b7f3242b31bb
+      iscommand: true
+      name: Set incident fields
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 33e190c0-b92f-44ec-8db3-b7f3242b31bb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 370
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IP:
+        simple: ${incident.sourceip}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7927ecb0-237e-4576-8637-de236f1b2f77
+      iscommand: false
+      name: IP to Summary
+      playbookId: 834d17e4-dc36-4f6a-825c-afcab2990307
+      type: playbook
+      version: -1
+    taskid: 7927ecb0-237e-4576-8637-de236f1b2f77
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 2200,
+          "y": 370
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      inc_id:
+        simple: ${incident.id}
+      tag:
+        simple: datacollection
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get all tasks for a specific incident by the given state, name
+        and/or tag.
+      id: cda2649b-4420-49f3-8e83-170ba956d8ce
+      iscommand: false
+      name: Get task ID
+      script: GetIncidentTasks
+      type: regular
+      version: -1
+    taskid: cda2649b-4420-49f3-8e83-170ba956d8ce
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 865
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      escalation:
+        simple: T
+      sla:
+        complex:
+          accessor: created
+          root: incident
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: in 8 days
+            operator: ModifyDateTime
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 3b6b61ea-6fa3-4e86-8310-74a4598da2ce
+      iscommand: true
+      name: Update the incident field
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 3b6b61ea-6fa3-4e86-8310-74a4598da2ce
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1770,
+          "y": 1215
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: TimeframeStart
+      value:
+        complex:
+          accessor: occurred
+          root: incident
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 1 hours ago
+            operator: ModifyDateTime
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 60bb4722-208b-4004-8f3e-85985241369d
+      iscommand: false
+      name: Timeframe to local object
+      script: Set
+      type: regular
+      version: -1
+    taskid: 60bb4722-208b-4004-8f3e-85985241369d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2630,
+          "y": 370
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      arrayData:
+        complex:
+          root: inputs.Observations
+      contextKey:
+        simple: ObservationsArray
+      separator:
+        simple: '||'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'Will create an array object in context from given string input '
+      id: 606df41c-9dae-4a3b-8fc1-c3cfdb8d4c6b
+      iscommand: false
+      name: Reasons to array
+      script: CreateArray
+      type: regular
+      version: -1
+    taskid: 606df41c-9dae-4a3b-8fc1-c3cfdb8d4c6b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3060,
+          "y": 195
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: emailObject.observations
+      value:
+        complex:
+          root: ObservationsArray
+          transformers:
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7d74a5ce-74da-4b5e-8fb5-3538851f26d9
+      iscommand: false
+      name: Add HTML UL elements to remediation list
+      script: ArrayToHTMLList
+      type: regular
+      version: -1
+    taskid: 7d74a5ce-74da-4b5e-8fb5-3538851f26d9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3060,
+          "y": 370
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1580,
+        "width": 3390,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

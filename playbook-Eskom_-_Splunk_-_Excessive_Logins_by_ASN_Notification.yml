@@ -1,0 +1,683 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Create a ticket in Zendesk when thre threshold is breached for excessive
+  failed logins from the same ASN. This checks against blocked IPs.
+id: abcaf3bd-1ef5-4c9d-8ded-44eb540bfaeb
+inputs:
+- description: ""
+  key: IP
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: ""
+  key: Threshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "20"
+- description: ""
+  key: Variation
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: 3 months ago
+name: Eskom - Splunk - Excessive Logins by ASN Notification
+outputs: []
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b4f920db-bd9d-4d5a-8b57-a6e9b7d89aa2
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: b4f920db-bd9d-4d5a-8b57-a6e9b7d89aa2
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        simple: firstSeen,lastSeen,relatedIncCount,asn,organization
+      query:
+        simple: value:${inputs.IP} type:IP
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: cb87e209-de8c-4eac-86a1-d63056965a8c
+      iscommand: false
+      name: Get IP address information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: cb87e209-de8c-4eac-86a1-d63056965a8c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 195
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+      - "14"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: asn_to_search
+      stringify:
+        simple: "false"
+      value:
+        simple: ${foundIndicators.asn}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: fc61afb2-042e-4704-8fb6-bd3c0aed75eb
+      iscommand: false
+      name: Set ASN to search in local context
+      script: Set
+      type: regular
+      version: -1
+    taskid: fc61afb2-042e-4704-8fb6-bd3c0aed75eb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 545
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "4"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 06848246-a44a-49d0-80ba-c7a996ed10f3
+      iscommand: false
+      name: IP info found?
+      type: condition
+      version: -1
+    taskid: 06848246-a44a-49d0-80ba-c7a996ed10f3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ab94f2cd-9e55-4bd4-81c8-743a9b901522
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: ab94f2cd-9e55-4bd4-81c8-743a9b901522
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 2090
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      all:
+        simple: "no"
+      key:
+        simple: foundIndicators
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Delete field from context.\n\nThis automation runs using the default
+        Limited User role, unless you explicitly change the permissions.\nFor more
+        information, see the section about permissions here:\n- For Cortex XSOAR 6
+        see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 6a0cd5f2-7195-4564-8877-f17c11c7433f
+      iscommand: false
+      name: Delete foundIndicators from the context data
+      script: DeleteContext
+      type: regular
+      version: -1
+    taskid: 6a0cd5f2-7195-4564-8877-f17c11c7433f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 720
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        simple: relatedIncCount,asn,organization
+      query:
+        simple: asn:${asn_to_search} tags:*cloudflareblocked* firstSeen:>="${searchStartDate}"
+      size:
+        complex:
+          root: inputs.Threshold
+          transformers:
+          - args:
+              by:
+                value:
+                  simple: "1"
+            operator: addition
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: db43d55e-a2f4-4eb2-8b34-dfa7297ecfd5
+      iscommand: false
+      name: Get ASN information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: db43d55e-a2f4-4eb2-8b34-dfa7297ecfd5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 895
+        }
+      }
+  "7":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIndicators
+                transformers:
+                - operator: count
+          operator: greaterThan
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Threshold
+      label: "yes"
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "4"
+      "yes":
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e46b8886-4671-4345-8486-7d91ace2fe96
+      iscommand: false
+      name: Is the number of IPs blocked greater than the threshold?
+      type: condition
+      version: -1
+    taskid: e46b8886-4671-4345-8486-7d91ace2fe96
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 162.5,
+          "y": 1070
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: EmailBody
+      stringify:
+        simple: "false"
+      value:
+        simple: |-
+          <p>Dear Eskom,</p>
+          <p>
+              The xSOAR has observed multiple failed VPN authentication attempts originating from different IP addresses within ASN
+              <strong>${asn_to_search}</strong>. <br /><br /> From <strong>${inputs.Variation} to now</strong>, more than
+              <strong>${inputs.Threshold}</strong> unique IPs associated with this ASN have been blocked on Cloudflare
+              due to their malicious activity. This trend indicates a coordinated effort, possibly an automated attack,
+              targeting your VPN infrastructure.
+          </p>
+          <p><strong>Risk:</strong><br />
+              Allowing continued access from ASN <strong>${asn_to_search}</strong> increases the risk of <strong>credential stuffing, brute-force attacks, and
+              potential account compromise</strong>. Additionally, persistent authentication attempts could lead to reconnaissance, service
+              disruption, or further escalation of malicious activity.
+          </p>
+          <p><strong>Recommendation:</strong><br />
+              <ul>
+                  <li>Block the ASN <strong>${asn_to_search}</strong> on Cloudflare</li>
+              </ul>
+          </p>
+          <hr/>
+          <p><strong>NOTE:</strong> This ticket was logged by the xSOAR automation bot based on predefined thresholds.</p>
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 238e0723-34b5-4a72-8c26-e5b77a28afe2
+      iscommand: false
+      name: Set email body
+      script: Set
+      type: regular
+      version: -1
+    taskid: 238e0723-34b5-4a72-8c26-e5b77a28afe2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 387.5,
+          "y": 1740
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      limit:
+        simple: "1"
+      query:
+        simple: custom_field_${lists.ZENDESK_CORRELATION_ID_FIELD_ID}:"${asn_to_search}"
+          order_by:created_at sort:asc
+      retry-count:
+        simple: "3"
+      retry-interval:
+        simple: "300"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Zendesk v2
+      description: Search in Zendesk.
+      id: 4af3d346-d044-4dfd-82e2-6d13f75f72ae
+      iscommand: true
+      name: Search ticket by correlation ID (ASN)
+      script: Zendesk v2|||zendesk-search
+      type: regular
+      version: -1
+    taskid: 4af3d346-d044-4dfd-82e2-6d13f75f72ae
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 1245
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Search
+                root: Zendesk
+          operator: isExists
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "12"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b6959fd7-dd1d-4794-83cf-e9e856818f98
+      iscommand: false
+      name: Ticket found?
+      type: condition
+      version: -1
+    taskid: b6959fd7-dd1d-4794-83cf-e9e856818f98
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 1420
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ba574707-997e-4675-8410-e23582fd4ada
+      iscommand: false
+      name: Log Ticket
+      type: title
+      version: -1
+    taskid: ba574707-997e-4675-8410-e23582fd4ada
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 387.5,
+          "y": 1595
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Action:
+        simple: NewTicket
+      AssigneeGroup:
+        simple: Level 1 Support
+      CorrelationID:
+        simple: ${asn_to_search}
+      HTMLComment:
+        simple: ${EmailBody}
+      Public:
+        simple: "true"
+      SetTicketIDInIncident:
+        simple: "no"
+      Severity:
+        simple: ${incident.severityStr}
+      ZendeskCollaborators:
+        complex:
+          accessor: PRIMARY_CONTACT
+          root: lists
+          transformers:
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: :put
+            operator: concat
+      ZendeskPriority:
+        simple: normal
+      ZendeskRequester:
+        complex:
+          accessor: CLOUDFLARE_PRIMARY_CONTACT
+          root: lists
+      ZendeskSubject:
+        simple: Repeated VPN Authentication Failures from ASN ${asn_to_search}
+      ZendeskTags:
+        simple: client_escalation
+      ZendeskType:
+        simple: incident
+      addCommentPerEndpoint:
+        simple: "True"
+      description:
+        simple: Repeated VPN Authentication Failures from ASN ${asn_to_search}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '`Zendesk - Ticket Management` allows you to open a new ticket
+        or comment on an existing ticket.'
+      id: ad3780e7-d6ad-45be-89f6-e88dbc21f993
+      iscommand: false
+      name: Zendesk - Ticket Management CAX
+      playbookId: 34afcf91-6a1d-43fc-8707-7fe2c7b799a2
+      type: playbook
+      version: -1
+    taskid: ad3780e7-d6ad-45be-89f6-e88dbc21f993
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 387.5,
+          "y": 1915
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: searchStartDate
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          accessor: created
+          root: incident
+          transformers:
+          - args:
+              variation:
+                iscontext: true
+                value:
+                  simple: inputs.Variation
+            operator: ModifyDateTime
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: af64ac41-0988-4a8d-8798-29a320a63c08
+      iscommand: false
+      name: Set the search start date
+      script: Set
+      type: regular
+      version: -1
+    taskid: af64ac41-0988-4a8d-8798-29a320a63c08
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 570,
+          "y": 720
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 2105,
+        "width": 900,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

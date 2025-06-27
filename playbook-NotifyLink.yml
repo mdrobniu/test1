@@ -1,0 +1,243 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: 81aa2e6f-a093-412f-8f76-87c320c0ae32
+inputs: []
+name: NotifyLink
+outputs: []
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: da8a0990-22b5-4d14-8839-80b275c4bdda
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: da8a0990-22b5-4d14-8839-80b275c4bdda
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Do you like pancakes?
+        options: []
+        optionsarg:
+        - simple: "Yes"
+        - simple: "No"
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "1"
+        label: ""
+        labelarg: null
+        options: []
+        optionsarg: []
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: shortText
+      sender: Your SOC team
+      title: Do you like pancakes?
+      totalanswers: 0
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: Do you like them?
+      cc: null
+      format: ""
+      methods:
+      - email
+      - Twoja stara
+      - AWS - SNS_copy
+      subject:
+        simple: Do you like pancakes?
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        simple: mdrobniuch@paloaltonetworks.com
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b79ccf74-6069-4d5f-81a9-cea3b0211a12
+      iscommand: false
+      name: Do you like panckes?
+      type: collection
+      version: -1
+    taskid: b79ccf74-6069-4d5f-81a9-cea3b0211a12
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 230
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c8d69715-1388-4a5d-826c-bd2e7e926249
+      iscommand: false
+      name: "Yes"
+      type: regular
+      version: -1
+    taskid: c8d69715-1388-4a5d-826c-bd2e7e926249
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -410,
+          "y": 620
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Do you like pancakes?.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: "Yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "4"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 79cc5c84-046b-4fdc-82e3-e2844a8429f0
+      iscommand: false
+      name: Yes or no?
+      type: condition
+      version: -1
+    taskid: 79cc5c84-046b-4fdc-82e3-e2844a8429f0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 430
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a2038e38-3499-4ab9-8e46-373a1efc59ca
+      iscommand: false
+      name: "No"
+      type: regular
+      version: -1
+    taskid: a2038e38-3499-4ab9-8e46-373a1efc59ca
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 340,
+          "y": 620
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 665,
+        "width": 1130,
+        "x": -410,
+        "y": 50
+      }
+    }
+  }

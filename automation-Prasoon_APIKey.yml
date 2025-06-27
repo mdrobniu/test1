@@ -1,0 +1,30 @@
+args:
+- name: Key
+  secret: true
+commonfields:
+  id: 6f0411c9-9d6e-4e66-8c97-bd2ba64fa5d7
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.8.1983910
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Prasoon_APIKey
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: ""
+scripttarget: 0
+subtype: python3
+tags: []
+type: python

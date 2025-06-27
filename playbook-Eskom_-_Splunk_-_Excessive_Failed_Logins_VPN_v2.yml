@@ -1,0 +1,2138 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Investigation an excessive failed login incident for a VPN-based attack.
+id: 9829f2c7-65bf-4474-85f1-6cc0bb7c1374
+inputs:
+- description: ""
+  key: MaliciousVendorTreshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "2"
+- description: Email of recipients that the report should be sent to when an IP address
+    is blocked.
+  key: BlockReportEmailRecipients
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: CLOUDFLARE_ADMINS
+      root: lists
+      transformers:
+      - args:
+          prefix: {}
+          suffix:
+            value:
+              simple: ','
+        operator: concat
+      - args:
+          prefix: {}
+          suffix:
+            iscontext: true
+            value:
+              simple: lists.VPN_EXCESSIVE_FAILED_LOGINS_ESCALATION
+        operator: concat
+      - args:
+          prefix: {}
+          suffix:
+            value:
+              simple: ','
+        operator: concat
+      - args:
+          prefix: {}
+          suffix:
+            value:
+              simple: kgampem@eskom.co.za
+        operator: concat
+- description: Email of recipients that the incident should escalated to
+  key: EscalationEmailRecipients
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: VPN_EXCESSIVE_FAILED_LOGINS_ESCALATION
+      root: lists
+- description: Cloudflare Administrators
+  key: CloudflareAdmins
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: CLOUDFLARE_ADMINS
+      root: lists
+- description: ""
+  key: ExcessiveByASNNotification
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "no"
+name: Eskom - Splunk - Excessive Failed Logins VPN v2
+outputs: []
+quiet: true
+sourceplaybookid: 7fc76111-67bb-4b7d-8633-0c872a7e5104
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1c5b8c08-070a-4f1c-83fa-a0d08939a3aa
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 1c5b8c08-070a-4f1c-83fa-a0d08939a3aa
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      name:
+        complex:
+          accessor: name
+          root: incident
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: 'VPN '
+              suffix: {}
+            operator: concat
+      sourceip:
+        complex:
+          accessor: srcs
+          root: incident
+          transformers:
+          - operator: FirstArrayElement
+      type:
+        simple: VPN Excessive Failed Logins
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: fbdf0ff6-d337-4c3c-8bfd-f073193b3b34
+      iscommand: true
+      name: Update incident fields
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: fbdf0ff6-d337-4c3c-8bfd-f073193b3b34
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 195
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: sourceip
+                root: incident
+          operator: IsInCidrRanges
+          right:
+            iscontext: true
+            value:
+              simple: lists.INTERNAL_IPS
+      label: Internal
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "4"
+      Internal:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fb8b21a1-ee56-4f91-85af-64b129eb91f2
+      iscommand: false
+      name: Is the IP address internal or external?
+      type: condition
+      version: -1
+    taskid: fb8b21a1-ee56-4f91-85af-64b129eb91f2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 370
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5e23a6bb-51b6-4c18-8cc9-88aea7a9ac07
+      iscommand: false
+      name: Internal
+      type: title
+      version: -1
+    taskid: 5e23a6bb-51b6-4c18-8cc9-88aea7a9ac07
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 545
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f6b0101a-a423-48dd-8bb0-118c6ea9d9ec
+      iscommand: false
+      name: External
+      type: title
+      version: -1
+    taskid: f6b0101a-a423-48dd-8bb0-118c6ea9d9ec
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 705,
+          "y": 545
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0182f7cb-8fda-4ed9-813e-8af5dc555080
+      iscommand: false
+      name: What to do? Blocking on Cloudflare won't have an impact.
+      type: regular
+      version: -1
+    taskid: 0182f7cb-8fda-4ed9-813e-8af5dc555080
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 690
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 458b560a-b133-4a20-8a8f-5d73863503ba
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 458b560a-b133-4a20-8a8f-5d73863503ba
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 880
+        }
+      }
+  "9":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        complex:
+          accessor: sourceip
+          root: incident
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Queries an IP address in AlienVault OTX.
+      id: 4fe54ccb-54b0-43f3-8317-8643402a81bf
+      iscommand: true
+      name: Enrich the IP address using all enabled instances
+      script: '|||ip'
+      type: regular
+      version: -1
+    taskid: 4fe54ccb-54b0-43f3-8317-8643402a81bf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 500,
+          "y": 1215
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "16"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      includeManual:
+        simple: "yes"
+      includeSuspicious:
+        simple: "no"
+      maliciousQueryOverride:
+        simple: value:${incident.sourceip}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the investigation found any malicious indicators (file,
+        URL, IP address, domain, or email). Returns "yes" if at least one malicious
+        indicator is found.
+      id: 7071cb15-e108-4614-8ec2-c21d02c1374c
+      iscommand: false
+      name: Malicious indicator found?
+      script: IsMaliciousIndicatorFound
+      type: condition
+      version: -1
+    taskid: 7071cb15-e108-4614-8ec2-c21d02c1374c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 500,
+          "y": 1390
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5fff1cea-c469-41e4-8790-76cf6b53fe69
+      iscommand: false
+      name: Escalation validation
+      type: title
+      version: -1
+    taskid: 5fff1cea-c469-41e4-8790-76cf6b53fe69
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 2730
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7f659a9d-0a2d-4b2c-8ea5-dc678eb21fb1
+      iscommand: false
+      name: Malicious IP detected
+      type: title
+      version: -1
+    taskid: 7f659a9d-0a2d-4b2c-8ea5-dc678eb21fb1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 690,
+          "y": 1580
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      add_fields_to_context:
+        simple: geocountry
+      query:
+        simple: value:${incident.sourceip}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: 445e9132-c601-4b68-8241-4f69a2aaec10
+      iscommand: false
+      name: Retrieve IP country information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: 445e9132-c601-4b68-8241-4f69a2aaec10
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 930,
+          "y": 2380
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      forEach: true
+      iscommand: false
+      max: 100
+      wait: 3
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      indicator:
+        simple: ${incident.sourceip}
+      sourceBrands:
+        simple: ${array}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 58e84010-759f-4036-868f-d270ed2be9e0
+      iscommand: false
+      name: Retrieve the list of vendors that flagged the vendor as malicious
+      playbookId: 9e1911af-6123-442d-833a-79953b0d761d
+      type: playbook
+      version: -1
+    taskid: 58e84010-759f-4036-868f-d270ed2be9e0
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 725,
+          "y": 1885
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      arrayData:
+        simple: AbuseIPDB,AlienVault OTX v2,VirusTotal (API v3)
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'Will create an array object in context from given string input '
+      id: 2daac86e-a50b-468c-8b3d-1f2aaaefd236
+      iscommand: false
+      name: Brands to array
+      script: CreateArray
+      type: regular
+      version: -1
+    taskid: 2daac86e-a50b-468c-8b3d-1f2aaaefd236
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 725,
+          "y": 1710
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Match
+          operator: isExists
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Match
+                transformers:
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.MaliciousVendorTreshold
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2a833a9c-7225-4956-875f-2d4728b44bbb
+      iscommand: false
+      name: Trusted vendors threshold met?
+      type: condition
+      version: -1
+    taskid: 2a833a9c-7225-4956-875f-2d4728b44bbb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 725,
+          "y": 2060
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5db3f33f-c37b-4e09-8b79-be2f9c38d55c
+      iscommand: false
+      name: Country check
+      type: title
+      version: -1
+    taskid: 5db3f33f-c37b-4e09-8b79-be2f9c38d55c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 930,
+          "y": 2235
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: foundIndicators.geocountry
+          operator: isExists
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "59"
+      "yes":
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a71eda03-ca31-45df-8408-1682f4f22620
+      iscommand: false
+      name: Is the IP address from South Africa?
+      type: condition
+      version: -1
+    taskid: a71eda03-ca31-45df-8408-1682f4f22620
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 930,
+          "y": 2555
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bae51e32-4c2c-447b-8af4-4b5d8de9d010
+      iscommand: false
+      name: Block indicator
+      type: title
+      version: -1
+    taskid: bae51e32-4c2c-447b-8af4-4b5d8de9d010
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 3895
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "49"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 51069d4d-a61a-4e86-89b9-7cc46c81c03c
+      iscommand: false
+      name: Escalation
+      type: title
+      version: -1
+    taskid: 51069d4d-a61a-4e86-89b9-7cc46c81c03c
+    timertriggers:
+    - action: start
+      fieldname: timetoremediate
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 3225
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "41"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      CloudflareAdmins:
+        complex:
+          root: inputs.CloudflareAdmins
+      IP:
+        complex:
+          accessor: sourceip
+          root: incident
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Add an IP addresses to a Cloudflare IP list.
+      id: 393239ae-1855-458f-85b6-2f5c0f588836
+      iscommand: false
+      name: Block IP - Cloudflare
+      playbookId: 507d55fa-6a28-4c31-85fb-7f9c19ce5039
+      type: playbook
+      version: -1
+    taskid: 393239ae-1855-458f-85b6-2f5c0f588836
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 4040
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cecd25df-5791-4431-86aa-9c4242058d6b
+      iscommand: false
+      name: Block Report
+      type: title
+      version: -1
+    taskid: cecd25df-5791-4431-86aa-9c4242058d6b
+    timertriggers:
+    - action: stop
+      fieldname: timetoremediate
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 4390
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "61"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      attachIDs:
+        complex:
+          accessor: EntryID
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: File.Name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: detection
+          root: File
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      bcc:
+        complex:
+          accessor: XSOAR_DEVELOPER
+          root: lists
+      body:
+        simple: ${EmailBody}
+      greeting:
+        simple: Dear Eskom,
+      importance:
+        simple: Normal
+      preheader:
+        simple: IP Block Report
+      signature:
+        simple: Regards,<br>Dbot
+      subject:
+        simple: SINC${incident.id} | Eskom | ${incident.type} Block Report
+      template:
+        simple: EMAIL_TEMPLATE_DEFAULT
+      to:
+        complex:
+          root: inputs.BlockReportEmailRecipients
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Send templated emails
+      id: a8056a1e-57c4-4fa0-84b9-28073a460480
+      iscommand: false
+      name: Communication - Email v2
+      playbookId: 70bdd136-546b-49a4-8089-2ef586b1a070
+      type: playbook
+      version: -1
+    taskid: a8056a1e-57c4-4fa0-84b9-28073a460480
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 4885
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f082bac3-8e5b-403d-8ff4-c7b305fb06fe
+      iscommand: false
+      name: ASN Check
+      type: title
+      version: -1
+    taskid: f082bac3-8e5b-403d-8ff4-c7b305fb06fe
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 5555
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "30"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: ${incident.sourceip} blocked on Cloudflare after xSOAR investigation
+          ${incident.id}
+      disposition:
+        simple: True Positive - Suspicious Activity
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 52091956-d021-49fb-8eb8-c66fc1cbc3db
+      iscommand: false
+      name: Eskom - Splunk - Incident Closure
+      playbookId: 5ddcd905-69b3-478b-8334-08990289aa15
+      type: playbook
+      version: -1
+    taskid: 52091956-d021-49fb-8eb8-c66fc1cbc3db
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 5700
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0787b2eb-c2a2-484d-88ed-5a9c31029904
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 0787b2eb-c2a2-484d-88ed-5a9c31029904
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 5875
+        }
+      }
+  "31":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.BlockReportEmailRecipients
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "61"
+      "yes":
+      - "58"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 027c71ad-de56-412c-8838-02d542492d1b
+      iscommand: false
+      name: Recipient is defined?
+      type: condition
+      version: -1
+    taskid: 027c71ad-de56-412c-8838-02d542492d1b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 4535
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AllUsers:
+        complex:
+          accessor: user
+          root: Splunk.Result
+          transformers:
+          - operator: uniq
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      AttachIDs:
+        complex:
+          accessor: EntryID
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: File.Name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: detection
+          root: File
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      EmailCC:
+        simple: kgampem@eskom.co.za,douglagm@eskom.co.za
+      EmailTo:
+        complex:
+          root: inputs.EscalationEmailRecipients
+      Observations:
+        complex:
+          root: Reason
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: '||'
+            operator: join
+      UsersFound:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: UsernamesFound
+              operator: isExists
+          root: UsernamesFound
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      UsersNotFound:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: UsernamesNotFound
+              operator: isExists
+          root: UsernamesNotFound
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      VendorsDetection:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Match
+              operator: isExists
+          root: Match
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Escalation of excessive failed login incidents
+      id: 22191204-03f6-4b8d-879e-3d01555eadbf
+      iscommand: false
+      name: Eskom - Excessive Failed Login Escalation
+      playbookId: 824b5018-73f5-4080-8bf6-94daee23a80c
+      type: playbook
+      version: -1
+    taskid: 22191204-03f6-4b8d-879e-3d01555eadbf
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 3545
+        }
+      }
+  "33":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: "0"
+                root: Remediation Plan Client Response.Answers
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: block the ip address
+      label: Block IP address
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      Block IP address:
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 18cb8841-c9e7-4719-8c66-e16ef2f400c7
+      iscommand: false
+      name: Action to take?
+      type: condition
+      version: -1
+    taskid: 18cb8841-c9e7-4719-8c66-e16ef2f400c7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 3720
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 31f05421-3cf7-42b4-88dc-4dfdeeae70f9
+      iscommand: false
+      name: Closure - No action
+      type: title
+      version: -1
+    taskid: 31f05421-3cf7-42b4-88dc-4dfdeeae70f9
+    timertriggers:
+    - action: stop
+      fieldname: timetoremediate
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 4390
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: ${Remediation Plan Client Response.Answers.2}
+      disposition:
+        complex:
+          accessor: "1"
+          root: Remediation Plan Client Response.Answers
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Splunk incident closure workflow
+      id: c5387815-d047-4615-8c13-3c8cce7ac56e
+      iscommand: false
+      name: Eskom - Splunk - Incident Closure
+      playbookId: 5ddcd905-69b3-478b-8334-08990289aa15
+      type: playbook
+      version: -1
+    taskid: c5387815-d047-4615-8c13-3c8cce7ac56e
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 4535
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 72093d9b-8d13-4db0-8b88-9630c2095825
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 72093d9b-8d13-4db0-8b88-9630c2095825
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 4725
+        }
+      }
+  "41":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: IPAddedToList
+                transformers:
+                - operator: toUpperCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "Y"
+      label: "yes"
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      "yes":
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 748b9718-2403-44ad-8857-1029e90904a3
+      iscommand: false
+      name: Was the IP added to the list?
+      type: condition
+      version: -1
+    taskid: 748b9718-2403-44ad-8857-1029e90904a3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 4215
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "48"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      BaseQuery:
+        complex:
+          accessor: drilldown_search
+          root: incident.labels
+      CheckUserAgainstAD:
+        simple: "TRUE"
+      EarliestTime:
+        complex:
+          accessor: occurred
+          root: incident
+          transformers:
+          - operator: toUnix
+          - operator: TimeStampToDate
+          - args:
+              variation:
+                value:
+                  simple: 62 minutes ago
+            operator: ModifyDateTime
+      LatestTime:
+        complex:
+          accessor: occurred
+          root: incident
+          transformers:
+          - operator: toUnix
+          - operator: TimeStampToDate
+          - args:
+              variation:
+                value:
+                  simple: in 15 minutes
+            operator: ModifyDateTime
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 35f7bf2c-726d-417a-8e7e-f91a28b44c25
+      iscommand: false
+      name: Eskom - Splunk - Search Users
+      playbookId: da6dbe17-d295-49c9-81dc-7332cfc62c2a
+      type: playbook
+      version: -1
+    taskid: 35f7bf2c-726d-417a-8e7e-f91a28b44c25
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 705,
+          "y": 690
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      usernames:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Splunk.Result.user
+              operator: isExists
+          root: Splunk.Result.user
+          transformers:
+          - operator: uniq
+      users:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Splunk.Result.user
+              operator: isExists
+          root: Splunk.Result.user
+          transformers:
+          - operator: uniq
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 0f6238fe-c761-41d3-8896-eb5035548220
+      iscommand: true
+      name: Update incident fields with user information
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 0f6238fe-c761-41d3-8896-eb5035548220
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 705,
+          "y": 865
+        }
+      }
+  "49":
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      username:
+        simple: admin
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Assign analyst to incident.
+        By default,  the analyst is picked randomly from the available users, according to the provided roles (if no roles provided, will fetch all users).
+        Otherwise, the analyst will be picked according to the 'assignBy' arguments.
+        machine-learning: DBot will calculated and decide who is the best analyst for the job.
+        top-user: The user that is most commonly owns this type of incident
+        less-busy-user: The less busy analyst will be picked to be the incident owner.
+        online: The analyst is picked randomly from all online analysts, according to the provided roles (if no roles provided, will fetch all users).
+        current: The user that executed the command.
+      id: 926e78b5-9943-44a7-8e6f-bc8feaa9b7f4
+      iscommand: false
+      name: Assign incident to admin
+      script: AssignAnalystToIncident
+      type: regular
+      version: -1
+    taskid: 926e78b5-9943-44a7-8e6f-bc8feaa9b7f4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": 3370
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "55"
+    note: false
+    quietmode: 0
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Validation to run to decide whether the incident should be escalated
+        for manual review by Eskom's analysts.
+      id: a338d92e-6df1-491d-8ce6-44f137f782f5
+      iscommand: false
+      name: Eskom - Splunk - VPN Excessive Failed Login Escalation Validation
+      playbookId: 6feaa77e-00a9-415b-8a98-4cb37deb719c
+      type: playbook
+      version: -1
+    taskid: a338d92e-6df1-491d-8ce6-44f137f782f5
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 2875
+        }
+      }
+  "52":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: users
+                root: incident
+          operator: match
+          right:
+            value:
+              simple: \b(?:gmail\.com|outlook\.com|csonline\.eskom\.co\.za|secapps\.eskom\.co\.za|sspr\.eskom\.co\.za)\b
+      label: "yes"
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "53"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 778aa444-4d2a-4ee5-8a8a-74dc7526f5fb
+      iscommand: false
+      name: Blacklisted domain detected?
+      type: condition
+      version: -1
+    taskid: 778aa444-4d2a-4ee5-8a8a-74dc7526f5fb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 705,
+          "y": 1040
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "54"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: One or more of the usernames used in the authentication attempts <strong>contains
+          a blacklisted domain</strong>.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: e30ec3af-4d50-4ee0-848a-bbcd283f05b5
+      iscommand: false
+      name: Set reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: e30ec3af-4d50-4ee0-848a-bbcd283f05b5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1350,
+          "y": 3545
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 63b332e9-b1d6-4526-85bb-643ca149d503
+      iscommand: false
+      name: Set action - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: 63b332e9-b1d6-4526-85bb-643ca149d503
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1350,
+          "y": 3720
+        }
+      }
+  "55":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Escalate
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "yes"
+      label: Escalate
+    continueonerrortype: ""
+    id: "55"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "57"
+      Escalate:
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dcdbfd1d-a258-43b9-896c-de204f6243fe
+      iscommand: false
+      name: Escalate?
+      type: condition
+      version: -1
+    taskid: dcdbfd1d-a258-43b9-896c-de204f6243fe
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 275,
+          "y": 3050
+        }
+      }
+  "56":
+    continueonerrortype: ""
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        complex:
+          root: Reason
+      disposition:
+        simple: Benign Positive - Suspicious But Expected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Splunk incident closure workflow
+      id: 82aacb85-5d57-4c98-8076-36a309393d49
+      iscommand: false
+      name: Eskom - Splunk - Incident Closure
+      playbookId: 5ddcd905-69b3-478b-8334-08990289aa15
+      type: playbook
+      version: -1
+    taskid: 82aacb85-5d57-4c98-8076-36a309393d49
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 4535
+        }
+      }
+  "57":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Block
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "yes"
+      label: Block
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      Block:
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 60fd4769-d1be-45a9-89c6-3a8724cd32bf
+      iscommand: false
+      name: Block
+      type: condition
+      version: -1
+    taskid: 60fd4769-d1be-45a9-89c6-3a8724cd32bf
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 3720
+        }
+      }
+  "58":
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AnalystFeedback:
+        complex:
+          accessor: "2"
+          root: Remediation Plan Client Response.Answers
+      Observations:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Reason
+              operator: isExists
+          root: Reason
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: '||'
+            operator: join
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Generate the email body for the report that is sent after an IP
+        address is blocked
+      id: a01a2a85-d93c-4de0-89aa-dbf7242436cc
+      iscommand: false
+      name: Eskom - Splunk - Excessive Failed Login Block Report
+      playbookId: b60646ac-54c6-4171-8ddd-9ecc5b929e1a
+      type: playbook
+      version: -1
+    taskid: a01a2a85-d93c-4de0-89aa-dbf7242436cc
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 4710
+        }
+      }
+  "59":
+    continueonerrortype: ""
+    id: "59"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "60"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The IP address was identified as <strong>malicious</strong>by 2 out
+          of the 3 threat intelligence vendors.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 4a613620-cf9b-4299-8251-ee70414dfb68
+      iscommand: false
+      name: Set reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 4a613620-cf9b-4299-8251-ee70414dfb68
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 3545
+        }
+      }
+  "60":
+    continueonerrortype: ""
+    id: "60"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 719a010b-5a2e-4b94-853e-653fbac033bf
+      iscommand: false
+      name: Set action - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: 719a010b-5a2e-4b94-853e-653fbac033bf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 3720
+        }
+      }
+  "61":
+    continueonerrortype: ""
+    id: "61"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "62"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 68272f25-0198-45ba-89c1-fd53725514f3
+      iscommand: false
+      name: ASN Check
+      type: title
+      version: -1
+    taskid: 68272f25-0198-45ba-89c1-fd53725514f3
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 5060
+        }
+      }
+  "62":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ExcessiveByASNNotification
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "62"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "28"
+      "yes":
+      - "63"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6e2b40b8-15a2-4516-8bc6-af3e3d91045f
+      iscommand: false
+      name: Notify customers of excessive login from a specific ASN?
+      type: condition
+      version: -1
+    taskid: 6e2b40b8-15a2-4516-8bc6-af3e3d91045f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1135,
+          "y": 5205
+        }
+      }
+  "63":
+    continueonerrortype: ""
+    id: "63"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IP:
+        simple: ${incident.sourceip}
+      Threshold:
+        simple: "20"
+      Variation:
+        simple: 3 months ago
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Create a ticket in Zendesk when thre threshold is breached for
+        excessive failed logins from the same ASN. This checks against blocked IPs.
+      id: 917e5190-2ba3-43ac-87e0-2425cd083925
+      iscommand: false
+      name: Eskom - Splunk - Excessive Logins by ASN Notification
+      playbookId: abcaf3bd-1ef5-4c9d-8ded-44eb540bfaeb
+      type: playbook
+      version: -1
+    taskid: 917e5190-2ba3-43ac-87e0-2425cd083925
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1022.5,
+          "y": 5380
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_11_#default#": 0.48,
+      "20_11_#default#": 0.52,
+      "57_23_Block": 0.19
+    },
+    "paper": {
+      "dimensions": {
+        "height": 5890,
+        "width": 1680,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

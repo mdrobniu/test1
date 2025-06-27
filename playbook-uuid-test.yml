@@ -1,0 +1,123 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: 6e16f59d-202a-450d-831e-7fc414a18217
+inputs: []
+name: uuid-test
+outputs: []
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 89b1659a-fc84-4979-8bb8-2224aeb27306
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 89b1659a-fc84-4979-8bb8-2224aeb27306
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      value:
+        simple: Hello Stella
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prints text to war room (Markdown supported)
+      id: c6fbc01a-7c81-484a-8a1a-eb6ebb101777
+      iscommand: false
+      name: say hello to stella
+      script: Print
+      type: regular
+      version: -1
+    taskid: c6fbc01a-7c81-484a-8a1a-eb6ebb101777
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 240
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6c92e551-6236-42e0-88f8-cf341327760c
+      iscommand: false
+      name: Access Investigation - Generic
+      playbookId: access_investigation_-_generic
+      type: playbook
+      version: -1
+    taskid: 6c92e551-6236-42e0-88f8-cf341327760c
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 500
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 545,
+        "width": 380,
+        "x": 450,
+        "y": 50
+      }
+    }
+  }

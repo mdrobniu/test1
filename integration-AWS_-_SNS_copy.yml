@@ -1,0 +1,757 @@
+category: Messaging
+commonfields:
+  id: AWS - SNS_copy
+  version: -1
+configuration:
+- display: AWS Default Region
+  name: defaultRegion
+  required: true
+  type: 0
+- additionalinfo: When using Access Key and Secret Key, there is no need to use Role
+    Arn
+  display: Role Arn
+  name: roleArn
+  required: false
+  type: 0
+- display: Role Session Name
+  name: roleSessionName
+  required: false
+  type: 0
+- display: Access Key
+  displaypassword: Secret Key
+  name: credentials
+  required: true
+  type: 9
+- display: Role Session Duration
+  name: sessionDuration
+  required: false
+  type: 0
+- additionalinfo: The time in seconds till a timeout exception is reached. You can
+    specify just the read timeout (for example 60) or also the connect timeout followed
+    after a comma (for example 60,10). If a connect timeout is not specified, a default
+    of 10 second will be used.
+  display: Timeout
+  name: timeout
+  required: false
+  type: 0
+- additionalinfo: 'The maximum number of retry attempts when connection or throttling
+    errors are encountered. Set to 0 to disable retries. The default value is 5 and
+    the limit is 10. Note: Increasing the number of retries will increase the execution
+    time.'
+  defaultvalue: "5"
+  display: Retries
+  name: retries
+  required: false
+  type: 0
+- additionalinfo: Sets the AWS_STS_REGIONAL_ENDPOINTS environment variable to specify
+    the AWS STS endpoint resolution logic. By default, this option is set to “legacy”
+    in AWS. Leave empty if the environment variable is already set using server configuration.
+  display: AWS STS Regional Endpoints
+  name: sts_regional_endpoint
+  options:
+  - legacy
+  - regional
+  required: false
+  section: Connect
+  type: 15
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  type: 8
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  type: 8
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Amazon Web Services Simple Notification Service (SNS).
+detaileddescription: '[View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/aws---sns)'
+display: AWS - SNS_copy
+image: data:image/png;base64,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
+name: AWS - SNS_copy
+script:
+  commands:
+  - arguments:
+    - description: The ARN of the topic you want to subscribe to.
+      name: topicArn
+      required: true
+    - auto: PREDEFINED
+      description: The protocol that you want to use.
+      name: protocol
+      predefined:
+      - http
+      - https
+      - email
+      - email-json
+      - sms
+      - sqs
+      - application
+      - lambda
+      - firehose
+      required: true
+    - description: The endpoint that you want to receive notifications.
+      name: endpoint
+    - auto: PREDEFINED
+      description: Sets whether the response from the Subscribe request includes the
+        subscription ARN, even if the subscription is not yet confirmed.
+      name: returnSubscriptionArn
+      predefined:
+      - "True"
+      - "False"
+    - description: The policy that defines how Amazon SNS retries failed deliveries
+        to HTTP/S endpoints.
+      name: deliveryPolicy
+    - description: The simple JSON object that lets your subscriber receive only a
+        subset of messages, rather than receiving every message published to the topic.
+      name: filterPolicy
+    - auto: PREDEFINED
+      description: When set to true , enables raw message delivery to Amazon SQS or
+        HTTP/S endpoints.
+      name: rawMessageDelivery
+      predefined:
+      - "True"
+      - "False"
+    - description: When specified, sends undeliverable messages to the specified Amazon
+        SQS dead-letter queue.
+      name: redrivePolicy
+    - description: 'The ARN of the IAM role that has the following: 1. Permission
+        to write to the Kinesis Data Firehose delivery stream 2. Amazon SNS listed
+        as a trusted entity.'
+      name: subscriptionRoleArn
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Subscribes an endpoint to an Amazon SNS topic. If the endpoint type
+      is HTTP/S or email, or if the endpoint and the topic are not in the same Amazon
+      Web Services account, the endpoint owner must run the ConfirmSubscription action
+      to confirm the subscription.
+    name: aws-sns-create-subscription
+    outputs:
+    - contextPath: AWS.SNS.Subscriptions.SubscriptionArn
+      description: The Subscription Arn.
+      type: string
+  - arguments:
+    - description: Token returned by the previous ListTopics request.
+      name: nextToken
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Returns a list of the requester's topics.
+    name: aws-sns-list-topics
+    outputs:
+    - contextPath: AWS.SNS.Topics.TopicArn
+      description: The Topic ARN.
+      type: string
+  - arguments:
+    - description: The topic you want to publish to. If you don't specify a value
+        for the TopicArn parameter, you must specify a value for the PhoneNumber or
+        TargetArn parameters.
+      name: topicArn
+    - description: If you don't specify a value for the TargetArn parameter, you must
+        specify a value for the PhoneNumber or TopicArn parameters.
+      name: targetArn
+    - description: The phone number to which you want to deliver an SMS message. Use
+        E.164 format.
+      name: phoneNumber
+    - description: The message you want to send.
+      name: message
+      required: true
+    - description: Optional parameter to be used as the "Subject" line when the message
+        is delivered to email endpoints.
+      name: subject
+    - description: Set MessageStructure to json if you want to send a different message
+        for each protocol.
+      name: messageStructure
+    - description: This parameter applies only to FIFO (first-in-first-out) topics.
+      name: messageDeduplicationId
+    - description: This parameter applies only to FIFO (first-in-first-out) topics.
+      name: messageGroupId
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Sends a message to an Amazon SNS topic, a text message (SMS message)
+      directly to a phone number, or a message to a mobile platform endpoint (when
+      you specify the TargetArn ).
+    name: aws-sns-send-message
+    outputs:
+    - contextPath: AWS.SNS.SentMessages
+      description: Unique identifier assigned to the published message.
+      type: string
+  - arguments:
+    - description: The name of the new topic.
+      name: topicName
+      required: true
+    - description: The policy that defines how Amazon SNS retries failed deliveries
+        to HTTP/S endpoints.
+      name: deliveryPolicy
+    - description: The display name to use for a topic with SMS subscriptions.
+      name: displayName
+    - auto: PREDEFINED
+      description: Set to true to create a FIFO topic.
+      name: fifoTopic
+      predefined:
+      - "true"
+      - "false"
+    - description: The policy that defines who can access your topic. By default,
+        only the topic owner can publish or subscribe to the topic.
+      name: policy
+    - description: The ID of an Amazon Web Services managed customer master key (CMK)
+        for Amazon SNS or a custom CMK.
+      name: kmsMasterKeyId
+    - auto: PREDEFINED
+      description: Enables content-based deduplication.
+      name: contentBasedDeduplication
+      predefined:
+      - "True"
+      - "False"
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Creates a new a topic to which notifications can be published. You
+      can specify the attribute to create FIFO topic.
+    name: aws-sns-create-topic
+    outputs:
+    - contextPath: AWS.SNS.Topic.TopicArn
+      description: The ARN of the created Amazon SNS topic.
+  - arguments:
+    - description: The ARN of the topic you want to delete.
+      name: topicArn
+      required: true
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Deletes a topic and all its subscriptions.
+    name: aws-sns-delete-topic
+  - arguments:
+    - description: The ARN of the topic for which you wish to find subscriptions.
+      name: topicArn
+      required: true
+    - description: Token returned by the previous ListTopics request.
+      name: nextToken
+    - description: The AWS Region, if not specified the default region will be used.
+      name: region
+    - description: The Amazon Resource Name (ARN) of the role to assume.
+      name: roleArn
+    - description: An identifier for the assumed role session.
+      name: roleSessionName
+    - description: The duration, in seconds, of the role session. The value can range
+        from 900 seconds (15 minutes) up to the maximum session duration setting for
+        the role.
+      name: roleSessionDuration
+    description: Returns a list of the subscriptions to a specific topic. Each call
+      returns a limited list of subscriptions, up to 100.
+    name: aws-sns-list-subscriptions-by-topic
+    outputs:
+    - contextPath: AWS.SNS.Subscriptions.SubscriptionArn
+      description: The Subscription Arn.
+  - arguments: []
+    name: send-notification
+  dockerimage: demisto/boto3py3:1.0.0.3575453
+  runonce: false
+  script: |
+    register_module_line('AWS - SNS', 'start', __line__())
+    CONSTANT_PACK_VERSION = '1.0.22'
+    demisto.debug('pack id = AWS-SNS, pack version = 1.0.22')
+
+
+    ### GENERATED CODE ###: from AWSApiModule import *  # noqa: E402
+    # This code was inserted in place of an API module.
+    register_module_line('AWSApiModule', 'start', __line__(), wrapper=-3)
+    import boto3
+    from botocore.config import Config
+
+
+
+
+    STS_ENDPOINTS = {
+        "us-gov-west-1": "https://sts.us-gov-west-1.amazonaws.com",
+        "us-gov-east-1": "https://sts.us-gov-east-1.amazonaws.com",
+    }  # See: https://docs.aws.amazon.com/general/latest/gr/sts.html
+
+
+    def validate_params(aws_default_region, aws_role_arn, aws_role_session_name, aws_access_key_id, aws_secret_access_key):
+        """
+        Validates that the provided parameters are compatible with the appropriate authentication method.
+        """
+        if not aws_default_region:
+            raise DemistoException("You must specify AWS default region.")
+
+        if bool(aws_access_key_id) != bool(aws_secret_access_key):
+            raise DemistoException("You must provide Access Key id and Secret key id to configure the instance with credentials.")
+        if bool(aws_role_arn) != bool(aws_role_session_name):
+            raise DemistoException("Role session name is required when using role ARN.")
+
+
+    def extract_session_from_secret(secret_key, session_token):
+        """
+        Extract the session token from the secret_key field.
+        """
+        if secret_key and "@@@" in secret_key and not session_token:
+            return secret_key.split("@@@")[0], secret_key.split("@@@")[1]
+        else:
+            return secret_key, session_token
+
+
+    class AWSClient:
+        def __init__(
+            self,
+            aws_default_region,
+            aws_role_arn,
+            aws_role_session_name,
+            aws_role_session_duration,
+            aws_role_policy,
+            aws_access_key_id,
+            aws_secret_access_key,
+            verify_certificate,
+            timeout,
+            retries,
+            aws_session_token=None,
+            sts_endpoint_url=None,
+            endpoint_url=None,
+        ):
+            self.sts_endpoint_url = sts_endpoint_url
+            self.endpoint_url = endpoint_url
+            self.aws_default_region = aws_default_region
+            self.aws_role_arn = aws_role_arn
+            self.aws_role_session_name = aws_role_session_name
+            # handle cases where aws_role_session_duration can be also empty string
+            self.aws_role_session_duration = aws_role_session_duration if aws_role_session_duration else None
+            self.aws_role_policy = aws_role_policy
+            self.aws_access_key_id = aws_access_key_id
+            self.aws_secret_access_key, self.aws_session_token = extract_session_from_secret(aws_secret_access_key, aws_session_token)
+            self.verify_certificate = verify_certificate
+
+            sts_regional_endpoint = demisto.params().get("sts_regional_endpoint") or None
+            if sts_regional_endpoint:
+                demisto.debug(f"Sets the environment variable AWS_STS_REGIONAL_ENDPOINTS={sts_regional_endpoint}")
+                os.environ["AWS_STS_REGIONAL_ENDPOINTS"] = sts_regional_endpoint.lower()
+
+            proxies = handle_proxy(proxy_param_name="proxy", checkbox_default_value=False)
+            (read_timeout, connect_timeout) = AWSClient.get_timeout(timeout)
+            if int(retries) > 10:
+                retries = 10
+            self.config = Config(
+                connect_timeout=connect_timeout, read_timeout=read_timeout, retries={"max_attempts": int(retries)}, proxies=proxies
+            )
+
+        def update_config(self):
+            command_config = {}
+            retries = demisto.getArg("retries")  # Supports retries and timeout parameters on the command execution level
+            if retries is not None:
+                command_config["retries"] = {"max_attempts": int(retries)}
+            timeout = demisto.getArg("timeout")
+            if timeout is not None:
+                (read_timeout, connect_timeout) = AWSClient.get_timeout(timeout)
+                command_config["read_timeout"] = read_timeout
+                command_config["connect_timeout"] = connect_timeout
+            if retries or timeout:
+                demisto.debug(f"Merging client config settings: {command_config}")
+                self.config = self.config.merge(Config(**command_config))  # type: ignore[arg-type]
+
+        def aws_session(
+            self, service, region=None, role_arn=None, role_session_name=None, role_session_duration=None, role_policy=None
+        ):
+            kwargs = {}
+            client = None
+
+            self.update_config()
+
+            if role_arn and role_session_name is not None:
+                kwargs.update(
+                    {
+                        "RoleArn": role_arn,
+                        "RoleSessionName": role_session_name,
+                    }
+                )
+            elif self.aws_role_arn and self.aws_role_session_name is not None:
+                kwargs.update(
+                    {
+                        "RoleArn": self.aws_role_arn,
+                        "RoleSessionName": self.aws_role_session_name,
+                    }
+                )
+
+            if role_session_duration is not None:
+                kwargs.update({"DurationSeconds": int(role_session_duration)})
+            elif self.aws_role_session_duration is not None:
+                kwargs.update({"DurationSeconds": int(self.aws_role_session_duration)})
+
+            if role_policy is not None:
+                kwargs.update({"Policy": role_policy})
+            elif self.aws_role_policy is not None:
+                kwargs.update({"Policy": self.aws_role_policy})
+
+            demisto.debug(f"{kwargs=}")
+            self.sts_endpoint_url = self.sts_endpoint_url or STS_ENDPOINTS.get(region) or STS_ENDPOINTS.get(self.aws_default_region)
+
+            if kwargs and not self.aws_access_key_id:  # login with Role ARN
+                if not self.aws_access_key_id:
+                    sts_client = boto3.client(
+                        "sts",
+                        config=self.config,
+                        verify=self.verify_certificate,
+                        region_name=region if region else self.aws_default_region,
+                        endpoint_url=self.sts_endpoint_url,
+                    )
+                    sts_response = sts_client.assume_role(**kwargs)
+                    client = boto3.client(
+                        service_name=service,
+                        region_name=region if region else self.aws_default_region,
+                        aws_access_key_id=sts_response["Credentials"]["AccessKeyId"],
+                        aws_secret_access_key=sts_response["Credentials"]["SecretAccessKey"],
+                        aws_session_token=sts_response["Credentials"]["SessionToken"],
+                        verify=self.verify_certificate,
+                        config=self.config,
+                        endpoint_url=self.endpoint_url,
+                    )
+            elif self.aws_access_key_id and (role_arn or self.aws_role_arn):  # login with Access Key ID and Role ARN
+                sts_client = boto3.client(
+                    service_name="sts",
+                    region_name=region if region else self.aws_default_region,
+                    aws_access_key_id=self.aws_access_key_id,
+                    aws_secret_access_key=self.aws_secret_access_key,
+                    verify=self.verify_certificate,
+                    config=self.config,
+                    endpoint_url=self.sts_endpoint_url,
+                )
+                kwargs.update(
+                    {
+                        "RoleArn": role_arn or self.aws_role_arn,
+                        "RoleSessionName": role_session_name or self.aws_role_session_name,
+                    }
+                )
+                sts_response = sts_client.assume_role(**kwargs)
+                client = boto3.client(
+                    service_name=service,
+                    region_name=region if region else self.aws_default_region,
+                    aws_access_key_id=sts_response["Credentials"]["AccessKeyId"],
+                    aws_secret_access_key=sts_response["Credentials"]["SecretAccessKey"],
+                    aws_session_token=sts_response["Credentials"]["SessionToken"],
+                    verify=self.verify_certificate,
+                    config=self.config,
+                    endpoint_url=self.endpoint_url,
+                )
+            elif self.aws_session_token and not self.aws_role_arn:  # login with session token
+                client = boto3.client(
+                    service_name=service,
+                    region_name=region if region else self.aws_default_region,
+                    aws_access_key_id=self.aws_access_key_id,
+                    aws_secret_access_key=self.aws_secret_access_key,
+                    aws_session_token=self.aws_session_token,
+                    verify=self.verify_certificate,
+                    config=self.config,
+                    endpoint_url=self.endpoint_url,
+                )
+            elif self.aws_access_key_id and not self.aws_role_arn:  # login with access key id
+                client = boto3.client(
+                    service_name=service,
+                    region_name=region if region else self.aws_default_region,
+                    aws_access_key_id=self.aws_access_key_id,
+                    aws_secret_access_key=self.aws_secret_access_key,
+                    verify=self.verify_certificate,
+                    config=self.config,
+                    endpoint_url=self.endpoint_url,
+                )
+            else:  # login with default permissions, permissions pulled from the ec2 metadata
+                client = boto3.client(
+                    service_name=service, region_name=region if region else self.aws_default_region, endpoint_url=self.endpoint_url
+                )
+
+            return client
+
+        @staticmethod
+        def get_timeout(timeout):
+            if not timeout:
+                timeout = "60,10"  # default values
+            try:
+                if isinstance(timeout, int):
+                    read_timeout = timeout
+                    connect_timeout = 10
+
+                else:
+                    timeout_vals = timeout.split(",")
+                    read_timeout = int(timeout_vals[0])
+                    # the default connect timeout is 10
+                    connect_timeout = 10 if len(timeout_vals) == 1 else int(timeout_vals[1])
+
+            except ValueError:
+                raise DemistoException(
+                    "You can specify just the read timeout (for example 60) or also the connect "
+                    "timeout followed after a comma (for example 60,10). If a connect timeout is not "
+                    "specified, a default of 10 second will be used."
+                )
+            return read_timeout, connect_timeout
+
+    register_module_line('AWSApiModule', 'end', __line__(), wrapper=1)
+    ### END GENERATED CODE ###
+
+
+
+    def create_entry(title, data, ec):  # pragme no cover
+        return {
+            "ContentsFormat": formats["json"],
+            "Type": entryTypes["note"],
+            "Contents": data,
+            "ReadableContentsFormat": formats["markdown"],
+            "HumanReadable": tableToMarkdown(title, data) if data else "No result were found",
+            "EntryContext": ec,
+        }
+
+
+    def raise_error(error):  # pragma no cover
+        return {"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": str(error)}
+
+
+    def create_subscription(args, client):
+        try:
+            attributes = {}
+            kwargs = {"TopicArn": args.get("topicArn"), "Protocol": args.get("protocol")}
+            if args.get("endpoint") is not None:
+                kwargs.update({"Endpoint": args.get("endpoint")})
+            if args.get("returnSubscriptionArn") is not None:
+                kwargs.update({"ReturnSubscriptionArn": bool(args.get("returnSubscriptionArn"))})
+
+            if args.get("deliveryPolicy") is not None:
+                attributes.update({"DeliveryPolicy": args.get("deliveryPolicy")})
+            if args.get("filterPolicy") is not None:
+                attributes.update({"FilterPolicy": args.get("filterPolicy")})
+            if args.get("rawMessageDelivery") is not None:
+                attributes.update({"RawMessageDelivery": args.get("rawMessageDelivery")})
+            if args.get("redrivePolicy") is not None:
+                attributes.update({"RedrivePolicy": args.get("RedrivePolicy")})
+            if args.get("subscriptionRoleArn") is not None:
+                attributes.update({"SubscriptionRoleArn": args.get("subscriptionRoleArn")})
+            if attributes:
+                kwargs.update({"Attributes": attributes})
+
+            response = client.subscribe(**kwargs)
+            data = {"SubscriptionArn": response["SubscriptionArn"]}
+
+            ec = {"AWS.SNS.Subscriptions": data}
+            return create_entry("AWS SNS Subscriptions", data, ec)
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def list_topics(args, client):
+        try:
+            data = []
+            kwargs = {}
+            if args.get("nextToken") is not None:
+                kwargs.update({"NextToken": args.get("nextToken")})
+            response = client.list_topics(**kwargs)
+            for topic in response["Topics"]:
+                data.append({"TopicArn": topic})
+
+            ec = {"AWS.SNS.Topics": data}
+            return create_entry("AWS SNS Topics", data, ec)
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def list_subscriptions_by_topic(args, client):
+        try:
+            data = []
+            kwargs = {}
+            if args.get("topicArn") is not None:
+                kwargs.update({"TopicArn": args.get("topicArn")})
+            if args.get("nextToken") is not None:
+                kwargs.update({"NextToken": args.get("nextToken")})
+            response = client.list_subscriptions_by_topic(**kwargs)
+            for subscription in response["Subscriptions"]:
+                data.append({"SubscriptionArn": subscription["SubscriptionArn"]})
+
+            ec = {"AWS.SNS.Subscriptions": data}
+            return create_entry("AWS SNS Subscriptions", data, ec)
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def send_message(args, client):
+        try:
+            data = []
+            kwargs = {"Message": args.get("message")}
+
+            if args.get("topicArn") is not None:
+                kwargs.update({"TopicArn": args.get("topicArn")})
+            if args.get("targetArn") is not None:
+                kwargs.update({"TargetArn": args.get("targetArn")})
+            if args.get("phoneNumber") is not None:
+                kwargs.update({"PhoneNumber": args.get("phoneNumber")})
+            if args.get("subject") is not None:
+                kwargs.update({"Subject": args.get("subject")})
+            if args.get("messageStructure") is not None:
+                kwargs.update({"MessageStructure": args.get("messageStructure")})
+            if args.get("messageDeduplicationId") is not None:
+                kwargs.update({"MessageDeduplicationId": args.get("messageDeduplicationId")})
+            if args.get("messageGroupId") is not None:
+                kwargs.update({"MessageGroupId": args.get("messageGroupId")})
+
+            response = client.publish(**kwargs)
+            data.append({"MessageId": response["MessageId"]})
+            ec = {"AWS.SNS.SentMessages": data}
+            return create_entry("AWS SNS sent messages", data, ec)
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def create_topic(args, client):
+        try:
+            attributes = {}
+            kwargs = {"Name": args.get("topicName")}
+            if args.get("deliveryPolicy") is not None:
+                attributes.update({"DeliveryPolicy": args.get("deliveryPolicy")})
+            if args.get("displayName") is not None:
+                attributes.update({"DisplayName": args.get("displayName")})
+            if args.get("fifoTopic") is not None:
+                attributes.update({"FifoTopic": bool(args.get("fifoTopic"))})
+            if args.get("policy") is not None:
+                attributes.update({"policy": args.get("Policy")})
+            if args.get("kmsMasterKeyId") is not None:
+                attributes.update({"KmsMasterKeyId": args.get("kmsMasterKeyId")})
+            if args.get("contentBasedDeduplication") is not None:
+                attributes.update({"ContentBasedDeduplication": args.get("contentBasedDeduplication")})
+            if attributes:
+                kwargs.update({"Attributes": attributes})
+
+            response = client.create_topic(**kwargs)
+            data = {"ARN": response["TopicArn"]}
+            ec = {"AWS.SNS.Topic": data}
+            return create_entry("AWS SNS Topic", data, ec)
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def delete_topic(args, client):
+        try:
+            response = client.delete_topic(TopicArn=args.get("topicArn"))
+            if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
+                return "The Topic has been deleted"
+
+        except Exception as e:
+            return raise_error(e)
+
+
+    def test_function(aws_client):  # pragma no cover
+        try:
+            client = aws_client.aws_session(service="sns")
+            response = client.list_topics()
+            if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
+                return "ok"
+        except Exception as e:
+            return raise_error(e)
+
+
+    def main():  # pragma no cover
+        params = demisto.params()
+        aws_default_region = params.get("defaultRegion")
+        aws_role_arn = params.get("roleArn")
+        aws_role_session_name = params.get("roleSessionName")
+        aws_role_session_duration = params.get("sessionDuration")
+        aws_role_policy = None
+        aws_access_key_id = params.get("credentials", {}).get("identifier", "")
+        aws_secret_access_key = params.get("credentials", {}).get("password", "")
+        verify_certificate = not params.get("insecure", False)
+        timeout = params.get("timeout")
+        retries = params.get("retries") or 5
+
+        commands = {
+            "aws-sns-create-subscription": create_subscription,
+            "aws-sns-list-topics": list_topics,
+            "aws-sns-list-subscriptions-by-topic": list_subscriptions_by_topic,
+            "aws-sns-send-message": send_message,
+            "aws-sns-create-topic": create_topic,
+            "aws-sns-delete-topic": delete_topic,
+        }
+
+        try:
+            validate_params(aws_default_region, aws_role_arn, aws_role_session_name, aws_access_key_id, aws_secret_access_key)
+            aws_client = AWSClient(
+                aws_default_region,
+                aws_role_arn,
+                aws_role_session_name,
+                aws_role_session_duration,
+                aws_role_policy,
+                aws_access_key_id,
+                aws_secret_access_key,
+                verify_certificate,
+                timeout,
+                retries,
+            )
+            command = demisto.command()
+            args = demisto.args()
+            demisto.debug(f"Command being called is {command}")
+            if command == "test-module":
+                return_results(test_function(aws_client))
+            elif command in commands:
+                client = aws_client.aws_session(
+                    service="sns",
+                    region=args.get("region"),
+                    role_arn=args.get("roleArn"),
+                    role_session_name=args.get("roleSessionName"),
+                    role_session_duration=args.get("roleSessionDuration"),
+                )
+                return_results(commands[command](args, client))
+            else:
+                raise NotImplementedError(f"{command} is not an existing AWS-SNS command")
+
+        except Exception as e:
+            return_error(f"Failed to execute {demisto.command()} command.\nError:\n{e!s}")
+
+
+    if __name__ in ("__main__", "__builtin__", "builtins"):
+        main()
+
+    register_module_line('AWS - SNS', 'end', __line__())
+  subtype: python3
+  type: python
+sourcemoduleid: AWS - SNS

@@ -1,0 +1,418 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Generate the email body for the report that is sent after an IP address
+  is blocked
+id: b60646ac-54c6-4171-8ddd-9ecc5b929e1a
+inputs:
+- description: ""
+  key: Observations
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ""
+  key: AnalystFeedback
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Eskom - Splunk - Excessive Failed Login Block Report
+outputs:
+- contextPath: EmailBody
+  type: string
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c756eb27-12db-46de-8afc-acf1fd65a688
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: c756eb27-12db-46de-8afc-acf1fd65a688
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IP:
+        simple: ${incident.sourceip}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cc466c60-01e9-4708-80f2-474f9a34add5
+      iscommand: false
+      name: IP to Summary
+      playbookId: 834d17e4-dc36-4f6a-825c-afcab2990307
+      type: playbook
+      version: -1
+    taskid: cc466c60-01e9-4708-80f2-474f9a34add5
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 195
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: incident.escalation
+                    operator: isExists
+                root: incident.escalation
+          operator: isEqualString
+          right:
+            value:
+              simple: T
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ecfd9998-a710-456f-821e-82a9cfcb3b2f
+      iscommand: false
+      name: Was the incident escalated?
+      type: condition
+      version: -1
+    taskid: ecfd9998-a710-456f-821e-82a9cfcb3b2f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 895
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: EmailBody
+      stringify:
+        simple: "false"
+      value:
+        simple: |-
+          <p>On <strong>${incident.occurred}</strong> a security incident, <strong>${incident.name}</strong>, was detected and investigated by the xSOAR. After an <strong>automated</strong> review, the xSOAR blocked the IP address on <strong>Cloudflare</strong>.&nbsp;<br /><br /><strong>Please see the details below:</strong></p>
+          <p><strong> IP Address:</strong><br />${IPToHTML}</p>
+          <p><strong>Description:</strong><br />
+              The source IP <strong>${incident.sourceip}</strong> failed authentication <strong>${incident.count}</strong> times using
+              <strong>${incident.usercount}</strong> username(s).
+          </p>
+          <p><strong>Observations:</strong><br/>
+          ${observations}
+          </p>
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 6a2b24dc-f675-4601-892e-5c7f448fe295
+      iscommand: false
+      name: Set email body
+      script: Set
+      type: regular
+      version: -1
+    taskid: 6a2b24dc-f675-4601-892e-5c7f448fe295
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1070
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: EmailBody
+      stringify:
+        simple: "false"
+      value:
+        simple: |-
+          <p>On <strong>${incident.occurred}</strong> a security incident, <strong>${incident.name}</strong>, was detected and
+              investigated by the xSOAR. After an escalation and <strong>manual</strong> review, the decision was
+              taken to block the IP address on <strong>Cloudflare.</strong><br /><br /><strong>Please see the details below:</strong></p>
+          <p><strong> IP Address:</strong><br />${IPToHTML}</p>
+          <p><strong>Description:</strong><br />
+              The source IP <strong>${incident.sourceip}</strong> failed authentication <strong>${incident.count}</strong> times using
+              <strong>${incident.usercount}</strong> username(s).
+          </p>
+          <p><strong>Observations:</strong><br/>
+          ${observations}
+          </p>
+          <p><strong>Analyst feedback:</strong><br/>
+          ${inputs.AnalystFeedback}
+          </p>
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: ca6848e5-a661-4138-8dba-9bb3ce41b452
+      iscommand: false
+      name: Set email body
+      script: Set
+      type: regular
+      version: -1
+    taskid: ca6848e5-a661-4138-8dba-9bb3ce41b452
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1070
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      arrayData:
+        complex:
+          root: inputs.Observations
+      contextKey:
+        simple: ObservationsArray
+      separator:
+        simple: '||'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'Will create an array object in context from given string input '
+      id: cf739d9e-a76a-4fe9-8151-749f5ec87c36
+      iscommand: false
+      name: Observations to array
+      script: CreateArray
+      type: regular
+      version: -1
+    taskid: cf739d9e-a76a-4fe9-8151-749f5ec87c36
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 545
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: observations
+      value:
+        complex:
+          root: ObservationsArray
+          transformers:
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6a786c31-f53e-48e9-8fa0-78393294d12e
+      iscommand: false
+      name: Add HTML UL elements to remediation list
+      script: ArrayToHTMLList
+      type: regular
+      version: -1
+    taskid: 6a786c31-f53e-48e9-8fa0-78393294d12e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 377.5,
+          "y": 720
+        }
+      }
+  "7":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Observations
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9d7a2433-b3b3-45b3-8875-b7a3ead4bf93
+      iscommand: false
+      name: Observations defined?
+      type: condition
+      version: -1
+    taskid: 9d7a2433-b3b3-45b3-8875-b7a3ead4bf93
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 370
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b4a8ad16-d4a2-4b72-849c-e00ac609af4d
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: b4a8ad16-d4a2-4b72-849c-e00ac609af4d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1245
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1260,
+        "width": 810,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

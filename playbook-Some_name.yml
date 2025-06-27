@@ -1,0 +1,428 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: ea7540cf-5ce3-4984-82b5-6a03e08f6400
+inputs:
+- description: ""
+  key: ipToEnrich
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: 2.2.2.4
+- description: ""
+  key: anything
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Some name
+outputs: []
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+      - "2"
+      - "3"
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1d90ed59-bb34-4de3-8790-8579989afa4d
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 1d90ed59-bb34-4de3-8790-8579989afa4d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        simple: 1.2.3.4
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: VirusTotal (API v3)
+      description: Checks the reputation of an IP address.
+      id: 31626769-664a-4fd4-8094-809e07862505
+      iscommand: true
+      name: ip
+      script: VirusTotal (API v3)|||ip
+      type: regular
+      version: -1
+    taskid: 31626769-664a-4fd4-8094-809e07862505
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 195
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        simple: 1.2.3.4
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: VirusTotal (API v3)
+      description: Checks the reputation of an IP address.
+      id: 2f22a3b5-c826-49c0-88ed-38fdb02cafd7
+      iscommand: true
+      name: enrichment ip
+      script: VirusTotal (API v3)|||ip
+      type: regular
+      version: -1
+    taskid: 2f22a3b5-c826-49c0-88ed-38fdb02cafd7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 195
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c06797b3-57e8-4ff6-8f41-b0e3a4fba65c
+      iscommand: false
+      name: manual
+      type: regular
+      version: -1
+    taskid: c06797b3-57e8-4ff6-8f41-b0e3a4fba65c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 195
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: inputs.ipToEnrich
+          operator: isEqualString
+          right:
+            value:
+              simple: 2.2.2.2
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1169a87c-d9a1-4673-8acc-5363e4e0c76d
+      iscommand: false
+      name: if ip is 2.2.2.2
+      type: condition
+      version: -1
+    taskid: 1169a87c-d9a1-4673-8acc-5363e4e0c76d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        simple: ${inputs.ipToEnrich}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: VirusTotal (API v3)
+      description: Checks the reputation of an IP address.
+      id: 14700daf-aade-4726-89f2-ee142d951c33
+      iscommand: true
+      name: Enrich IP
+      script: VirusTotal (API v3)|||ip
+      type: regular
+      version: -1
+    taskid: 14700daf-aade-4726-89f2-ee142d951c33
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 545
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 08ab5031-fe21-43c4-80ae-3dc8d39282a8
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 08ab5031-fe21-43c4-80ae-3dc8d39282a8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 720
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      I LIKE APPLES:
+      - "9"
+      I like pancakes:
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 472d5013-4af2-4d34-85c8-0ec12317ecf8
+      iscommand: false
+      name: Decide
+      type: condition
+      version: -1
+    taskid: 472d5013-4af2-4d34-85c8-0ec12317ecf8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 370
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 89ec4af5-305d-4f4c-857f-fbe886a8a990
+      iscommand: false
+      name: PANCAKES
+      type: regular
+      version: -1
+    taskid: 89ec4af5-305d-4f4c-857f-fbe886a8a990
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 545
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5b9450f7-b370-40bf-8315-afde963a689f
+      iscommand: false
+      name: I like apples
+      type: regular
+      version: -1
+    taskid: 5b9450f7-b370-40bf-8315-afde963a689f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1125,
+          "y": 545
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: do you like panckes
+        options: []
+        optionsarg:
+        - simple: "Yes"
+        - simple: "No"
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: ""
+      title: do you like pancakes
+      totalanswers: 0
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods:
+      - email
+      subject:
+        simple: sadf
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        simple: Administrator
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dc984387-187f-4553-8f93-1be1dd619a5e
+      iscommand: false
+      name: askbyemail
+      type: collection
+      version: -1
+    taskid: dc984387-187f-4553-8f93-1be1dd619a5e
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 1540,
+          "y": 190
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 735,
+        "width": 1870,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

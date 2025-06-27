@@ -1,0 +1,438 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: 834d17e4-dc36-4f6a-825c-afcab2990307
+inputs:
+- description: ""
+  key: IP
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: IP to Summary
+outputs:
+- contextPath: IPToHTML
+  type: string
+quiet: true
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fb326e16-e7f9-447f-816d-e32b504626bf
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: fb326e16-e7f9-447f-816d-e32b504626bf
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        simple: firstSeen,lastSeen,relatedIncCount,asn,geocountry,geolocation,organization
+      query:
+        simple: value:${inputs.IP} type:IP
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: f723ce34-e2d7-49de-8ad6-f73ea0729e79
+      iscommand: false
+      name: Get IP address information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: f723ce34-e2d7-49de-8ad6-f73ea0729e79
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 195
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: IPToHTML
+      stringify:
+        simple: "false"
+      value:
+        simple: |-
+          Value: ${foundIndicators.value}<br />
+          Verdict: ${foundIndicators.verdict}<br />
+          Country: ${foundIndicators.geocountry}<br />
+          Location: ${foundIndicators.geolocation}<br />
+          Organization: ${foundIndicators.organization}<br />
+          ASN: ${foundIndicators.asn}<br />
+          First seen on xSOAR: ${foundIndicators.firstSeen}<br />
+          Last seen on xSOAR: ${foundIndicators.lastSeen}<br />
+          Seen in # xSOAR incidents: ${foundIndicators.relatedIncCount}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 93681f92-8a87-4ddd-8181-58b8f820d1bd
+      iscommand: false
+      name: Set HTML to local context
+      script: Set
+      type: regular
+      version: -1
+    taskid: 93681f92-8a87-4ddd-8181-58b8f820d1bd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1070
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 06665158-ef5b-4ad6-847c-d2379d88b910
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 06665158-ef5b-4ad6-847c-d2379d88b910
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1420
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b6d86818-cf15-4adc-8739-f461865eaf04
+      iscommand: false
+      name: Data found?
+      type: condition
+      version: -1
+    taskid: b6d86818-cf15-4adc-8739-f461865eaf04
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      add_fields_to_context:
+        simple: firstSeen,lastSeen,relatedIncCount,asn,geocountry,geolocation,organization
+      query:
+        simple: value:${inputs.IP} type:IP
+      size:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Cortex XSOAR Indicators.
+
+        Search for XSOAR Indicators and returns the id, indicator_type, value, and score/verdict.
+
+        You can add additional fields from the indicators using the add_field_to_context argument.
+      id: c737e1a6-61cc-43f7-8140-bc66808acce1
+      iscommand: false
+      name: Retry to retrieve IP information
+      script: SearchIndicator
+      type: regular
+      version: -1
+    taskid: c737e1a6-61cc-43f7-8140-bc66808acce1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 470,
+          "y": 720
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: foundIndicators
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7434d8a2-ccf9-4669-87c6-c664eba18b66
+      iscommand: false
+      name: Data found?
+      type: condition
+      version: -1
+    taskid: 7434d8a2-ccf9-4669-87c6-c664eba18b66
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 470,
+          "y": 895
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      body:
+        simple: The xSOAR couldn't retrieve IP information from the threat intel database.
+          Access the incident and debug.
+      greeting:
+        simple: Hi,
+      importance:
+        simple: High
+      signature:
+        simple: Regards,<br>Cybersecurity Team
+      subject:
+        simple: SINC${incident.id} | ${incident.account} | Fatal Error
+      template:
+        simple: EMAIL_TEMPLATE_DEFAULT
+      to:
+        complex:
+          accessor: XSOAR_DEVELOPER
+          root: lists
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b125aa51-bdaf-4240-8646-ebc628a796e4
+      iscommand: false
+      name: Communication - Email v2
+      playbookId: 70bdd136-546b-49a4-8089-2ef586b1a070
+      type: playbook
+      version: -1
+    taskid: b125aa51-bdaf-4240-8646-ebc628a796e4
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1070
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      message:
+        simple: Contact xSOAR engineer. Fatal error
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prints an error entry with a given message.
+      id: d1339cc0-ddcc-4338-86be-95c93f22bd15
+      iscommand: false
+      name: Fatal error
+      script: PrintErrorEntry
+      type: regular
+      version: -1
+    taskid: d1339cc0-ddcc-4338-86be-95c93f22bd15
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1245
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      seconds:
+        simple: "60"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sleep for X seconds.
+      id: 4ffa3c95-e537-4b75-85b9-46cd855a8dd4
+      iscommand: false
+      name: Sleep
+      script: Sleep
+      type: regular
+      version: -1
+    taskid: 4ffa3c95-e537-4b75-85b9-46cd855a8dd4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 470,
+          "y": 545
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1435,
+        "width": 810,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

@@ -1,0 +1,46 @@
+commonfields:
+  id: bcda2356-bf1e-4e16-89fb-02f906b493b7
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.8.1983910
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Prasoon_PreProc
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: |+
+  incoming_incident = demisto.incidents()[0]
+  demisto.executeCommand("setIncident", {"birthday": incoming_incident, "accountname": "Preprocessed"})
+
+  incoming_ticket_number = demisto.dt(incoming_incident, "CustomFields.ticketnumber")
+
+
+
+  searched_incidents = demisto.executeCommand("SearchIncidentsV2", {
+                                                              "query": f"{incoming_ticket_number} -id:{incoming_ticket_number}",
+                                                              "sort": "id.asc",
+                                                              "limit": 1
+                                                              })[0]['Contents']
+
+  ids = demisto.dt(searched_incidents, "Contents.data.id")[0]
+  demisto.executeCommand("setIncident", {"accountid": ids})
+
+  return_results(True)
+
+scripttarget: 0
+subtype: python3
+tags:
+- pre-processing
+type: python

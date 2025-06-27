@@ -1,0 +1,68 @@
+args:
+- description: List of usernames
+  name: value
+  required: true
+- name: client_domain
+  required: true
+commonfields:
+  id: 491831f2-ccd5-4fb5-83e9-a21dc099acaa
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+dockerimage: demisto/python3:3.10.14.92207
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ModifyUsernames
+outputs:
+- contextPath: ModifiedUsernames.Email
+  type: unknown
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: |+
+  from typing import Dict, Any
+  import traceback
+  import re
+
+
+  def modify(args: Dict[str, Any]) -> CommandResults:
+      # usernames = argToList(args.get('usernames'))
+      username = args.get("value")
+      client_domain = args.get("client_domain")
+      pattern = r'^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$'
+      output = []
+      match_result = re.match(pattern, username)
+      if match_result:
+          return username
+      else:
+          return username + "@" + client_domain
+
+
+  def main():
+      try:
+          demisto.results(modify(demisto.args()))
+          # return_results(modify(demisto.args()))
+          # return_results(modify(demisto.args()))
+      except Exception as ex:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f'Failed to execute script. Error: {traceback.format_exc()}')
+
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+scripttarget: 0
+subtype: python3
+tags:
+- transformer
+type: python

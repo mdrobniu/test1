@@ -1,0 +1,2097 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: Eskom - Splunk - Excessive Failed Logins VPN v2
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+description: Validation to run to decide whether the incident should be escalated
+  for manual review by Eskom's analysts.
+id: 6feaa77e-00a9-415b-8a98-4cb37deb719c
+inputs:
+- description: ""
+  key: UsernameFailedAuthTreshold
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "2"
+- description: ""
+  key: ValidUsernames
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      root: UsernamesFound
+      transformers:
+      - args:
+          separator:
+            value:
+              simple: ','
+        operator: join
+- description: ""
+  key: InvalidUsernames
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      filters:
+      - - left:
+            iscontext: true
+            value:
+              simple: UsernamesNotFound
+          operator: isExists
+      root: UsernamesNotFound
+      transformers:
+      - args:
+          separator:
+            value:
+              simple: ','
+        operator: join
+name: Eskom - Splunk - VPN Excessive Failed Login Escalation Validation
+outputs:
+- contextPath: Reason
+  description: An array of reasons/observations
+  type: string
+- contextPath: Escalate
+  description: Yes or no
+  type: string
+- contextPath: Block
+  description: Yes or no
+  type: string
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "48"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6b36cb5a-c126-4e9b-8f35-406470432e65
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 6b36cb5a-c126-4e9b-8f35-406470432e65
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1472.5,
+          "y": 50
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 87fe44b6-3f32-4dfd-83b7-755db4b4eeed
+      iscommand: false
+      name: IP Check - First time offender
+      type: title
+      version: -1
+    taskid: 87fe44b6-3f32-4dfd-83b7-755db4b4eeed
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3632.5,
+          "y": 370
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: relatedIncCount
+                root: foundIndicators
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "1"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "14"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 284bf8b3-946b-4db1-89d1-19788a3e9935
+      iscommand: false
+      name: IP address is a first time offender?
+      type: condition
+      version: -1
+    taskid: 284bf8b3-946b-4db1-89d1-19788a3e9935
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3632.5,
+          "y": 515
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: verdict
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: good
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ce069d97-bc33-443b-8a1e-e2789e056923
+      iscommand: false
+      name: IP verdict is Good and is from South Africa?
+      type: condition
+      version: -1
+    taskid: ce069d97-bc33-443b-8a1e-e2789e056923
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3632.5,
+          "y": 865
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: 'The IP address is a first-time offender with a Good verdict and is
+          from a whitelisted country. '
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: d1482a33-0b93-494e-811a-90a4ae481025
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: d1482a33-0b93-494e-811a-90a4ae481025
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4062.5,
+          "y": 1215
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "no"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 76a44d9e-f0f1-4c4b-8c16-7339b4dfea6f
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: 76a44d9e-f0f1-4c4b-8c16-7339b4dfea6f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4062.5,
+          "y": 1390
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b860fdfa-f861-4205-8039-746b51aeeea1
+      iscommand: false
+      name: No escalation
+      type: title
+      version: -1
+    taskid: b860fdfa-f861-4205-8039-746b51aeeea1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 4062.5,
+          "y": 1055
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aa3af7e8-8cf5-499e-8e59-e21ec51e662e
+      iscommand: false
+      name: Escalation
+      type: title
+      version: -1
+    taskid: aa3af7e8-8cf5-499e-8e59-e21ec51e662e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3417.5,
+          "y": 1230
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: cca42578-ed18-4f41-811b-8cafa217ec9f
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: cca42578-ed18-4f41-811b-8cafa217ec9f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3632.5,
+          "y": 1390
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The <strong>IP address'  verdict is not Good</strong> and/or the IP
+          address is not from South Africa
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 987a8b9b-3596-4015-81ed-59c251315a55
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 987a8b9b-3596-4015-81ed-59c251315a55
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3202.5,
+          "y": 1390
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: users
+                root: incident
+                transformers:
+                - operator: toLowerCase
+                - operator: uniq
+                - operator: count
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "2"
+      label: "yes"
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "51"
+      "yes":
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2eb55792-81f0-4af8-8274-b1ad9a0ce209
+      iscommand: false
+      name: Is the user count less than or equal to the threshold?
+      type: condition
+      version: -1
+    taskid: 2eb55792-81f0-4af8-8274-b1ad9a0ce209
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 4062.5,
+          "y": 690
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "55"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The <strong>IP address is a repeat offender</strong>. It was first
+          seen on ${foundIndicators.firstSeen}. See the attached spreadsheet for more
+          information.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: e799485e-47b2-4c18-820b-269504ecedf4
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: e799485e-47b2-4c18-820b-269504ecedf4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2570,
+          "y": 990
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The IP address is a <strong>first-time offender from a whitelisted
+          country</strong>, and <strong>a high number of usernames were used</strong>
+          in the authentication attempts, making this activity suspicious.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 16d1a196-3af9-4111-886d-266787710bf3
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 16d1a196-3af9-4111-886d-266787710bf3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4492.5,
+          "y": 1215
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8d6bf03d-cf94-4ea4-860d-5369972eb613
+      iscommand: false
+      name: IP Check - Done
+      type: title
+      version: -1
+    taskid: 8d6bf03d-cf94-4ea4-860d-5369972eb613
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3632.5,
+          "y": 2130
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 62606d72-e9a4-42c8-8526-d012d9e1f6a9
+      iscommand: false
+      name: Check 2
+      type: title
+      version: -1
+    taskid: 62606d72-e9a4-42c8-8526-d012d9e1f6a9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 370
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: users
+                root: incident
+                transformers:
+                - operator: toLowerCase
+                - operator: uniq
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "21"
+      "yes":
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05bb64cd-eb3f-42ea-835c-25224632d045
+      iscommand: false
+      name: Is the user count equal to or greater than the threshold?
+      type: condition
+      version: -1
+    taskid: 05bb64cd-eb3f-42ea-835c-25224632d045
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 515
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f7b61ab2-97f3-4bda-8bfd-206110391bdd
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: f7b61ab2-97f3-4bda-8bfd-206110391bdd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 705
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.InvalidUsernames
+                    operator: isExists
+                root: inputs.InvalidUsernames
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+      label: "yes"
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "27"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fe3f84da-f87d-4873-8090-d8e3153dec2a
+      iscommand: false
+      name: Is the number of invalid usernames greater than the threshold?
+      type: condition
+      version: -1
+    taskid: fe3f84da-f87d-4873-8090-d8e3153dec2a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 690
+        }
+      }
+  "23":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "26"
+      "yes":
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4d29ca10-acb0-4cff-8a87-72b175e265b7
+      iscommand: false
+      name: Is the IP from South Africa?
+      type: condition
+      version: -1
+    taskid: 4d29ca10-acb0-4cff-8a87-72b175e265b7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 865
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5b6a3ffd-5ec4-4c39-8029-475b1489769e
+      iscommand: false
+      name: Escalation
+      type: title
+      version: -1
+    taskid: 5b6a3ffd-5ec4-4c39-8029-475b1489769e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 1055
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5c717ce7-74db-4565-8cc3-7b3730e1bfdd
+      iscommand: false
+      name: Block
+      type: title
+      version: -1
+    taskid: 5c717ce7-74db-4565-8cc3-7b3730e1bfdd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1055
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The incident contains <strong>suspicious activity</strong> due to
+          the <strong>high number of usernames</strong> used in the authentication
+          attempt.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 9aa44550-401e-4fdd-80d3-243493d9672c
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 9aa44550-401e-4fdd-80d3-243493d9672c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1215
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: a40a55d6-6e30-4fc5-86dc-90aae3d26eb5
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: a40a55d6-6e30-4fc5-86dc-90aae3d26eb5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1390
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f0b4d8d8-f419-4461-8713-35270d3fb42e
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: f0b4d8d8-f419-4461-8713-35270d3fb42e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1870
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "58"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The number of <strong>invalid usernames</strong> is greater than the
+          threshold, which may indicate <strong>potential malicious activity</strong>.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: a2970f79-3252-47ee-81e6-a5d234989cb9
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: a2970f79-3252-47ee-81e6-a5d234989cb9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1215
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 41619976-bc28-4918-892e-3723a8a516f2
+      iscommand: false
+      name: Set output - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: 41619976-bc28-4918-892e-3723a8a516f2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1565
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The number of <strong>invalid usernames</strong> exceeds the threshold
+          that triggers an automated block; however, the source IP's location is whitelisted.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: c723a9e9-32a6-4815-83b7-695ab446ed73
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: c723a9e9-32a6-4815-83b7-695ab446ed73
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 1215
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: ce0147e7-021c-47be-81f7-83ba76f108ad
+      iscommand: false
+      name: Set output - esclate
+      script: Set
+      type: regular
+      version: -1
+    taskid: ce0147e7-021c-47be-81f7-83ba76f108ad
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 1390
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "57"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 48395ba5-7fba-4950-8db5-f08ccaed66af
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: 48395ba5-7fba-4950-8db5-f08ccaed66af
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2332.5,
+          "y": 1565
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 6f14e105-e156-41ef-8721-005e27db2bfe
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: 6f14e105-e156-41ef-8721-005e27db2bfe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4492.5,
+          "y": 1390
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5e0659da-9e2d-46e3-8a25-2a0631d0305b
+      iscommand: false
+      name: Check 3
+      type: title
+      version: -1
+    taskid: 5e0659da-9e2d-46e3-8a25-2a0631d0305b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1472.5,
+          "y": 370
+        }
+      }
+  "39":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: usercount
+                root: incident
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "1"
+      label: "yes"
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "40"
+      "yes":
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c645699c-33ae-4a7d-8ec4-bd8ffdb6dc4d
+      iscommand: false
+      name: Is the user count equal to 1
+      type: condition
+      version: -1
+    taskid: c645699c-33ae-4a7d-8ec4-bd8ffdb6dc4d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1472.5,
+          "y": 515
+        }
+      }
+  "40":
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 953f5bb9-4b39-41ce-83b5-b410a9a13ff9
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: 953f5bb9-4b39-41ce-83b5-b410a9a13ff9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1240,
+          "y": 1760
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      fromdate:
+        complex:
+          accessor: created
+          root: incident
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 3 months ago
+            operator: ModifyDateTime
+      limit:
+        simple: "3"
+      query:
+        simple: type:"VPN Excessive Failed Logins" -id:${incident.id} (users:"${incident.users.[0]}")
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches Demisto incidents. A summarized version of this scrips is avilable with the summarizedversion argument.
+
+        This automation runs using the default Limited User role, unless you explicitly change the permissions.
+        For more information, see the section about permissions here:
+        https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.10/Cortex-XSOAR-Administrator-Guide/Automations
+      id: bfae30dc-2304-423e-8e7f-2e8817bf837c
+      iscommand: false
+      name: Retrieve incidents where the username was seen in the last 3 months
+      script: SearchIncidentsV2
+      type: regular
+      version: -1
+    taskid: bfae30dc-2304-423e-8e7f-2e8817bf837c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1585,
+          "y": 690
+        }
+      }
+  "42":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIncidents
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "40"
+      "yes":
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d7f846c6-a571-48f1-8918-270be047ae27
+      iscommand: false
+      name: Incident found?
+      type: condition
+      version: -1
+    taskid: d7f846c6-a571-48f1-8918-270be047ae27
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1585,
+          "y": 865
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "44"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The username, <strong>${incident.users.[0]}</strong>, was detected
+          in <strong>multiple failed VPN authentication attempts</strong> in the past
+          3 months with the latest attempt using an IP address that is not from South
+          Africa. See the attached spreadsheet for more information.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 4c7aca3e-9f25-4ac3-848c-dc70c004779d
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 4c7aca3e-9f25-4ac3-848c-dc70c004779d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1482.5,
+          "y": 1215
+        }
+      }
+  "44":
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "54"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: bb50502a-4ee0-4d4a-8822-abdcb905bcfd
+      iscommand: false
+      name: Set output - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: bb50502a-4ee0-4d4a-8822-abdcb905bcfd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1482.5,
+          "y": 1390
+        }
+      }
+  "45":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "43"
+      "yes":
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bd8769aa-5727-4a39-8593-eb7fa26976c2
+      iscommand: false
+      name: Is the IP from South Africa?
+      type: condition
+      version: -1
+    taskid: bd8769aa-5727-4a39-8593-eb7fa26976c2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1697.5,
+          "y": 1040
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The username, <strong>${incident.users.[0]}</strong>, was detected
+          in multiple <strong>failed VPN authentication attempts</strong> in the past
+          3 months. See the attached Excel spreadsheet for more information.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 11f7da6b-7335-4329-82ba-36ee496a7428
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 11f7da6b-7335-4329-82ba-36ee496a7428
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1912.5,
+          "y": 1215
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "54"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Escalate
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 9ca5ce15-2546-4a7e-8353-48a09712c1f5
+      iscommand: false
+      name: Set output - escalate
+      script: Set
+      type: regular
+      version: -1
+    taskid: 9ca5ce15-2546-4a7e-8353-48a09712c1f5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1912.5,
+          "y": 1390
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "2"
+      - "38"
+      - "19"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AdditionalFields:
+        simple: firstSeen,lastSeen,relatedIncCount,geocountry
+      IP:
+        complex:
+          accessor: sourceip
+          root: incident
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get IP from the Threat Intel database
+      id: ff5fb488-0982-482e-851c-c0e2529c5f84
+      iscommand: false
+      name: Get IP from the Threat Intel database
+      playbookId: cbe8ad40-a067-4b7d-8d50-875cb26a1d63
+      type: playbook
+      version: -1
+    taskid: ff5fb488-0982-482e-851c-c0e2529c5f84
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1472.5,
+          "y": 195
+        }
+      }
+  "49":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "34"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 869026fc-65d7-4f2b-814f-0dc631c1ad7d
+      iscommand: false
+      name: Is the IP from South Africa?
+      type: condition
+      version: -1
+    taskid: 869026fc-65d7-4f2b-814f-0dc631c1ad7d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2570,
+          "y": 1350
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "57"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: d346c5a4-df40-4877-835e-d68e221975ac
+      iscommand: false
+      name: Set output - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: d346c5a4-df40-4877-835e-d68e221975ac
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2792.5,
+          "y": 1730
+        }
+      }
+  "51":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: geocountry
+                root: foundIndicators
+                transformers:
+                - operator: toLowerCase
+          operator: inList
+          right:
+            value:
+              simple: za,south africa,republic of south africa
+      label: "yes"
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7a7a6ca0-c1c3-4f1e-865d-3da6756597c7
+      iscommand: false
+      name: Is the IP from South Africa?
+      type: condition
+      version: -1
+    taskid: 7a7a6ca0-c1c3-4f1e-865d-3da6756597c7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 4707.5,
+          "y": 1040
+        }
+      }
+  "52":
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Block
+      value:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 2cf5ae7e-ace2-4b39-8e33-48de3b62758f
+      iscommand: false
+      name: Set output - block
+      script: Set
+      type: regular
+      version: -1
+    taskid: 2cf5ae7e-ace2-4b39-8e33-48de3b62758f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4922.5,
+          "y": 1390
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The IP address is a first-time offender, and <strong>a high number
+          of usernames were used</strong> in the authentication attempts, making this
+          activity suspicious.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 864bc94c-014c-4363-85b7-aa00e8e78749
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 864bc94c-014c-4363-85b7-aa00e8e78749
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4922.5,
+          "y": 1215
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "40"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      FileName:
+        simple: incident_${incident.id}_user_detection
+      FromDate:
+        complex:
+          accessor: created
+          root: incident
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 3 months ago
+            operator: ModifyDateTime
+      SearchQuery:
+        simple: type:"VPN Excessive Failed Logins" users:*${incident.users.[0]}*
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 86cb4ed0-c5f8-4b94-8ef8-3743960e51b1
+      iscommand: false
+      name: Eskom - Splunk - Repeat Offender Excel Extract
+      playbookId: 1462590a-e6d2-4303-80b4-20e4652566d7
+      type: playbook
+      version: -1
+    taskid: 86cb4ed0-c5f8-4b94-8ef8-3743960e51b1
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1697.5,
+          "y": 1565
+        }
+      }
+  "55":
+    continueonerrortype: ""
+    id: "55"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "49"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      FileName:
+        simple: incident_${incident.id}_ip_detection
+      FromDate:
+        complex:
+          accessor: firstSeen
+          root: foundIndicators
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 30 minutes ago
+            operator: ModifyDateTime
+      OutputStats:
+        simple: "yes"
+      SearchQuery:
+        simple: applicationname:"VPN" (sourceip:${incident.sourceip} or srcs:${incident.sourceip})
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 07c231ee-a084-488b-8b73-a16599f3750b
+      iscommand: false
+      name: Eskom - Splunk - Repeat Offender Excel Extract
+      playbookId: 1462590a-e6d2-4303-80b4-20e4652566d7
+      type: playbook
+      version: -1
+    taskid: 07c231ee-a084-488b-8b73-a16599f3750b
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 2570,
+          "y": 1185
+        }
+      }
+  "56":
+    continueonerrortype: ""
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "50"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The IP address is <strong>not from a whitelisted country</strong>.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 0f118dff-2211-436f-8f61-dbb3feab6ade
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 0f118dff-2211-436f-8f61-dbb3feab6ade
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2792.5,
+          "y": 1565
+        }
+      }
+  "57":
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: "Over the observed period starting from <strong>${foundIndicators.firstSeen}</strong>,
+          \nthe IP in question has made a total of <strong>${TotalNumberOfAttempts}</strong>
+          \nfailed login attempts using at least<strong>${TotalNumberOfUsernames}
+          username(s)</strong>."
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 939b877f-504c-477d-8b66-d54591d91dab
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 939b877f-504c-477d-8b66-d54591d91dab
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2552.5,
+          "y": 1935
+        }
+      }
+  "58":
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Reason
+      value:
+        simple: The IP address is <strong>not from a whitelisted country</strong>.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 18efecf4-dd9c-43b4-8fc1-8f01bb0d24e9
+      iscommand: false
+      name: Set output - reason
+      script: Set
+      type: regular
+      version: -1
+    taskid: 18efecf4-dd9c-43b4-8fc1-8f01bb0d24e9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1390
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 2145,
+        "width": 5252.5,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }

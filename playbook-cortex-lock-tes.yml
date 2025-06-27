@@ -1,0 +1,163 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: b0740a04-cd33-4c2a-8e7b-8921336fc683
+inputs: []
+name: cortex-lock-tes
+outputs: []
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 271a5ed5-c75f-416e-81bb-ca8dc30ee07e
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 271a5ed5-c75f-416e-81bb-ca8dc30ee07e
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      name:
+        simple: test
+      polling_interval:
+        simple: "5"
+      timeout:
+        simple: "36000"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Gets a specific lock. If the lock doesn't exist, it creates one.
+        If the lock is already in use, the command waits until the lock is released
+        or until timeout is reached. If timeout is reached and the lock hasn't been
+        released, the command fails to get the lock.
+      id: b2e3db31-f217-485e-8c1d-e4e1142e6b8a
+      iscommand: true
+      name: lock
+      script: '|||demisto-lock-get'
+      type: regular
+      version: -1
+    taskid: b2e3db31-f217-485e-8c1d-e4e1142e6b8a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 451,
+          "y": 264
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 192cc456-75f7-486c-87f1-6b2f556b24c7
+      iscommand: false
+      name: pause
+      type: regular
+      version: -1
+    taskid: 192cc456-75f7-486c-87f1-6b2f556b24c7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 483
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      name:
+        simple: test
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Release a lock.
+      id: 2560232f-bc6f-48e5-83da-47d91ef4cf3a
+      iscommand: true
+      name: lock release
+      script: '|||demisto-lock-release'
+      type: regular
+      version: -1
+    taskid: 2560232f-bc6f-48e5-83da-47d91ef4cf3a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 679
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 724,
+        "width": 381,
+        "x": 450,
+        "y": 50
+      }
+    }
+  }

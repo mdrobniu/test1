@@ -1,0 +1,58 @@
+args:
+- name: value
+  required: true
+- defaultValue: "1"
+  description: How many times to parse- encapsulate json within json
+  name: times
+  required: true
+comment: OcdParseJson
+commonfields:
+  id: bf1eaa98-1def-4459-8c00-90f01e84541b
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ParseJsonJS
+outputs:
+- contextPath: OcdStringifyJson
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: |
+  var value;
+  var ec = {};
+  value = args.value;
+  try {
+      for (let i = 0; i < args.times; i++)
+      {
+          value = JSON.parse(value);
+      }
+  } catch(err) {
+      value = args.value;
+  }
+
+  ec['ParseJson'] = value;
+  var result = {
+      Type: entryTypes.note,
+      Contents: ec,
+      ContentsFormat: formats.json,
+      HumanReadable: value
+  };
+
+  result.EntryContext = ec;
+
+  return result;
+scripttarget: 0
+tags: []
+type: javascript
