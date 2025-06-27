@@ -1,0 +1,829 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    itemVersion: 2.0.5
+    packID: Office365AndAzureAuditLog
+    packName: Office 365 and Azure (Audit Log)
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    toServerVersion: ""
+description: 'This playbook enables you to collect and investigate suspicious security
+  events from Azure AD environment. '
+id: Office 365 and Azure Hunting
+inputs: []
+name: Office 365 and Azure Hunting
+outputs: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e12ceb8c-018b-4a48-806a-4443ee22b71e
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: e12ceb8c-018b-4a48-806a-4443ee22b71e
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 610,
+          "y": 1830
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c8d75c55-e9f1-4808-8272-4c027f784e3b
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: c8d75c55-e9f1-4808-8272-4c027f784e3b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 3810
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Hunt for a Azure AD new or modified service account.\nXDR example
+        query:\npreset = msft_azure_ad_audit // go over azure ad audit logs\n| filter
+        activityDisplayName IN (\"Add service principal credentials\", \"Add service
+        principal\")\nAND result = \"success\" // find cases where someone adds SPNs
+        to an account\n\nSplunk example queries:\nsourcetype=\"azure:aad:audit\" activityDisplayName=\"Add
+        service principal\" \n| stats values(activityDisplayName) AS Action, values(initiatedBy.user.userPrincipalName)
+        \nAS UPN, values(targetResources{}.displayName) AS Target,\nvalues(targetResources{}.modifiedProperties{}.displayName)
+        AS \"Modified Resources\",\nvalues(targetResources{}.modifiedProperties{}.oldValue)
+        AS \"Old Values\",\nvalues(targetResources{}.modifiedProperties{}.newValue)
+        AS \"New Values\" by correlationId \n| fields - correlationId\n---------\nsourcetype=\"azure:aad:audit\"
+        activityDisplayName=\"Add service principal credentials\"\n"
+      id: 9b9c34a8-15c4-46c8-83b9-5a15e108b370
+      iscommand: false
+      name: Search for Azure AD service account created or modified
+      type: regular
+      version: -1
+    taskid: 9b9c34a8-15c4-46c8-83b9-5a15e108b370
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 2280
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Hunt for Azure AD application sharing with additional tenants.\n**XDR
+        example query:**\npreset = msft_azure_ad_audit  // go over azure ad audit
+        logs\n| filter activityDisplayName = \"Update application\"\nAND operationType=\"Update\"\nand
+        result=\"success\"\nand modifiedDisplayName = \"AvailableToOtherTenants\" 
+        // find cases where someone grants permission to access an app from another
+        azure ad tenant\n\n**Splunk example query:**\nsourcetype=\"azure:aad:audit\"
+        activityDisplayName=\"Update application\" operationType=Update \nresult=success
+        targetResources{}.modifiedProperties{}.displayName=AvailableToOtherTenants
+        \n| table activityDateTime initiatedBy.user.userPrincipalName, \ntargetResources{}.displayName
+        additionalDetails{}.value"
+      id: 6240c9dc-c4d0-4e19-8055-d90a16ed5bec
+      iscommand: false
+      name: Search for Azure AD application sharing with additional tenants
+      type: regular
+      version: -1
+    taskid: 6240c9dc-c4d0-4e19-8055-d90a16ed5bec
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 2480
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Hunt for an added Azure AD custom unverified domain.
+        XDR example query:
+        preset = msft_azure_ad_audit // go over azure ad audit logs
+        | filter activityDisplayName = "Add unverified domain" AND result = "success"  // find cases where someone added a custom domain to the azure ad env
+      id: dd13bebb-ebc9-4d62-85ef-38574f7aaac7
+      iscommand: false
+      name: Search for an added Azure AD custom unverified domain
+      type: regular
+      version: -1
+    taskid: dd13bebb-ebc9-4d62-85ef-38574f7aaac7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 2670
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Hunt for SSO being disabled for a domain.
+        XDR example query:
+        preset = msft_azure_ad_audit // go over azure ad audit logs
+        | filter activityDisplayName = "Disable Desktop Sso for a specific domain" AND result =
+        "success" // remove need for SSO on desktop devices
+      id: 11ce5bed-ede5-4263-8bfe-5b46d0a44463
+      iscommand: false
+      name: Search for SSO being disabled for a domain
+      type: regular
+      version: -1
+    taskid: 11ce5bed-ede5-4263-8bfe-5b46d0a44463
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 2870
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Hunt for modified domain federation settings.
+        XDR example query:
+        preset = msft_azure_ad_audit // go over azure ad audit logs
+        | filter activityDisplayName = "Set federation settings on domain"
+      id: f43f3472-e999-4839-8c7d-b55bdc08f0f7
+      iscommand: false
+      name: Search for modified domain federation settings
+      type: regular
+      version: -1
+    taskid: f43f3472-e999-4839-8c7d-b55bdc08f0f7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 3070
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Hunt for cases where mail permissions were added to a service principal.
+        XDR example query:
+        preset = msft_azure_ad_audit // go over azure ad audit logs
+        | filter activityDisplayName IN ("Add app role assignment to service
+        principal", "Add delegated permission grant", "Add application" ) and
+                modifiedPropertyNewValue ~= "(Mail.Read|Mail.ReadWrite)" and
+                modifiedPropertyOldValue not contains "Mail.Read" // find
+        cases where mail read was added as a permission to another account.
+      id: 1d40b042-db29-4326-8c51-16d499af1680
+      iscommand: false
+      name: Search mail permissions that were added to a service principal
+      type: regular
+      version: -1
+    taskid: 1d40b042-db29-4326-8c51-16d499af1680
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 3260
+        }
+      }
+  "35":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isEqualString
+          right:
+            value:
+              simple: MicrosoftPolicyAndComplianceAuditLog
+      label: "yes"
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "36"
+      "yes":
+      - "37"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if Microsoft Policy And Compliance is enabled.
+      id: 32bb1304-61c7-4d72-8535-c086a3a10bed
+      iscommand: false
+      name: Is Microsoft Policy And Compliance enabled?
+      type: condition
+      version: -1
+    taskid: 32bb1304-61c7-4d72-8535-c086a3a10bed
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 610,
+          "y": 1980
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 97175d0a-c968-4297-82f9-ca62ba28e4cd
+      iscommand: false
+      name: Manual Hunt
+      type: title
+      version: -1
+    taskid: 97175d0a-c968-4297-82f9-ca62ba28e4cd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 2150
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ca015250-4fb1-42ce-8516-c708d86f1053
+      iscommand: false
+      name: 'Automatic Hunt '
+      type: title
+      version: -1
+    taskid: ca015250-4fb1-42ce-8516-c708d86f1053
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 2150
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    evidencedata:
+      customfields: {}
+      description:
+        simple: Azure AD service account created or modified
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      operations:
+        simple: Add service principal credentials,Add service principal
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: 8b9ad15d-f0e2-43b9-84fb-b0684357c75f
+      iscommand: true
+      name: Search for Azure AD service account created or modified
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: 8b9ad15d-f0e2-43b9-84fb-b0684357c75f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 2280
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    evidencedata:
+      customfields: {}
+      description:
+        simple: Azure AD application sharing with additional tenants
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "40"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      free_text:
+        simple: AvailableToOtherTenants
+      operations:
+        simple: Update application
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: b33e2258-dd01-4a54-86ae-f38c1ad0f045
+      iscommand: true
+      name: Search for Azure AD application sharing with additional tenants
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: b33e2258-dd01-4a54-86ae-f38c1ad0f045
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 2480
+        }
+      }
+  "40":
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "41"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      free_text:
+        simple: Add unverified domain
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: 11863f50-65fe-4b12-80da-72551d2f44fe
+      iscommand: true
+      name: Search for Azure AD custom unverified domain was added
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: 11863f50-65fe-4b12-80da-72551d2f44fe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 2670
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      free_text:
+        simple: Disable Desktop SSO for a specific domain
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: 12bff9a6-df8e-40e4-8f3c-eaca767a7c40
+      iscommand: true
+      name: Search for SSO being disabled for a domain
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: 12bff9a6-df8e-40e4-8f3c-eaca767a7c40
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 2870
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      operations:
+        simple: Set domain authentication,Set federation settings on domain
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: a18788f3-0bf4-4372-8541-927a7b9936cf
+      iscommand: true
+      name: Search for domain federation settings modified
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: a18788f3-0bf4-4372-8541-927a7b9936cf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 3070
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      free_text:
+        simple: Add app role assignment to service principal,Add delegated permission
+          grant,Add application
+      record_type:
+        simple: AzureActiveDirectory
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the o365-search-auditlog command to search the unified audit
+        log. This log contains events from Exchange Online, SharePoint Online, OneDrive
+        for Business, Azure Active Directory, Microsoft Teams, Power BI, and other
+        Microsoft 365 services. You can search for all events in a specified date
+        range, or you can filter the results based on specific criteria, such as the
+        action, the user who performed the action, or the target object.
+      id: 841b04e8-ecab-460f-898d-54710a044b8a
+      iscommand: true
+      name: Search whether mail permissions were added to a service principal
+      script: '|||o365-auditlog-search'
+      type: regular
+      version: -1
+    taskid: 841b04e8-ecab-460f-898d-54710a044b8a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 3260
+        }
+      }
+  "44":
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: MailPermissionsAdded
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: O365AuditLog.ModifiedProperties.NewValue
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Mail.Read
+            - left:
+                iscontext: true
+                value:
+                  simple: O365AuditLog.ModifiedProperties.NewValue
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Mail.ReadWrite
+          - - left:
+                iscontext: true
+                value:
+                  simple: O365AuditLog.ModifiedProperties.OldValue
+              operator: notContainsGeneral
+              right:
+                value:
+                  simple: Mail.Read
+          root: O365AuditLog
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 8e96920a-4cd6-490f-8974-8d57e7ec0762
+      iscommand: false
+      name: Set added mail permissions to a service principal
+      script: Set
+      type: regular
+      version: -1
+    taskid: 8e96920a-4cd6-490f-8974-8d57e7ec0762
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 70,
+          "y": 3640
+        }
+      }
+  "45":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: O365AuditLog.ModifiedProperties.NewValue
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Mail.Read
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: O365AuditLog.ModifiedProperties.NewValue
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Mail.ReadWrite
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: O365AuditLog.ModifiedProperties.OldValue
+                    operator: notContainsGeneral
+                    right:
+                      value:
+                        simple: Mail.Read
+                root: O365AuditLog
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "28"
+      "yes":
+      - "44"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks for cases where mail permissions were added to a service
+        principal.
+      id: 5ce1ba8d-8292-476c-8a58-70f3248c1296
+      iscommand: false
+      name: Found mail permissions were added to a service principal?
+      type: condition
+      version: -1
+    taskid: 5ce1ba8d-8292-476c-8a58-70f3248c1296
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 300,
+          "y": 3460
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "45_28_#default#": 0.19,
+      "45_44_yes": 0.53
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2045,
+        "width": 1200,
+        "x": 70,
+        "y": 1830
+      }
+    }
+  }

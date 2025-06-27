@@ -1,0 +1,121 @@
+{
+	"author": "Cortex XSOAR",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Messaging And Conferencing"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Retrieves emails according to the configuration.",
+						"name": "mail-listener-list-emails"
+					},
+					{
+						"description": "Retrieves an email by email ID.",
+						"name": "mail-listener-get-email"
+					},
+					{
+						"description": "Fetches an email by message ID and returns the information in an eml file format.",
+						"name": "mail-listener-get-email-as-eml"
+					}
+				],
+				"description": "Listens to a mailbox and enables incident triggering via e-mail.",
+				"id": "Mail Listener v2",
+				"name": "Mail Listener v2"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "1.0.63",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.32",
+			"name": "Base"
+		},
+		"CommonTypes": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.8.9",
+			"name": "Common Types"
+		}
+	},
+	"deprecated": false,
+	"description": "Listen to a mailbox, enable incident triggering via e-mail",
+	"disabledMonthly": false,
+	"downloads": 14485,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldByCortexXSOAR",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "MailListener",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/MailListener/MailListenerv2_image.png",
+			"name": "Mail Listener v2"
+		}
+	],
+	"itemVersion": "1.0.63",
+	"keywords": [],
+	"legacy": true,
+	"name": "Mail Listener",
+	"packID": "MailListener",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "## Overview\n\n---\n\nUse the MailListener Content Pack to listen to a mailbox and trigger incidents. The MailListener Content Pack contains the Mail Listener v2 Integration. You can customize multiple integration instances according to your needs. Each instance can be customized to work with a different email address and according to different rules. For example, you can define the integration instance to fetch emails from specific sender addresses and for specific periods of time. You can also define whether to delete the emails once they are processed and whether to include the raw body in the incident. For more details on how to configure instances of the integration, see the [Mail Listener v2 Integration](https://xsoar.pan.dev/docs/reference/integrations/mail-listener-v2).\n",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-06-26T12:59:53Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3534539",
+	"videos": []
+}

@@ -1,0 +1,241 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    itemVersion: 4.0.0
+    packID: Darktrace
+    packName: Darktrace
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    toServerVersion: ""
+description: Update all incident fields that may change over time.
+id: Darktrace Email Update Incident Fields
+inputs: []
+name: Darktrace Email Update Incident Fields
+outputs: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 49113b0c-5e10-43f6-86ed-a59118326e2b
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 49113b0c-5e10-43f6-86ed-a59118326e2b
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -1040
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      uuid:
+        simple: ${incident.darktraceemailuuid}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: DarktraceEmail
+      description: Fetch details about a specific Email.
+      id: b412127f-dd2d-4721-8022-c2586cffd9f9
+      iscommand: true
+      name: Get Email Info
+      script: DarktraceEmail|||darktrace-email-get-email
+      type: regular
+      version: -1
+    taskid: b412127f-dd2d-4721-8022-c2586cffd9f9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -910
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Darktrace Email Receipt Status
+      output:
+        simple: ${Darktrace.Email.receipt_status}
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      id:
+        simple: ${incident.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Change the properties of an incident
+      id: 5bbe8e2b-95b4-476f-8d19-7babd3ca0f16
+      iscommand: true
+      name: Update incident receipt status
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 5bbe8e2b-95b4-476f-8d19-7babd3ca0f16
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -335
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Darktrace Email Action Status
+      output:
+        simple: ${Darktrace.Email.action_status}
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      id:
+        simple: ${incident.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Change the properties of an incident
+      id: 351b78d4-d6c0-4f77-8ab3-23a9c6890433
+      iscommand: true
+      name: Update incident action status
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 351b78d4-d6c0-4f77-8ab3-23a9c6890433
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -730
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Darktrace Email Read Status
+      output:
+        simple: ${Darktrace.Email.read_status}
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      id:
+        simple: ${incident.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Change the properties of an incident
+      id: 67c90b42-8004-4676-85d9-e504c8d2c227
+      iscommand: true
+      name: Update incident read status
+      script: Builtin|||setIncident
+      type: regular
+      version: -1
+    taskid: 67c90b42-8004-4676-85d9-e504c8d2c227
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -530
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ab041bc5-3084-4234-8a00-dcc58f2311c5
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: ab041bc5-3084-4234-8a00-dcc58f2311c5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": -120
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 800,
+        "width": 380,
+        "x": 860,
+        "y": -1040
+      }
+    }
+  }

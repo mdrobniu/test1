@@ -1,0 +1,735 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    itemVersion: 2.0.5
+    packID: Office365AndAzureAuditLog
+    packName: Office 365 and Azure (Audit Log)
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    toServerVersion: ""
+description: This playbook helps you collect, review, and find misconfigurations with
+  the Azure environment.
+id: Office 365 and Azure Configuration Analysis
+inputs:
+- description: Comma-separated list of Service O365 admin roles.
+  key: O365_AdminRolesList
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The maximum number of results to retrieve. Default is 10.
+  key: Limit
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Office 365 and Azure Configuration Analysis
+outputs: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "54"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e12ceb8c-018b-4a48-806a-4443ee22b71e
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: e12ceb8c-018b-4a48-806a-4443ee22b71e
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1430,
+          "y": 1740
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c8d75c55-e9f1-4808-8272-4c027f784e3b
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: c8d75c55-e9f1-4808-8272-4c027f784e3b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1430,
+          "y": 3520
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Attackers may exploit the following mailboxes delegations.
+        Search for mailboxes that delegated:
+        -  'Full Access' Permission Granted.
+        -  'Any' Permissions Granted.
+        - 'Send As' or 'SendOnBehalf' Permissions.
+      id: be4e7bb9-7041-4895-85f3-4741814d6641
+      iscommand: false
+      name: Delegation on MailBoxes
+      type: regular
+      version: -1
+    taskid: be4e7bb9-7041-4895-85f3-4741814d6641
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 3340
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "51"
+      - "53"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get and review key credentials for all service principals.
+      id: b1b431ae-cd59-476b-8af4-67ea4eace243
+      iscommand: false
+      name: Azure AD Key Credentials
+      type: title
+      version: -1
+    taskid: b1b431ae-cd59-476b-8af4-67ea4eace243
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2980,
+          "y": 2140
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: FederationTrustInformation=
+      ignore-outputs:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the ews-federation-trust-get command to view the federation
+        trust configured for the Exchange organization.
+      id: 323b4ae9-3c22-4578-8102-8ac7de36c169
+      iscommand: true
+      name: Review Federation Trust Information
+      script: '|||ews-federation-trust-get'
+      type: regular
+      version: -1
+    taskid: 323b4ae9-3c22-4578-8102-8ac7de36c169
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 2300
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: CASSettingsConfigured=
+      ignore-outputs:
+        simple: "false"
+      limit:
+        complex:
+          root: inputs.Limit
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Displays Client Access settings that are configured on mailboxes.
+      id: c4006844-e576-4ee6-842e-21139859b069
+      iscommand: true
+      name: Client Access Settings Configured on Mailboxes
+      script: '|||ews-cas-mailbox-list'
+      type: regular
+      version: -1
+    taskid: c4006844-e576-4ee6-842e-21139859b069
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 2500
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "44"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: AdminMailForwardingRules=
+      ignore-outputs:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: View the configuration information for the remote domains configured
+        in your organization. This command is available only in the Exchange Online
+        PowerShell V2 module.
+      id: 95ac373f-62ef-4c40-8cab-248e06b4a23f
+      iscommand: true
+      name: Mail Forwarding Rules for Remote Domains
+      script: '|||ews-remote-domain-get'
+      type: regular
+      version: -1
+    taskid: 95ac373f-62ef-4c40-8cab-248e06b4a23f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 2700
+        }
+      }
+  "44":
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: MailboxSMTPForwarding=
+      ignore-outputs:
+        simple: "false"
+      limit:
+        complex:
+          root: inputs.Limit
+      property_sets:
+        simple: Minimum,Delivery
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Displays mailbox objects and attributes, populate property pages,
+        or supplies mailbox information to other tasks.
+      id: d07d378f-2714-4e25-87ae-74115d0885c0
+      iscommand: true
+      name: Mailbox SMTP Forwarding for All Mailboxes
+      script: '|||ews-mailbox-list'
+      type: regular
+      version: -1
+    taskid: d07d378f-2714-4e25-87ae-74115d0885c0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 2910
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: AuditBypassEnabledUsers=
+      ignore-outputs:
+        simple: "false"
+      limit:
+        complex:
+          root: inputs.Limit
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Use the Get-User command to view existing user objects in your
+        organization.
+      id: 6d7242da-9c61-47d3-8df7-4d7d3a948634
+      iscommand: true
+      name: Users with 'Audit Bypass' Enabled
+      script: '|||ews-mailbox-audit-bypass-association-list'
+      type: regular
+      version: -1
+    taskid: 6d7242da-9c61-47d3-8df7-4d7d3a948634
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 3120
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "49"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      limit:
+        complex:
+          root: inputs.Limit
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Lists roles in the directory.
+      id: 47a63884-0a8b-4ff0-8c56-7f78fdded14c
+      iscommand: true
+      name: Get Azure roles list
+      script: '|||msgraph-identity-directory-roles-list'
+      type: regular
+      version: -1
+    taskid: 47a63884-0a8b-4ff0-8c56-7f78fdded14c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2710,
+          "y": 2500
+        }
+      }
+  "49":
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: AdminRolesMembers=
+      ignore-outputs:
+        simple: "false"
+      limit:
+        complex:
+          root: inputs.Limit
+      role_id:
+        complex:
+          accessor: id
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MSGraphIdentity.Role.displayName
+              operator: containsGeneral
+              right:
+                iscontext: true
+                value:
+                  simple: ${adminRoles}
+          root: MSGraphIdentity.Role
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Gets all members in the role ID.
+      id: 74befa57-f3d7-4898-8b6c-357b06a6182b
+      iscommand: true
+      name: Get members for admin roles
+      script: '|||msgraph-identity-directory-role-members-list'
+      type: regular
+      version: -1
+    taskid: 74befa57-f3d7-4898-8b6c-357b06a6182b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2710,
+          "y": 2690
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2fe04752-b4d6-44e6-86f0-06c89dc93099
+      iscommand: false
+      name: Microsoft Exchange
+      type: title
+      version: -1
+    taskid: 2fe04752-b4d6-44e6-86f0-06c89dc93099
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 2140
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      limit:
+        complex:
+          root: inputs.Limit
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieve a list of service principals.
+      id: c088252e-731b-400e-885e-5415d2eae779
+      iscommand: true
+      name: Get service principal list
+      script: '|||msgraph-apps-service-principal-list'
+      type: regular
+      version: -1
+    taskid: c088252e-731b-400e-885e-5415d2eae779
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3210,
+          "y": 2300
+        }
+      }
+  "52":
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ServicePrincipalKeyCredentials
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MSGraphApplication.keyCredentials
+              operator: isNotEmpty
+          root: MSGraphApplication
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered. If no value is
+        entered, the script doesn't do anything.
+      id: 73ee02fb-94d1-43aa-8d74-7300617bcbe9
+      iscommand: false
+      name: Set service principal with key credentials
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 73ee02fb-94d1-43aa-8d74-7300617bcbe9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3210,
+          "y": 2500
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "48"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: adminRoles
+      value:
+        complex:
+          root: inputs.O365_AdminRolesList
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: ','
+            operator: splitAndTrim
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set admin roles input to context.
+      id: 71974047-a66c-4d1a-8b4f-3d70c9278d2e
+      iscommand: false
+      name: Set admin roles input to context
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 71974047-a66c-4d1a-8b4f-3d70c9278d2e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2710,
+          "y": 2300
+        }
+      }
+  "54":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: containsGeneral
+          right:
+            value:
+              simple: MicrosoftGraphIdentityandAccess
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: containsGeneral
+          right:
+            value:
+              simple: MicrosoftGraphApplications
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: containsGeneral
+          right:
+            value:
+              simple: EwsExtension
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isEqualString
+          right:
+            value:
+              simple: EWS Extension Online Powershell v2
+      label: "yes"
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "28"
+      "yes":
+      - "50"
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the supported integrations are enabled.
+      id: 1692898c-26b1-4e71-8d6e-b3502d11ffd3
+      iscommand: false
+      name: 'Are Azure integrations enabled? '
+      type: condition
+      version: -1
+    taskid: 1692898c-26b1-4e71-8d6e-b3502d11ffd3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1430,
+          "y": 1880
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "54_28_#default#": 0.12
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1845,
+        "width": 2160,
+        "x": 1430,
+        "y": 1740
+      }
+    }
+  }

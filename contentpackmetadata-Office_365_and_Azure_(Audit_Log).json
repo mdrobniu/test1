@@ -1,0 +1,176 @@
+{
+	"author": "Cortex XSOAR",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Cloud Service Provider"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"playbook"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Use the o365-search-auditlog command to search the unified audit log. This log contains events from Exchange Online, SharePoint Online, OneDrive for Business, Azure Active Directory, Microsoft Teams, Power BI, and other Microsoft 365 services. You can search for all events in a specified date range, or you can filter the results based on specific criteria, such as the action, the user who performed the action, or the target object.",
+						"name": "o365-auditlog-search"
+					}
+				],
+				"description": "Use the integration to get logs from the O365 service.",
+				"id": "MicrosoftPolicyAndComplianceAuditLog",
+				"name": "Microsoft Policy And Compliance (Audit Log)"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": [
+			{
+				"description": "This playbook enables you to collect and investigate suspicious security events from Azure AD environment. ",
+				"name": "Office 365 and Azure Hunting"
+			},
+			{
+				"description": "This playbook helps you collect, review, and find misconfigurations with the Azure environment.",
+				"name": "Office 365 and Azure Configuration Analysis"
+			}
+		],
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "2.0.5",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.25",
+			"name": "Base"
+		},
+		"CommonScripts": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.19.54",
+			"name": "Common Scripts"
+		},
+		"MicrosoftExchangeOnline": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "1.6.6",
+			"name": "Microsoft Exchange Online"
+		},
+		"MicrosoftGraphApplications": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.2.49",
+			"name": "Microsoft Graph Applications"
+		},
+		"MicrosoftGraphIdentityandAccess": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.2.59",
+			"name": "Microsoft Graph Identity and Access"
+		}
+	},
+	"deprecated": false,
+	"description": "Search the unified audit log to view user and administrator activity in your organization.",
+	"disabledMonthly": false,
+	"downloads": 1899,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "5.5.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldByCortexXSOAR",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "Office365AndAzureAuditLog",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/Office365AndAzureAuditLog/MicrosoftPolicyAndComplianceAuditLog_image.png",
+			"name": "Microsoft Policy And Compliance (Audit Log)"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/EWSExtensionOnlinePowershellv2_image.png",
+			"name": "EWS Extension Online Powershell v2 (Deprecated)"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/EWSExtensionOnlinePowershellv3_image.png",
+			"name": "EWS Extension Online Powershell v3"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/EWSO365_image.png",
+			"name": "EWS O365"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/EwsExtension_image.png",
+			"name": "O365 - EWS - Extension (Deprecated)"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/SecurityAndCompliance_image.png",
+			"name": "O365 - Security And Compliance - Content Search (Deprecated)"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftExchangeOnline/SecurityAndComplianceV2_image.png",
+			"name": "O365 - Security And Compliance - Content Search v2"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftGraphIdentityandAccess/MicrosoftGraphIdentityandAccess_image.png",
+			"name": "Azure Active Directory Identity And Access"
+		},
+		{
+			"imagePath": "content/packs/MicrosoftGraphApplications/MicrosoftGraphApplications_image.png",
+			"name": "Azure Active Directory Applications"
+		}
+	],
+	"itemVersion": "2.0.5",
+	"keywords": [],
+	"legacy": true,
+	"name": "Office 365 and Azure (Audit Log)",
+	"packID": "Office365AndAzureAuditLog",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "Need to find if a user viewed a specific document or purged an item from their mailbox? If so, use the Microsoft Policy And Compliance (Audit Log) integration to search the unified audit log to view user and administrator activity in your organization.\n\nThe unified audit log contains events from\n\n- Exchange Online\n- SharePoint Online\n- OneDrive for Business\n- Azure Active Directory\n- Microsoft Teams\n- Power BI\n- and other Microsoft 365 services\n\nYou can search for all events in a specified date range, or you can filter the results based on specific criteria, such as the action, the user who performed the action, or the target object.\n\n## What does this pack do?\n\nYou can search for the following types of user and admin activity in Microsoft 365:\n\n- User activity in SharePoint Online and OneDrive for Business\n- User activity in Exchange Online (Exchange mailbox audit logging)\n- Admin activity in SharePoint Online\n- Admin activity in Azure Active Directory (the directory service for Microsoft 365)\n- Admin activity in Exchange Online (Exchange admin audit logging)\n- eDiscovery activities in the security and compliance center\n- User and admin activity in Power BI\n- User and admin activity in Microsoft Teams\n- User and admin activity in Dynamics 365\n- User and admin activity in Yammer\n- User and admin activity in Microsoft Power Automate\n- User and admin activity in Microsoft Stream\n- Analyst and admin activity in Microsoft Workplace Analytics\n- User and admin activity in Microsoft Power Apps\n- User and admin activity in Microsoft Forms\n- User and admin activity for sensitivity labels for sites that use SharePoint Online or Microsoft Teams\n\nThis pack includes the [Microsoft Policy And Compliance (Audit Log)](https://xsoar.pan.dev/docs/reference/integrations/microsoft-policy-and-compliance-audit-log) integration.\n",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.5.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-05-11T10:33:25Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3368777",
+	"videos": []
+}

@@ -1,0 +1,124 @@
+{
+	"author": "Jie Liau",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Cloud Service Provider"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "IT Services",
+				"commands": [
+					{
+						"description": "Subscribes an endpoint to an Amazon SNS topic. If the endpoint type is HTTP/S or email, or if the endpoint and the topic are not in the same Amazon Web Services account, the endpoint owner must run the ConfirmSubscription action to confirm the subscription.",
+						"name": "aws-sns-create-subscription"
+					},
+					{
+						"description": "Returns a list of the requester's topics.",
+						"name": "aws-sns-list-topics"
+					},
+					{
+						"description": "Sends a message to an Amazon SNS topic, a text message (SMS message) directly to a phone number, or a message to a mobile platform endpoint (when you specify the TargetArn ).",
+						"name": "aws-sns-send-message"
+					},
+					{
+						"description": "Creates a new a topic to which notifications can be published. You can specify the attribute to create FIFO topic.",
+						"name": "aws-sns-create-topic"
+					},
+					{
+						"description": "Deletes a topic and all its subscriptions.",
+						"name": "aws-sns-delete-topic"
+					},
+					{
+						"description": "Returns a list of the subscriptions to a specific topic. Each call returns a limited list of subscriptions, up to 100.",
+						"name": "aws-sns-list-subscriptions-by-topic"
+					}
+				],
+				"description": "Amazon Web Services Simple Notification Service (SNS).",
+				"id": "AWS - SNS",
+				"name": "AWS - SNS"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "1.0.22",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.34",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "This is the integration content pack which can create or delete topic/subscription on AWS Simple Notification System and send the message via SNS as well.",
+	"disabledMonthly": false,
+	"downloads": 145,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "6.5.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "AWS-SNS",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/AWS-SNS/AWS-SNS_image.png",
+			"name": "AWS - SNS"
+		}
+	],
+	"itemVersion": "1.0.22",
+	"keywords": [],
+	"legacy": true,
+	"name": "AWS - SNS",
+	"packID": "AWS-SNS",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.5.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-06-08T10:58:09Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3683768",
+	"videos": []
+}

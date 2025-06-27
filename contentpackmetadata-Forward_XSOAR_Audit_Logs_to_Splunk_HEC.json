@@ -1,0 +1,119 @@
+{
+	"author": "Harri Ruuttila",
+	"authorImage": "",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "",
+	"contentItemTypes": [
+		"automation"
+	],
+	"contentItems": {
+		"automation": [
+			{
+				"description": "This Automation script uses the XSOAR API to get the audit logs and pushes them to Splunk HEC. Dependencies: SlunkPy and Core REST API integrations.",
+				"name": "ForwardAuditLogsToSplunkHEC",
+				"tags": [
+					"Utility"
+				]
+			}
+		],
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": null,
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "1.0.4",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.25",
+			"name": "Base"
+		},
+		"DemistoRESTAPI": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.3.70",
+			"name": "Cortex REST API"
+		},
+		"SplunkPy": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "3.2.8",
+			"name": "Splunk"
+		}
+	},
+	"deprecated": false,
+	"description": "This automation script takes a timeframe as input fetches the audit logs for the defined period. Then it pushes them to Splunk HEC. ",
+	"disabledMonthly": false,
+	"downloads": 375,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "6.0.0",
+	"general": [
+		"generalFieldFree"
+	],
+	"id": "ForwardXSOARAuditLogsToSplunkHEC",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/DemistoRESTAPI/CoreRESTAPI_image.png",
+			"name": "Core REST API"
+		},
+		{
+			"imagePath": "content/packs/DemistoRESTAPI/DemistoRESTAPI_image.png",
+			"name": "Demisto REST API (Deprecated)"
+		},
+		{
+			"imagePath": "content/packs/SplunkPy/SplunkPy_image.png",
+			"name": "SplunkPy"
+		}
+	],
+	"itemVersion": "1.0.4",
+	"keywords": [],
+	"legacy": true,
+	"name": "Forward XSOAR Audit Logs to Splunk HEC",
+	"packID": "ForwardXSOARAuditLogsToSplunkHEC",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.0.0",
+	"support": "community",
+	"supportDetails": {
+		"email": "",
+		"url": ""
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-05-12T10:35:19Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3089368",
+	"videos": []
+}

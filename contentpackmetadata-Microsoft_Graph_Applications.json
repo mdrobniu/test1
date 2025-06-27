@@ -1,0 +1,150 @@
+{
+	"author": "Cortex XSOAR",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Cloud Service Provider"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "IT Services",
+				"commands": [
+					{
+						"description": "Run this command to start the authorization process and follow the instructions in the command results.",
+						"name": "msgraph-apps-auth-start"
+					},
+					{
+						"description": "Run this command to complete the authorization process. Should be used after running the msgraph-apps-auth-start command.",
+						"name": "msgraph-apps-auth-complete"
+					},
+					{
+						"description": "Run this command if for some reason you need to rerun the authentication process.",
+						"name": "msgraph-apps-auth-reset"
+					},
+					{
+						"description": "Tests connectivity to Microsoft.",
+						"name": "msgraph-apps-auth-test"
+					},
+					{
+						"description": "Retrieves a list of applications.",
+						"name": "msgraph-apps-service-principal-list"
+					},
+					{
+						"description": "Removes an application from the directory.",
+						"name": "msgraph-apps-service-principal-remove"
+					},
+					{
+						"description": "Retrieve the properties and relationships of a servicePrincipal object.",
+						"name": "msgraph-apps-service-principal-get"
+					},
+					{
+						"description": "Update the properties of servicePrincipal object.",
+						"name": "msgraph-apps-service-principal-update"
+					},
+					{
+						"description": "Add a strong password or secret to a service principal. To allow this command, use msgraph-apps-service-principal-unlock-configuration. The password will be expired in 1 hour by default.",
+						"name": "msgraph-apps-service-principal-password-add"
+					},
+					{
+						"description": "Remove a password from a service principal. To allow this command, use msgraph-apps-service-principal-unlock-configuration.",
+						"name": "msgraph-apps-service-principal-password-remove"
+					},
+					{
+						"description": "Unlock configuration of a service principal.",
+						"name": "msgraph-apps-service-principal-unlock-configuration"
+					},
+					{
+						"description": "Lock configuration of a service principal.",
+						"name": "msgraph-apps-service-principal-lock-configuration"
+					}
+				],
+				"description": "Use the Azure Active Directory Applications integration to manage authorized applications.",
+				"id": "MicrosoftGraphApplications",
+				"name": "Azure Active Directory Applications"
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "1.2.49",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.25",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Use this pack to manage connected applications and services",
+	"disabledMonthly": false,
+	"downloads": 6623,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldByCortexXSOAR",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "MicrosoftGraphApplications",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/MicrosoftGraphApplications/MicrosoftGraphApplications_image.png",
+			"name": "Azure Active Directory Applications"
+		}
+	],
+	"itemVersion": "1.2.49",
+	"keywords": [],
+	"legacy": true,
+	"name": "Microsoft Graph Applications",
+	"packID": "MicrosoftGraphApplications",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "An application provides authorization access to your APIs. An instance of the application is a service principal. Using this integration you can retrieve a list of the service principals. If you find a service principal that has suspicious permissions, or if you see suspicious behavior of a service principal, you can remove that service principal.\n\n## What does this pack do?\n\nThe **Azure Active Directory Applications** integration enables you to:\n\n- Retrieve a detailed list of service principals.\n- Remove a service principal from the directory.\n",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2025-06-20T10:46:54Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3392471",
+	"videos": []
+}

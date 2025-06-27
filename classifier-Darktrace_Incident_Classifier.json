@@ -1,0 +1,32 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "Darktrace Model Breach",
+	"definitionId": "",
+	"description": "Classifies all incidents fetched by the Darktrace integration as \"Darktrace Model Breach\" type incidents for purposes of using the Integration Playbooks.",
+	"feed": false,
+	"fromServerVersion": "6.0.0",
+	"id": "b62e079d-a83a-4ef7-8e46-ce59037a310b",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"itemVersion": "4.0.0",
+	"keyTypeMap": {},
+	"locked": false,
+	"logicalVersion": 0,
+	"mapping": null,
+	"name": "Darktrace Incident Classifier",
+	"nameRaw": "Darktrace Incident Classifier",
+	"packID": "Darktrace",
+	"packName": "Darktrace",
+	"packPropagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"system": true,
+	"toServerVersion": "",
+	"transformer": {},
+	"type": "classification",
+	"unclassifiedCases": null,
+	"version": -1
+}

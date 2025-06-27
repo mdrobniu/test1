@@ -1,0 +1,297 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "",
+	"feed": false,
+	"fromServerVersion": "6.0.0",
+	"id": "User Profile - SCIM (Outgoing)",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"itemVersion": "1.1.1",
+	"keyTypeMap": null,
+	"locked": false,
+	"logicalVersion": 0,
+	"mapping": {
+		"User Profile - Create": {
+			"dontMapEventToLabels": true,
+			"internalMapping": {
+				"displayName": {
+					"simple": "displayname"
+				},
+				"emails": {
+					"complex": {
+						"filters": [],
+						"root": "email",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "[{\"primary\": true, \"type\": \"work\", \"value\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}]"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"externalId": {
+					"simple": "employeeid"
+				},
+				"name": {
+					"complex": {
+						"filters": [],
+						"root": "${givenname}",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "{\"givenName\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\", \"familyName\": \""
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"args": {
+									"prefix": {
+										"isContext": false
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "${surname}"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"args": {
+									"prefix": {
+										"isContext": false
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"phoneNumbers": {
+					"complex": {
+						"filters": [],
+						"root": "mobilephone",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "[{\"type\": \"work\", \"value\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}]"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"title": {
+					"simple": "title"
+				},
+				"userName": {
+					"simple": "username"
+				},
+				"userType": {
+					"simple": "employeetype"
+				}
+			}
+		},
+		"User Profile - Update": {
+			"dontMapEventToLabels": true,
+			"internalMapping": {
+				"displayName": {
+					"simple": "displayname"
+				},
+				"emails": {
+					"complex": {
+						"filters": [],
+						"root": "email",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "[{\"primary\": true, \"type\": \"work\", \"value\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}]"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"externalId": {
+					"simple": "employeeid"
+				},
+				"name": {
+					"complex": {
+						"filters": [],
+						"root": "${givenname}",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "{\"givenName\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\", \"familyName\": \""
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"args": {
+									"prefix": {
+										"isContext": false
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "${surname}"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"args": {
+									"prefix": {
+										"isContext": false
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"phoneNumbers": {
+					"complex": {
+						"filters": [],
+						"root": "mobilephone",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "[{\"type\": \"work\", \"value\": \""
+										}
+									},
+									"suffix": {
+										"isContext": false,
+										"value": {
+											"simple": "\"}]"
+										}
+									}
+								},
+								"operator": "concat"
+							},
+							{
+								"operator": "ParseJSON"
+							}
+						]
+					}
+				},
+				"title": {
+					"simple": "title"
+				},
+				"userName": {
+					"simple": "username"
+				},
+				"userType": {
+					"simple": "employeetype"
+				}
+			}
+		}
+	},
+	"name": "User Profile - SCIM (Outgoing)",
+	"nameRaw": "User Profile - SCIM (Outgoing)",
+	"packID": "IAM-SCIM",
+	"packName": "IAM SCIM",
+	"packPropagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"system": true,
+	"toServerVersion": "",
+	"transformer": {},
+	"type": "mapping-outgoing",
+	"unclassifiedCases": null,
+	"version": -1
+}

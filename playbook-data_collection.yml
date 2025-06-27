@@ -92,6 +92,9 @@ tasks:
         retriesinterval: 360
       to:
         simple: Administrator
+    nexttasks:
+      '#none#':
+      - "4"
     note: false
     quietmode: 0
     separatecontext: false
@@ -179,15 +182,42 @@ tasks:
           "y": 670
         }
       }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1c2fb32d-61dc-490f-87c8-c6018376873c
+      iscommand: false
+      name: demo test
+      type: regular
+      version: -1
+    taskid: 1c2fb32d-61dc-490f-87c8-c6018376873c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 680
+        }
+      }
 version: -1
 view: |-
   {
     "linkLabelsPosition": {},
     "paper": {
       "dimensions": {
-        "height": 715,
-        "width": 940,
-        "x": 450,
+        "height": 725,
+        "width": 960,
+        "x": 430,
         "y": 50
       }
     }
