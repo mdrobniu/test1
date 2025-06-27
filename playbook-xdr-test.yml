@@ -1,0 +1,130 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: 65d5ad61-6529-4ca7-8395-76ab810f91fd
+inputs: []
+name: xdr-test
+outputs: []
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 282f5fff-bde1-4518-890d-4ee15722543d
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: 282f5fff-bde1-4518-890d-4ee15722543d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      hostname:
+        simple: user1-virtual-machine
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Gets a list of endpoints, according to the passed filters. If there
+        are no filters, all endpoints are returned. Filtering by multiple fields will
+        be concatenated using AND condition (OR is not supported). Maximum result
+        set size is 100. Offset is the zero-based number of endpoint from the start
+        of the result set. (Start by counting from 0).
+      id: 93213303-a4cb-415c-8cbe-5b57bf5cf78f
+      iscommand: true
+      name: Get endpoint infromation
+      script: '|||xdr-get-endpoints'
+      type: regular
+      version: -1
+    taskid: 93213303-a4cb-415c-8cbe-5b57bf5cf78f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 170
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      value:
+        simple: ${PaloAltoNetworksXDR.Endpoint.ip}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prints text to war room (Markdown supported)
+      id: 25fc62c7-2697-4cb0-8bd5-2f2ef3ca4f8e
+      iscommand: false
+      name: Print the ip address of the endpoint
+      script: Print
+      type: regular
+      version: -1
+    taskid: 25fc62c7-2697-4cb0-8bd5-2f2ef3ca4f8e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 370
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 415,
+        "width": 380,
+        "x": 450,
+        "y": 50
+      }
+    }
+  }
