@@ -1,0 +1,703 @@
+{
+	"author": "Darktrace",
+	"authorImage": "content/packs/Darktrace/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Network Security"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"incidentfield",
+		"incidenttype",
+		"playbook",
+		"classifier",
+		"layoutscontainer"
+	],
+	"contentItems": {
+		"automation": null,
+		"classifier": [
+			{
+				"description": "Classifies all incidents fetched by the Darktrace integration as \"Darktrace Model Breach\" type incidents for purposes of using the Integration Playbooks.",
+				"id": "b62e079d-a83a-4ef7-8e46-ce59037a310b",
+				"name": "Darktrace Incident Classifier"
+			},
+			{
+				"description": "Maps model breach fields to mappings for use in Integration Playbooks.",
+				"id": "df4dda6f-19a6-4a5a-8e54-fdbe57034349",
+				"name": "Darktrace Model Breach Mapper"
+			},
+			{
+				"description": "",
+				"id": "Darktrace Email Mapper",
+				"name": "Darktrace Email Mapper"
+			},
+			{
+				"description": "",
+				"id": "Darktrace AI Analyst",
+				"name": "Darktrace AI Analyst"
+			},
+			{
+				"description": "Maps model breach fields to mappings for use in Integration Playbooks",
+				"id": "Darktrace Model Breach",
+				"name": "Darktrace Model Breach"
+			}
+		],
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": [
+			{
+				"description": "",
+				"name": "Darktrace Email Subject",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Category",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Actions",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Number of comments on the Darktrace model breach",
+				"name": "Darktrace Comment Count",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Score",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Read Status",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Receipt Status",
+				"type": "shortText"
+			},
+			{
+				"description": "Device label associated with device in Darktrace",
+				"name": "Darktrace Device Label",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email UUID",
+				"type": "shortText"
+			},
+			{
+				"description": "Vendor associated with device in Darktrace",
+				"name": "Darktrace Device Vendor",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Group Status",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Device ID",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Comment Count",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Associated Devices",
+				"type": "grid"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Summary",
+				"type": "longText"
+			},
+			{
+				"description": "Priority of the breached model in Darktrace",
+				"name": "Darktrace Model Priority",
+				"type": "number"
+			},
+			{
+				"description": "Hostname associated with device in Darktrace",
+				"name": "Darktrace Device Hostname",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Direction",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Name",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Sender",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Attachments",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Tags",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Critical Tags",
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email UI Link",
+				"type": "url"
+			},
+			{
+				"description": "Name associated with the breached model in Darktrace",
+				"name": "Darktrace Model Name",
+				"type": "shortText"
+			},
+			{
+				"description": "Darktrace Model Breach Score",
+				"name": "Darktrace Model Breach Score",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Related Model Breaches",
+				"type": "grid"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Recipient",
+				"type": "shortText"
+			},
+			{
+				"description": "Model ID (PID) associated with the breached model in Darktrace",
+				"name": "Darktrace Model ID",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Priority",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Tags",
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Group Id",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Action Status",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Mitre Tactics",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Warning Tags",
+				"type": "tagsSelect"
+			},
+			{
+				"description": "Darktrace Model Breach ID (PBID) of the breached model",
+				"name": "Darktrace Model Breach ID",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Category",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Actions Taken",
+				"type": "shortText"
+			},
+			{
+				"description": "Description of the Model Breach",
+				"name": "Darktrace Model Breach Description",
+				"type": "longText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Informational Tags",
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Anomaly Score",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Event Id",
+				"type": "shortText"
+			},
+			{
+				"description": "MAC address associated with device in Darktrace",
+				"name": "Darktrace Device MAC",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Unique Identifier",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Summary",
+				"type": "longText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Policy Id",
+				"type": "number"
+			},
+			{
+				"description": "IP address associated with device in Darktrace",
+				"name": "Darktrace Device IP",
+				"type": "shortText"
+			},
+			{
+				"description": "Model UUID associated with the breached model in Darktrace",
+				"name": "Darktrace Model UUID",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Release Requested",
+				"type": "boolean"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Links",
+				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Time",
+				"type": "shortText"
+			},
+			{
+				"description": "Tags associated with the breached Darktrace model",
+				"name": "Darktrace Model Tags",
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Darktrace AI Analyst Title",
+				"type": "shortText"
+			}
+		],
+		"incidenttype": [
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Darktrace Model Breach Alert",
+				"playbook": "Darktrace Basic Model Breach Handler",
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Darktrace Model Breach",
+				"playbook": "Handle Darktrace Model Breach",
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Darktrace AI Analyst Event",
+				"playbook": "Darktrace Basic AI Analyst Event Handler",
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Darktrace Email",
+				"playbook": "Darktrace Email Basic Email Handler",
+				"weeks": 0
+			}
+		],
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Network Security",
+				"commands": [
+					{
+						"description": "Run an Advanced Search Query and perform an analysis operation on any metric.",
+						"name": "darktrace-run-advanced-search-analysis"
+					},
+					{
+						"description": "Returns the graphable data for a device (max of 4 weeks of connections retained).",
+						"name": "darktrace-get-device-connection-info"
+					},
+					{
+						"description": "Returns details collected by Darktrace about external IP addresses or hostnames.",
+						"name": "darktrace-get-external-endpoint-details"
+					},
+					{
+						"description": "Returns a list of similar devices with respect to a specified device.",
+						"name": "darktrace-get-similar-devices"
+					},
+					{
+						"description": "Post to the list of Darkace Watched Domains to generate alerts when visited.",
+						"name": "darktrace-post-to-watched-list"
+					},
+					{
+						"description": "Get all devices that hold a common tag.",
+						"name": "darktrace-get-tagged-devices"
+					},
+					{
+						"description": "Get all tags for the given device.",
+						"name": "darktrace-get-tags-for-device"
+					},
+					{
+						"description": "Post a tag to a device.",
+						"name": "darktrace-post-tag-to-device"
+					}
+				],
+				"description": "This pack includes configurations to combine the world-class threat detection of Darktrace with the synchrony and automation abilities of XSOAR, allowing security teams to manage device actions including device statuses and tags. Your understanding of potential threats can also be levelled-up with Advanced Search logs from DPI.",
+				"id": "DarktraceAdmin",
+				"name": "Darktrace Admin (Partner Contribution)"
+			},
+			{
+				"category": "Network Security",
+				"commands": [
+					{
+						"description": "Fetch details about a specific Model Breach.",
+						"name": "darktrace-get-model-breach"
+					},
+					{
+						"description": "Fetch all comments for a given model brach.",
+						"name": "darktrace-get-model-breach-comments"
+					},
+					{
+						"description": "Acknowledge a model breach as specified by Model Breach ID.",
+						"name": "darktrace-acknowledge-model-breach"
+					},
+					{
+						"description": "Post a comment to a model breach.",
+						"name": "darktrace-post-comment-to-model-breach"
+					},
+					{
+						"description": "Unacknowledge a given model breach.",
+						"name": "darktrace-unacknowledge-model-breach"
+					},
+					{
+						"description": "Retrieve connections relevant to a specified model breach.",
+						"name": "darktrace-get-model-breach-connections"
+					},
+					{
+						"description": "Fetch the configuration details behind a specified model.",
+						"name": "darktrace-get-model"
+					},
+					{
+						"description": "Get details of a component.",
+						"name": "darktrace-get-model-component"
+					}
+				],
+				"description": "Rapid detection of malicious behaviour can make all the difference in the response to a security event. This pack includes configurations to combine the world-class threat detection of Darktrace with the synchrony and automation abilities of XSOAR, allowing security teams to investigate model breaches and all model breach related actions (such as commenting, acknowledging and model logic info).",
+				"id": "DarktraceMBs",
+				"name": "Darktrace Model Breaches (Partner Contribution)"
+			},
+			{
+				"category": "Network Security",
+				"commands": [
+					{
+						"description": "Fetch details about a specific Email.",
+						"name": "darktrace-email-get-email"
+					},
+					{
+						"description": "Apply \"hold\" action to a specified Email.",
+						"name": "darktrace-email-hold-email"
+					},
+					{
+						"description": "Apply \"release\" action to a specified Email. ",
+						"name": "darktrace-email-release-email"
+					}
+				],
+				"description": "This pack includes configurations to combine the world-class threat detection of Darktrace with the synchrony and automation abilities of XSOAR, allowing security teams to investigate critical incidents along with accompanying summaries and timelines.",
+				"id": "DarktraceEmail",
+				"name": "DarktraceEmail (Partner Contribution)"
+			},
+			{
+				"category": "Network Security",
+				"commands": [
+					{
+						"description": "Fetch the details of an AI Analyst event.",
+						"name": "darktrace-get-ai-analyst-incident-event"
+					},
+					{
+						"description": "Fetch all comments from an AI Analyst incident Event.",
+						"name": "darktrace-get-comments-for-ai-analyst-incident-event"
+					},
+					{
+						"description": "Post a comment to an AI Analyst incident Event.",
+						"name": "darktrace-post-comment-to-ai-analyst-incident-event"
+					},
+					{
+						"description": "Acknowledge an AI Analyst Incident Event.",
+						"name": "darktrace-acknowledge-ai-analyst-incident-event"
+					},
+					{
+						"description": "Unacknowledge an AI Analyst Incident Event.",
+						"name": "darktrace-unacknowledge-ai-analyst-incident-event"
+					},
+					{
+						"description": "Pulls all linked events for a given event. Over time, events can become merged with one another. This happens when two sets of disparate activity are suddenly linked by shared factors.",
+						"name": "darktrace-get-ai-analyst-incident-group-from-eventId"
+					}
+				],
+				"description": "Rapid detection of malicious behaviour can make all the difference in the response to a security event. This pack includes configurations to combine the world-class threat detection of Darktrace with the synchrony and automation abilities of XSOAR, allowing security teams to investigate critical incidents along with accompanying summaries and timelines. AI actions can also be applied.",
+				"id": "DarktraceAIA",
+				"name": "Darktrace AI Analyst (Partner Contribution)"
+			},
+			{
+				"category": "Network Security",
+				"commands": [
+					{
+						"description": "Darktrace-get-breach returns a model breach based on its model breach id (pbid)",
+						"name": "darktrace-get-breach"
+					},
+					{
+						"description": "Returns the comments on a model breach based on its model breach id (pbid)",
+						"name": "darktrace-get-comments"
+					},
+					{
+						"description": "Acknowledge a model breach as specified by Model Breach ID",
+						"name": "darktrace-acknowledge"
+					},
+					{
+						"description": "Unacknowledges a model breach as specified by Model Breach ID",
+						"name": "darktrace-unacknowledge"
+					},
+					{
+						"description": "Returns a list of similar devices to a device specified by Darktrace DID",
+						"name": "darktrace-list-similar-devices"
+					},
+					{
+						"description": "Returns details collected by Darktrace about external IP addresses or hostnames.",
+						"name": "darktrace-get-external-endpoint-details"
+					},
+					{
+						"description": "Returns the graphable data used in the \"Connections Data\" view for a specific device that can be accessed from the Threat Visualizer omnisearch in Darktrace. Data returned covers a 4 week period. Parameters are further documented at https://customerportal.darktrace.com/product-guides/main/api-deviceinfo-request. It is recommended to run the command to check the relevant fields in context.",
+						"name": "darktrace-get-device-connection-info"
+					},
+					{
+						"description": "Gets device identity information based on label, tag, type, hostname, ip, mac, vendor and os. It is recommended to run the command to check the relevant fields in context.",
+						"name": "darktrace-get-device-identity-info"
+					},
+					{
+						"description": "Returns a time sorted list of connections and events for a device or an entity such as a user credential.",
+						"name": "darktrace-get-entity-details"
+					},
+					{
+						"description": "Retrieve additional details on a modelbreach",
+						"name": "darktrace-get-breach-details"
+					},
+					{
+						"description": "Get the details of a model given the UUID",
+						"name": "darktrace-get-model"
+					},
+					{
+						"description": "Get details of a component given the CID",
+						"name": "darktrace-get-component"
+					}
+				],
+				"description": "Deprecated. Use DarktraceMBs, DarktraceAIA, DarktraceAdmin instead.",
+				"id": "Darktrace",
+				"name": "Darktrace (Deprecated) (Partner Contribution)"
+			}
+		],
+		"layoutscontainer": [
+			{
+				"description": "",
+				"name": "Darktrace Model Breach Layout"
+			},
+			{
+				"description": "AI Analyst Incident Event Layout",
+				"name": "Darktrace AI Analyst Incident Layout"
+			},
+			{
+				"description": "",
+				"name": "Darktrace Email Layout"
+			},
+			{
+				"description": "Model Breach Layout",
+				"name": "Darktrace MBs Layout"
+			}
+		],
+		"list": null,
+		"playbook": [
+			{
+				"description": "Update all incident fields that may change over time.",
+				"name": "Darktrace Email Update Incident Fields"
+			},
+			{
+				"description": "Runs a common Model Breach workflow for fetched Model breach alerts.",
+				"name": "Darktrace Basic Model Breach Handler"
+			},
+			{
+				"description": "Runs a common Email workflow for fetch Darktrace Email incidents.",
+				"name": "Darktrace Email Basic Email Handler"
+			},
+			{
+				"description": "Deprecated. Use Darktrace Basic Model Breach Handler and Darktrace Basic AI Analyst Event Handler instead.",
+				"name": "Handle Darktrace Model Breach"
+			},
+			{
+				"description": "Runs a common AI Analyst workflow for fetched AI Analyst events.",
+				"name": "Darktrace Basic AI Analyst Event Handler"
+			}
+		],
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"currentVersion": "4.0.0",
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.39.30",
+			"name": "Base"
+		},
+		"CommonPlaybooks": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "2.7.2",
+			"name": "Common Playbooks"
+		},
+		"CommonScripts": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.19.62",
+			"name": "Common Scripts"
+		},
+		"CommonTypes": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.8.9",
+			"name": "Common Types"
+		},
+		"FiltersAndTransformers": {
+			"author": "Cortex XSOAR",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.2.95",
+			"name": "Filters And Transformers"
+		}
+	},
+	"deprecated": false,
+	"description": "Populates Darktrace Model Breaches and AI Analyst Events in Cortex XSOAR, allowing for cross-platform automated investigation and response.",
+	"disabledMonthly": false,
+	"downloads": 2587,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"fromServerVersion": "6.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldByPartner",
+		"generalFieldFree",
+		"generalFieldSupportIncluded"
+	],
+	"id": "Darktrace",
+	"installMessage": "",
+	"integrations": [
+		{
+			"imagePath": "content/packs/Darktrace/Darktrace_image.png",
+			"name": "Darktrace (Deprecated)"
+		},
+		{
+			"imagePath": "content/packs/Darktrace/DarktraceAIA_image.png",
+			"name": "Darktrace AI Analyst"
+		},
+		{
+			"imagePath": "content/packs/Darktrace/DarktraceAdmin_image.png",
+			"name": "Darktrace Admin"
+		},
+		{
+			"imagePath": "content/packs/Darktrace/DarktraceMBs_image.png",
+			"name": "Darktrace Model Breaches"
+		},
+		{
+			"imagePath": "content/packs/Darktrace/DarktraceEmail_image.png",
+			"name": "DarktraceEmail"
+		}
+	],
+	"itemVersion": "4.0.0",
+	"keywords": [
+		"Darktrace"
+	],
+	"legacy": true,
+	"name": "Darktrace",
+	"packID": "Darktrace",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "As organizations continue to mature their security stack and adopt defence-in-depth practices, it is increasingly important for security operation teams to have their data available in one place, rather than spread across multiple tools.\n\nThis integration pack enriches your Cortex XSOAR playbooks with information from Darktrace’s self-learning AI in our DETECT product family. This ensures your endpoint data is accompanied by tailored Darktrace alerts on anomalous activities within your network, SaaS, cloud and industrial environments.\n\nTogether with XSOAR, this pack can speed up your triage workflow, boost SOC efficiency and ensure all your security coverage can be found in one place.\n\nWhat does this pack do?\n\nThis pack provides three optional sub-integrations by pulling a variety of Darktrace metrics:\n\n- Model Breaches and all model breach related actions (such as commenting, acknowledging and model logic info).\n- AI Analyst investigations indicative of critical incidents along with accompanying summaries and timelines. AI actions can also be applied.\n- Device administration data including device statuses and tags. Your understanding of potential threats can also be levelled-up with Advanced Search logs from DPI.\n\nCustomers can decide which of these alerts are integrated, ensuring visibility is bespoke to your individual SOC’s needs. Alerts from the connector will populate in the XSOAR ‘Incidents’ tab.\n",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.0.0",
+	"support": "partner",
+	"supportDetails": {
+		"email": "integrationsupport@darktrace.com",
+		"url": "https://customerportal.darktrace.com"
+	},
+	"tags": [
+		"Breach",
+		"Attack",
+		"Alerts",
+		"Compliance",
+		"Malware",
+		"Network"
+	],
+	"toServerVersion": "",
+	"updated": "2025-06-26T12:55:15Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "3481649",
+	"videos": []
+}
