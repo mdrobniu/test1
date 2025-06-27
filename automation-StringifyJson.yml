@@ -1,0 +1,58 @@
+args:
+- name: value
+  required: true
+- defaultValue: "1"
+  description: How many times to stringify - encapsulate json within json
+  name: times
+  required: true
+comment: OcdStringifyJson
+commonfields:
+  id: e91463b1-5b8f-4c49-809b-3050b11575f3
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringifyJson
+outputs:
+- contextPath: OcdStringifyJson
+pswd: ""
+runas: DBotWeakRole
+runonce: false
+script: |
+  var value;
+  var ec = {};
+  value = args.value;
+  try {
+      for (let i = 0; i < args.times; i++)
+      {
+          value = JSON.stringify(value);
+      }
+  } catch(err) {
+      value = args.value;
+  }
+
+  ec['StringifyJson'] = value;
+  var result = {
+      Type: entryTypes.note,
+      Contents: ec,
+      ContentsFormat: formats.json,
+      HumanReadable: value
+  };
+
+  result.EntryContext = ec;
+
+  return result;
+scripttarget: 0
+tags: []
+type: javascript
