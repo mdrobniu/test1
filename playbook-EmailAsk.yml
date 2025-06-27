@@ -1,0 +1,193 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    toServerVersion: ""
+id: b17e14ab-e129-4c2d-83c6-a9455c4341b5
+inputs: []
+name: EmailAsk
+outputs: []
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b9e1e8a6-7c39-4603-85e3-7f6d1777138e
+      iscommand: false
+      name: ""
+      version: -1
+    taskid: b9e1e8a6-7c39-4603-85e3-7f6d1777138e
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      email:
+        simple: mdrobniuch@paloaltonetworks.com
+      message:
+        simple: Do you like pancakes
+      option1:
+        simple: "yes"
+      option2:
+        simple: "no"
+      subject:
+        simple: Do you like pancakes
+      task:
+        simple: "2"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Ask a user a question via email and process the reply directly
+        into the investigation.
+      id: 2c4e93f3-deb7-4051-865e-97f186c5fc21
+      iscommand: false
+      name: Ask over email
+      script: EmailAskUser
+      type: regular
+      version: -1
+    taskid: 2c4e93f3-deb7-4051-865e-97f186c5fc21
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 220
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "NO":
+      - "6"
+      "YES":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4c552593-3b05-42bb-848d-72d26c05fb2e
+      iscommand: false
+      name: Yes or no?
+      tags:
+      - Await
+      type: condition
+      version: -1
+    taskid: 4c552593-3b05-42bb-848d-72d26c05fb2e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 510
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d42364c8-4652-4f74-847e-3723043921a8
+      iscommand: false
+      name: "Yes"
+      type: regular
+      version: -1
+    taskid: d42364c8-4652-4f74-847e-3723043921a8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -300,
+          "y": 740
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b16f1311-ff45-465a-80c4-559094bf6ba3
+      iscommand: false
+      name: Else
+      type: regular
+      version: -1
+    taskid: b16f1311-ff45-465a-80c4-559094bf6ba3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 730
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 785,
+        "width": 1030,
+        "x": -300,
+        "y": 50
+      }
+    }
+  }
